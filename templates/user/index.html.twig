@@ -1,0 +1,73 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}User Index{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <!-- Header -->
+    <h1 class="mb-5 text-center text-dark">User Index</h1>
+
+    <!-- Table -->
+    <div class="table-responsive-sm">
+        <table class="table table-bordered text-dark" style="width: 80%; margin: 0 auto; border-color: black;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Password</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.Nom }}</td>
+                    <td>{{ user.Prenom }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roles ? user.roles|join(', ') : 'No roles assigned' }}</td>
+                    <td>{{ user.password }}</td>
+                    <td>
+                        <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-info btn-sm">Show</a>
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Create New Button -->
+    <div class="text-center mt-4">
+        <a href="{{ path('app_user_new') }}" class="btn btn-success">Create New</a>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+    /* Drop table further down */
+    .mt-5 {
+        margin-top: 150px !important;
+    }
+
+    /* Ensure black borders and text */
+    table, th, td {
+        border-color: black !important;
+        color: black !important;
+    }
+
+    /* Adjust table size */
+    .table-responsive-sm {
+        max-width: 0;
+        margin: 0; /* Centers the table */
+    }
+</style>
+{% endblock %}

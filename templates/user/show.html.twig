@@ -1,0 +1,44 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}User Details{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">User Details</h1>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th scope="row" class="w-25">ID</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Nom</th>
+                <td>{{ user.Nom }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Prenom</th>
+                <td>{{ user.Prenom }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Roles</th>
+                <td>{{ user.roles ? user.roles|join(', ') : 'No roles assigned' }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mt-4">
+        <a href="{{ path('app_user_index') }}" class="btn btn-secondary">Back to List</a>
+        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">Edit</a>
+        <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+{% endblock %}
