@@ -1,0 +1,80 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Statistiques des Réservations{% endblock %}
+
+{% block body %}
+    <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
+        <h1 class="display-6 mb-4 text-center text-primary">Statistiques génerales</h1>
+        
+        <div class="row">
+            <!-- Top Compagnies Aériennes -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header" style="background-color: #002B5C; color: white;">
+                        Top Compagnies Aériennes
+                    </div>
+                    <div class="card-body">
+                        {% if topCompagnies is not empty %}
+                            <ul class="list-group list-group-flush">
+                                {% for compagnie in topCompagnies %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>{{ compagnie.compagnie }}</span>
+                                        <span class="badge bg-secondary rounded-pill">{{ compagnie.totalReservations }} réservations</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-center text-muted">Aucune donnée disponible.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Top Destinations -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header" style="background-color: #002B5C; color: white;">
+                        Top Destinations
+                    </div>
+                    <div class="card-body">
+                        {% if topDestinations is not empty %}
+                            <ul class="list-group list-group-flush">
+                                {% for destination in topDestinations %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>{{ destination.destination }}</span>
+                                        <span class="badge bg-secondary rounded-pill">{{ destination.totalReservations }} réservations</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-center text-muted">Aucune donnée disponible.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chiffre d'Affaire par Compagnie -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header" style="background-color: #002B5C; color: white;">
+                        Chiffre d'Affaire par Compagnie
+                    </div>
+                    <div class="card-body">
+                        {% if chiffreAffaireParCompagnie is not empty %}
+                            <ul class="list-group list-group-flush">
+                                {% for compagnie in chiffreAffaireParCompagnie %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>{{ compagnie.compagnie }}</span>
+                                        <span class="badge bg-secondary rounded-pill">{{ compagnie.chiffreAffaire|number_format(2, ',', ' ') }} €</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-center text-muted">Aucune donnée disponible.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

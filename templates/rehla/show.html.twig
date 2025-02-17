@@ -1,0 +1,54 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Rehla{% endblock %}
+
+{% block body %}
+    <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
+        <h1 class="display-6 mb-4 text-center text-primary">Détails de Rehla</h1>
+
+        <!-- Tableau de Détails -->
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th class="text-primary">ID</th>
+                    <td>{{ rehla.id }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Départ</th>
+                    <td>{{ rehla.depart }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Destination</th>
+                    <td>{{ rehla.destination }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Date de Départ</th>
+                    <td>{{ rehla.departDate ? rehla.departDate|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Date d'Arrivée</th>
+                    <td>{{ rehla.arrivalDate ? rehla.arrivalDate|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Prix</th>
+                    <td>{{ rehla.price }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Agence</th>
+                    <td>{{ rehla.agence.nom }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{{ path('app_rehla_index') }}" class="btn btn-dark btn-lg text-white shadow-sm" style="background-color: #002B5C; border: none;">
+                <i class="bi bi-arrow-left-circle"></i> Retour à la liste
+            </a>
+            <a href="{{ path('app_rehla_edit', {'id': rehla.id}) }}" class="btn btn-primary btn-lg text-white shadow-sm">
+                <i class="bi bi-pencil"></i> Modifier
+            </a>
+            {{ include('rehla/_delete_form.html.twig', { 'class': 'btn btn-danger btn-lg text-white shadow-sm' }) }}
+        </div>
+    </div>
+{% endblock %}

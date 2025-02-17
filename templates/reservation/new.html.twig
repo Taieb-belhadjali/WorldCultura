@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation{% endblock %}
+
+{% block body %}
+    <div class="container-fluid booking py-5" style="background-color: #2c3e50;">
+        <div class="container py-5">
+            <div class="row g-5 align-items-center">
+                <!-- Partie gauche -->
+                <div class="col-lg-6">
+                    <h5 class="section-booking-title pe-3 text-white">Réservation</h5>
+
+
+                    
+                    <h1 class="text-white mb-4">Réservation en ligne</h1>
+                    <p class="text-white mb-4">Réservez votre vol de rêve maintenant et explorez les destinations les plus belles du monde !</p>
+                    <p class="text-white mb-4">Choisissez vos dates de voyage et obtenez les meilleures offres pour votre prochaine aventure.</p>
+                    <a href="{{ path('rehla_list_front') }}" class="btn btn-light text-primary rounded-pill py-3 px-5 mt-2">rentre au vols</a>
+
+                </div>
+
+                <!-- Partie droite -->
+                <div class="col-lg-6">
+                    <h1 class="text-white mb-3">Réservez un tour maintenant</h1>
+                    <p class="text-white mb-4">Complétez ce formulaire et vivez de nouvelles aventures avec la culture mondiale.</p>
+
+                    {{ form_start(form) }}
+                        <div class="row g-3">
+                            <!-- Zone de texte avec placeholders -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form_row(form.userName, {'attr': {'class': 'form-control bg-light border-0 shadow-sm', 'placeholder': 'Votre nom complet'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form_row(form.email, {'attr': {'class': 'form-control bg-light border-0 shadow-sm', 'placeholder': 'Votre adresse email'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form_row(form.contact, {'attr': {'class': 'form-control bg-light border-0 shadow-sm', 'placeholder': 'Votre numéro de contact'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary text-white w-100 py-3" type="submit">Confirmer la réservation</button>
+                            </div>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

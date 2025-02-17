@@ -1,0 +1,68 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Compagnie Aérienne{% endblock %}
+
+{% block body %}
+    <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
+        <h1 class="display-6 mb-4 text-center text-primary">Liste des Compagnies Aériennes</h1>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-primary text-dark">
+                    <tr class="text-center">
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Logo</th>
+                        <th>Description</th>
+                        <th>Contact</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for compagnie_aerienne in compagnie_aeriennes %}
+                    <tr class="text-center">
+                        <td>{{ compagnie_aerienne.id }}</td>
+                        <td>{{ compagnie_aerienne.nom }}</td>
+                        <td>
+                            {% if compagnie_aerienne.logo %}
+                                <img src="{{ asset('uploads/logos/' ~ compagnie_aerienne.logo) }}" alt="Logo de la compagnie" class="img-thumbnail" style="max-width: 80px;">
+                            {% else %}
+                                <span class="badge bg-secondary">Pas de logo</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <p class="text-truncate" style="max-width: 200px;" title="{{ compagnie_aerienne.description }}">{{ compagnie_aerienne.description }}</p>
+                        </td>
+                        <td>{{ compagnie_aerienne.contactDuResponsable }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{{ path('app_compagnie_aerienne_show', {'id': compagnie_aerienne.id}) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye"></i> Voir
+                                </a>
+                                <a href="{{ path('app_compagnie_aerienne_edit', {'id': compagnie_aerienne.id}) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-pencil"></i> Modifier
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">
+                            <div class="py-4">
+                                <i class="bi bi-emoji-frown display-6 text-muted"></i>
+                                <p class="mt-2">Aucune compagnie aérienne trouvée.</p>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            <a href="{{ path('app_compagnie_aerienne_new') }}" class="btn btn-dark btn-lg text-white shadow-sm" style="background-color: #002B5C; border: none;">
+                <i class="bi bi-plus-circle"></i> Nouvelle Compagnie
+            </a>
+        </div>
+    </div>
+{% endblock %}

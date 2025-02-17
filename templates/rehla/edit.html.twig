@@ -1,0 +1,45 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Modifier Rehla{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 p-4 bg-white rounded shadow-sm">
+        <h1 class="text-center text-primary mb-4">Modifier la Rehla</h1>
+
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <!-- Formulaire -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        {{ form_start(form) }}
+
+                        {% for field in form %}
+                            {% if field.vars.name != '_token' %} 
+                                <div class="mb-3">
+                                    {{ form_label(field, null, {'label_attr': {'class': 'form-label fw-semibold text-primary'}}) }}
+                                    {{ form_widget(field, {'attr': {'class': 'form-control shadow-sm rounded-3 px-3'}}) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {{ form_rest(form) }}
+
+                        <button class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm">
+                            {{ button_label|default('🔄 Mettre à jour') }}
+                        </button>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <a href="{{ path('app_rehla_index') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Retour à la liste
+            </a>
+            {{ include('rehla/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

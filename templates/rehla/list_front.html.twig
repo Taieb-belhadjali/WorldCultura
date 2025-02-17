@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Rehlas front{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <div class="row">
+            <!-- Partie gauche pour recherche, tri, filtrage -->
+            <div class="col-md-3">
+                <h4 class="mb-4">Filtres et Recherche</h4>
+
+                <!-- Recherche et filtres dans l'URL -->
+                <div class="mb-3">
+                    <label class="form-label">Recherche par destination</label>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Ex. Paris" value="{{ app.request.query.get('search') }}" oninput="applyFilters()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Date de départ</label>
+                    <input type="date" class="form-control" id="departDate" name="departDate" value="{{ app.request.query.get('departDate') }}" oninput="applyFilters()">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Prix (max.)</label>
+                    <input type="number" class="form-control" id="priceRange" name="priceRange" value="{{ app.request.query.get('priceRange') }}" oninput="applyFilters()">
+                </div>
+            </div>
+
+            <!-- Partie centrale pour la liste des Rehlas -->
+            <div class="col-md-6">
+                <h1 class="mb-4">Liste des Rehlas</h1>
+
+                {% for rehla in rehlas %}
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="card-title">{{ rehla.depart }} → {{ rehla.destination }}</h5>
+                                    <p class="text-muted mb-1">
+                                        {{ rehla.departDate ? rehla.departDate|date('d/m/Y H:i') : '-' }}  
+                                        ⏳ {{ rehla.arrivalDate ? rehla.arrivalDate|date('d/m/Y H:i') : '-' }}
+                                    </p>
+                                    <p class="mb-1"><strong>Prix :</strong> {{ rehla.price }} €</p>
+                                    <p class="text-muted">Agent aérienne : {{ rehla.agence.nom }}</p>
+                                </div>
+                                <div class="text-end">
+                                    <p class="fw-bold text-primary">{{ rehla.price }} €</p>
+                                    <a href="{{ path('reservation_new', {'id': rehla.id}) }}" class="btn btn-primary">Réserver</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted">Aucune rehla disponible.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Partie droite pour les publicités -->
+            <div class="col-md-3">
+                <h4 class="mb-4">Publicités</h4>
+                <div class="card">
+                    <img src="https://business.ladn.eu/wp-content/uploads/2017/03/bmw.jpeg" class="card-img-top" alt="Publicité 1">
+                    <div class="card-body">
+                        <p class="card-text">
+    <strong>BMW - Conduisez l'excellence</strong><br>
+    "La route est à vous, faites-la vôtre avec BMW."
+</p>
+
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <img src="https://scontent.ftun10-2.fna.fbcdn.net/v/t1.6435-9/120132198_1648609238673989_3883431477855060586_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=xlVxxtBfZmAQ7kNvgF-UFDz&_nc_oc=AdjcXbBo5SG55TzK0UurnDpEZY_xf8ogVCBCBT_eqjExGp_qApxP5rGMRKeNeju7NqI&_nc_zt=23&_nc_ht=scontent.ftun10-2.fna&_nc_gid=AwqJwtddBQqlfYjENNsbigB&oh=00_AYB4SIHLbPcQzRqDAabqxuNwNHiNC1JPBq9xNb7H5go-qA&oe=67D9A5E0" class="card-img-top" alt="Publicité 2">
+                   <div class="card-body">
+                        <p class="card-text">
+    <strong>BMW - Conduisez l'excellence</strong><br>
+    "La route est à vous, faites-la vôtre avec BMW."
+</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function applyFilters() {
+            const search = document.getElementById('search').value;
+            const departDate = document.getElementById('departDate').value;
+            const priceRange = document.getElementById('priceRange').value;
+            
+            const params = new URLSearchParams();
+            if (search) params.set('search', search);
+            if (departDate) params.set('departDate', departDate);
+            if (priceRange) params.set('priceRange', priceRange);
+
+            window.location.search = params.toString();  // Met à jour l'URL avec les filtres
+        }
+    </script>
+{% endblock %}

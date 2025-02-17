@@ -1,0 +1,52 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Compagnie Aérienne{% endblock %}
+
+{% block body %}
+    <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
+        <h1 class="display-6 mb-4 text-center text-primary">Détails de la Compagnie Aérienne</h1>
+
+        <!-- Tableau de Détails -->
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th class="text-primary">ID</th>
+                    <td>{{ compagnie_aerienne.id }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Nom</th>
+                    <td>{{ compagnie_aerienne.nom }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Logo</th>
+                    <td>
+                        {% if compagnie_aerienne.logo %}
+                            <img src="{{ asset('uploads/logos/' ~ compagnie_aerienne.logo) }}" alt="Logo de la compagnie" class="img-thumbnail" style="max-width: 150px;">
+                        {% else %}
+                            <span class="badge bg-secondary">Pas de logo</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Description</th>
+                    <td>{{ compagnie_aerienne.description }}</td>
+                </tr>
+                <tr>
+                    <th class="text-primary">Contact du Responsable</th>
+                    <td>{{ compagnie_aerienne.contactDuResponsable }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{{ path('app_compagnie_aerienne_index') }}" class="btn btn-dark btn-lg text-white shadow-sm" style="background-color: #002B5C; border: none;">
+                <i class="bi bi-arrow-left-circle"></i> Retour à la liste
+            </a>
+            <a href="{{ path('app_compagnie_aerienne_edit', {'id': compagnie_aerienne.id}) }}" class="btn btn-primary btn-lg text-white shadow-sm">
+                <i class="bi bi-pencil"></i> Modifier
+            </a>
+            {{ include('compagnie_aerienne/_delete_form.html.twig', { 'class': 'btn btn-danger btn-lg text-white shadow-sm' }) }}
+        </div>
+    </div>
+{% endblock %}

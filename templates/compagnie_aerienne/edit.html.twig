@@ -1,0 +1,45 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Modifier Compagnie Aérienne{% endblock %}
+
+{% block body %}
+    <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
+        <h1 class="display-6 mb-4 text-center text-primary">Modifier la Compagnie Aérienne</h1>
+
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <!-- Formulaire -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        {{ form_start(form) }}
+
+                        {% for field in form %}
+                            {% if field.vars.name != '_token' %}
+                                <div class="mb-3">
+                                    {{ form_label(field, null, {'label_attr': {'class': 'form-label fw-semibold text-primary'}}) }}
+                                    {{ form_widget(field, {'attr': {'class': 'form-control shadow-sm rounded-3 px-3'}}) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {{ form_rest(form) }}
+
+                        <button class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm">
+                            {{ button_label|default('🔄 Mettre à jour') }}
+                        </button>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{{ path('app_compagnie_aerienne_index') }}" class="btn btn-dark btn-lg text-white shadow-sm" style="background-color: #002B5C; border: none;">
+                <i class="bi bi-arrow-left-circle"></i> Retour à la liste
+            </a>
+            {{ include('compagnie_aerienne/_delete_form.html.twig', { 'class': 'btn btn-danger btn-lg text-white shadow-sm' }) }}
+        </div>
+    </div>
+{% endblock %}
