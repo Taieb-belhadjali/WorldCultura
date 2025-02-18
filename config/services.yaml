@@ -1,0 +1,29 @@
+# config/services.yaml
+
+parameters:
+    uploads_directory: '%kernel.project_dir%/public/uploads'
+
+services:
+    # Automatically enable autowiring and autoconfiguration
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        #bind:
+            #$session: '@session'
+
+    # Explicit definition for CartService
+   
+
+    # Ensure the session interface is correctly mapped
+    Symfony\Component\HttpFoundation\Session\SessionInterface: '@session'
+
+    # Make all classes in src/ available as services
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

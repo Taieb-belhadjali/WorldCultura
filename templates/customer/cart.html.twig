@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}🛒Mon Panier{% endblock %}
+
+{% block body %}
+<div class="container mx-auto p-6">
+    <h2 class="text-3xl font-semibold mb-6 text-center text-gray-700">🛒Mon Panier</h2>
+
+    {% if cart is empty %}
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+            <p class="text-gray-500 text-lg mb-6">Votre panier est vide.</p>
+            <a href="{{ path('customer_products') }}" class="btn btn-primary">
+                ← Retour aux produits
+            </a>
+        </div>
+    {% else %}
+        <div class="overflow-x-auto bg-white shadow-lg rounded-lg mb-6">
+            <table class="min-w-full table-auto">
+                <thead class="bg-gray-100 border-b">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Produit</th>
+                        <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Quantité</th>
+                        <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Prix Unitaire</th>
+                        <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Total</th>
+                        <th class="py-3 px-4 text-left text-sm font-medium text-gray-600">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for productId, item in cart %}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-4 px-4 text-sm">{{ item.product.name }}</td>
+                            <td class="py-4 px-4 text-sm">
+                                <form action="{{ path('update_cart_quantity', { 'productId': productId }) }}" method="POST" class="flex items-center space-x-2">
+                                    <button type="submit" name="quantity" value="{{ item.quantity - 1 }}" class="btn btn-quantity" {% if item.quantity == 1 %}disabled{% endif %}>
+                                        <span class="text-xl font-bold">-</span>
+                                    </button>
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" class="w-16 text-center border-gray-300 rounded-lg" readonly>
+                                    <button type="submit" name="quantity" value="{{ item.quantity + 1 }}" class="btn btn-quantity">
+                                        <span class="text-xl font-bold">+</span>
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="py-4 px-4 text-sm">{{ item.product.price }} €</td>
+                            <td class="py-4 px-4 text-sm">{{ item.product.price * item.quantity }} €</td>
+                            <td class="py-4 px-4 text-sm">
+                                <form action="{{ path('remove_from_cart', { 'productId': productId }) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger">
+                                        Retirer
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6 flex justify-between items-center">
+            <a href="{{ path('customer_products') }}" class="btn btn-secondary">
+                ← Retour aux produits
+            </a>
+<p class="text-xl font-bold">Total: <span class="text-green-600 font-bold">{{ total }} €</span></p>
+            <form action="{{ path('checkout') }}" method="POST">
+                <button type="submit" class="btn btn-primary">
+                    Passer à la caisse
+                </button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+
+{% block stylesheets %}
+<style>
+    /* General button styling */
+    .btn {
+        padding: 10px 20px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #4299e1;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #3182ce;
+    }
+
+    .btn-secondary {
+        background-color: #a0aec0;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #718096;
+    }
+
+    .btn-danger {
+        background-color: #e53e3e;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c53030;
+    }
+
+    .btn-quantity {
+        background-color: #edf2f7;
+        color: #4a5568;
+        border: 1px solid #e2e8f0;
+        padding: 6px 12px;
+        font-size: 1.5rem;
+    }
+
+    .btn-quantity:hover {
+        background-color: #e2e8f0;
+    }
+
+    /* Container and Table Styling */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.5rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    thead {
+        background-color: #f7fafc;
+    }
+
+    /* Input styling */
+    input[readonly] {
+        background-color: #f7fafc;
+        cursor: not-allowed;
+        border: 1px solid #e2e8f0;
+    }
+
+    /* Responsive styling */
+    @media (max-width: 768px) {
+        table {
+            width: 100%;
+            display: block;
+            overflow-x: auto;
+        }
+    }
+</style>
+{% endblock %}
+{% endblock %}

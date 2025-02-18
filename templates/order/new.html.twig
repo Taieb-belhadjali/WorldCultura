@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une nouvelle commande{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Créer une nouvelle commande</h1>
+
+        <form action="{{ path('order_create') }}" method="POST">
+            <div class="mb-3">
+                <label for="status" class="form-label">Statut</label>
+                <select name="status" id="status" class="form-control">
+                    <option value="pending">En attente</option>
+                    <option value="completed">Terminée</option>
+                    <option value="cancelled">Annulée</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="totalPrice" class="form-label">Prix total</label>
+                <input type="number" step="0.01" name="totalPrice" id="totalPrice" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Créer la commande</button>
+        </form>
+
+        <a href="{{ path('order_index') }}" class="btn btn-secondary mt-3">Retour à la liste des commandes</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block body %}
+    <h1>Checkout</h1>
+    <ul>
+        {% for item in cart %}
+            <li>{{ item.product.name }} - {{ item.quantity }} x {{ item.product.price }} = {{ item.total }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total: {{ total }}</p>
+    <a href="{{ path('shop_index') }}">Back to Shop</a>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center mb-4">Checkout</h1>
+
+    {% if cart is not empty %}
+        <h3>Your Order</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% for item in cart %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.price|number_format(2, ',', ' ') }}€</td>
+                        <td>{{ item.product.price * item.quantity|number_format(2, ',', ' ') }}€</td>
+                    </tr>
+                    {% set total = total + (item.product.price * item.quantity) %}
+                {% endfor %}
+                <tr>
+                    <td colspan="3" class="text-right"><strong>Total</strong></td>
+                    <td colspan="1"><strong>{{ total|number_format(2, ',', ' ') }}€</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form action="{{ path('order_create') }}" method="post">
+            <button type="submit" class="btn btn-primary w-100">Place Order</button>
+        </form>
+    {% else %}
+        <p>Your cart is empty. Add products to your cart before proceeding to checkout.</p>
+    {% endif %}
+</div>
+{% endblock %}

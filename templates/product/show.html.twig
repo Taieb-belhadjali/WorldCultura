@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}🛍️Détails du produit{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="product-details-card shadow-lg p-4">
+            <!-- Image du produit -->
+            <div class="product-image-container">
+                <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="product-image">
+            </div>
+
+            <!-- Détails du produit -->
+            <div class="product-info">
+                <h1 class="product-title">{{ product.name }} 🛍️</h1>
+                <p class="product-price">{{ product.price }} € 💰</p>
+                <p class="product-description">{{ product.description }}</p>
+
+                <!-- Boutons -->
+                <div class="product-actions">
+                    <a href="{{ path('product_form_edit', { id: product.id }) }}" class="btn btn-warning">✏️ Modifier</a>
+                    <a href="{{ path('product_index') }}" class="btn btn-secondary">⬅️ Retour à la liste</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Conteneur principal */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Carte des détails du produit */
+        .product-details-card {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, #fdfdfd, #f3f4f6);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Image du produit */
+        .product-image-container {
+            flex: 1 1 40%;
+            max-width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Informations du produit */
+        .product-info {
+            flex: 1 1 60%;
+            max-width: 60%;
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #3182ce;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Boutons */
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-warning {
+            background-color: #ffcc00;
+            color: #2d3748;
+        }
+
+        .btn-warning:hover {
+            background-color: #ffaa00;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-details-card {
+                flex-direction: column;
+            }
+
+            .product-image-container,
+            .product-info {
+                max-width: 100%;
+            }
+        }
+    </style>
+{% endblock %}
