@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Event{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <!-- Title and Description -->
+        <div class="text-center mb-4">
+            <h1 class="text-primary fw-bold">Create a New Event</h1>
+            <p class="text-muted">Fill in the details below to organize a fantastic event.</p>
+        </div>
+
+        <!-- Event Create Form -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg border-0 rounded-4">
+                    
+                    <div class="card-body p-4">
+                        {{ include('event/_form.html.twig') }}
+                    </div>
+                    
+                    <!-- Footer with a back button -->
+                    <div class="card-footer bg-light text-center py-3 rounded-bottom">
+                        <a href="{{ path('app_event_index') }}" class="btn btn-outline-primary px-4">Back to Event List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #007bff, #6610f2);
+        }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+{% endblock %}

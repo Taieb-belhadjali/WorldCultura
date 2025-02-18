@@ -1,0 +1,59 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-5" style="background-color: #fff;">
+        <h1 class="text-center text-primary mb-4">Event </h1>
+
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td>
+                        {% if event.image %}
+                            <img src="{{ asset('uploads/images/' ~ event.image) }}" alt="{{ event.name }}" style="max-width: 50px;">
+                        {% else %}
+                            <span>No image</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.dateDebut ? event.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ event.dateFin ? event.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('app_eventback_show', {'id': event.id}) }}" class="btn btn-info btn-sm">
+                            Show
+                        </a>
+                        <a href="{{ path('app_eventback_edit', {'id': event.id}) }}" class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-center mt-4">
+            <a href="{{ path('app_eventback_new') }}" class="btn btn-success">
+                Create New Event
+            </a>
+        </div>
+    </div>
+{% endblock %}

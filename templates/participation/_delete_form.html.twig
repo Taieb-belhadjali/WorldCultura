@@ -1,0 +1,9 @@
+<form method="post" action="{{ path('app_participation_delete', {'id': participation.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette participation ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participation.id) }}">
+
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-primary btn-sm">
+            <i class="bi bi-trash"></i> Delete
+        </button>
+    </div>
+</form>

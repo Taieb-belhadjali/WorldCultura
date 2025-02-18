@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Participation index{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center text-primary mb-4">List of Participations</h1>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-hover table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for participation in participations %}
+                            <tr>
+                                <td>{{ participation.id }}</td>
+                                <td>{{ participation.nom }}</td>
+                                <td>{{ participation.email }}</td>
+                                <td>{{ participation.telephone }}</td>
+                                <td class="d-flex gap-2">
+                                    <a href="{{ path('app_participation_show', {'id': participation.id}) }}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-eye"></i> Show
+                                    </a>
+                                    <a href="{{ path('app_participation_edit', {'id': participation.id}) }}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-pencil"></i> Update
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">No participation found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

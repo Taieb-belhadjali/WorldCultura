@@ -1,0 +1,21 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+    <div class="card shadow-sm p-4 border-0" style="background-color: #fff; border-radius: 10px;">
+        
+
+        {% for field in form %}
+            <div class="mb-3">
+                {{ form_label(field, null, {'label_attr': {'class': 'form-label fw-bold text-dark'}}) }}
+                {{ form_widget(field, {'attr': {'class': 'form-control', 'placeholder': 'Enter ' ~ field.vars.name}}) }}
+                {{ form_errors(field) }}
+            </div>
+        {% endfor %}
+
+        <div class="d-flex justify-content-center mt-3">
+            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
+                <i class="bi bi-save"></i> {{ button_label|default('Save') }}
+            </button>
+        </div>
+    </div>
+
+{{ form_end(form) }}

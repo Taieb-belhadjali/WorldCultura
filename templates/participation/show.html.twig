@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Participation Details{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center text-primary mb-4">Participation Details</h1>
+
+        <!-- Table with improved design -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="bg-light">ID</th>
+                            <td>{{ participation.id }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Name</th>
+                            <td>{{ participation.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Email</th>
+                            <td>{{ participation.email }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Phone</th>
+                            <td>{{ participation.telephone }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Buttons with improved design -->
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{{ path('app_participation_index') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-arrow-left"></i> Back to list
+            </a>
+            <a href="{{ path('app_participation_edit', {'id': participation.id}) }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-pencil"></i> Update
+            </a>
+            
+        </div>
+
+        <!-- Delete button -->
+        <div class="mt-4 text-center">
+            {{ include('participation/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

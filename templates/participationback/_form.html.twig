@@ -1,0 +1,40 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+    <div class="card p-4 shadow-lg border-0 rounded-3" style="background-color: #fff; max-width: 600px; margin: auto;">
+        <h2 class="text-center text-primary mb-4">{{ button_label|default('Save') }}</h2>
+        
+        <!-- Name Field -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Name</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Enter your name'}}) }}
+            </div>
+            {{ form_errors(form.nom) }}
+        </div>
+
+        <!-- Email Field -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Email</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Enter your email'}}) }}
+            </div>
+            {{ form_errors(form.email) }}
+        </div>
+
+        <!-- Phone Field -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Phone</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                {{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'placeholder': 'Enter your phone number'}}) }}
+            </div>
+            {{ form_errors(form.telephone) }}
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-3">
+            <button class="btn btn-primary px-5 py-2 rounded-pill">{{ button_label|default('Save') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

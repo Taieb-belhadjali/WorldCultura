@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <h1 class="text-center mb-5 text-primary">Event Details</h1>
+
+        <!-- Card for Event Details -->
+        <div class="card shadow-lg rounded-3">
+            
+            <div class="card-body">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <th class="bg-light">ID</th>
+                            <td>{{ event.id }}</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Image</th>
+                            <td>
+                                {% if event.image %}
+                                    <img src="{{ asset('uploads/images/' ~ event.image) }}" class="img-fluid rounded" alt="Event Image" style="max-width: 250px;">
+                                {% else %}
+                                    <span class="text-muted">No image uploaded</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Name</th>
+                            <td>{{ event.name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Description</th>
+                            <td>{{ event.description }}</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">Start Date</th>
+                            <td>{{ event.dateDebut ? event.dateDebut|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th class="bg-light">End Date</th>
+                            <td>{{ event.dateFin ? event.dateFin|date('Y-m-d H:i:s') : 'N/A' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <a href="{{ path('app_event_index') }}" class="btn btn-outline-primary px-4">Back to list</a>
+                <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-outline-primary px-4">Edit Event</a>
+            </div>
+        </div>
+
+        <!-- Delete Event Section and Participate Button in the Same Line -->
+        <div class="mt-4 d-flex justify-content-between align-items-center">
+            <div>
+                {{ include('event/_delete_form.html.twig') }}
+            </div>
+            <div>
+                <a href="{{ path('app_participation_new', {'id': event.id}) }}" class="btn btn-outline-primary px-4">Participate</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Participants Section -->
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-0 border" style="background-color: #f9f9f9;">
+                <div class="card-body p-4">
+                    <h5 class="text-center mb-4">Participants</h5>
+
+                    <div class="list-group">
+                        {% for participation in event.getParticipations() %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center border rounded mb-3 p-3 shadow-sm">
+                                <span class="fw-bold text-primary">{{ participation.getNom() }}</span>
+                                <span class="badge bg-secondary rounded-pill">{{ participation.email }}</span>
+                            </div>
+                        {% else %}
+                            <div class="list-group-item text-center text-muted">No participants yet.</div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

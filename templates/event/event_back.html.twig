@@ -1,0 +1,46 @@
+{% block body %}
+
+<!-- Topbar Start -->
+
+<!-- Topbar End -->
+<div class="container-fluid blog py-5">
+    <div class="container py-5">
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Our Events</h5>
+            <h1 class="mb-4">Upcoming Events</h1>
+            <p class="mb-0">Discover our latest events and join us for unforgettable experiences.</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for event in events %}
+            <div class="col-lg-4 col-md-6">
+                <div class="blog-item">
+                    <div class="blog-img">
+                        <div class="blog-img-inner">
+                            <img class="img-fluid w-100 rounded-top" src="{{ asset('public/uploads/images') }}" alt="Event Image">
+                            <div class="blog-icon">
+                                <a href="{{ path('app_event_show', {'id': event.id}) }}" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
+                            </div>
+                        </div>
+                        <div class="blog-info d-flex align-items-center border border-start-0 border-end-0">
+                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>Start: {{ event.datedebut ? event.datedebut|date('Y-m-d') : 'N/A' }}</small>
+                            <small class="flex-fill text-center py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>End: {{ event.datefin ? event.datefin|date('Y-m-d') : 'N/A' }}</small>
+                        </div>
+                    </div>
+                    <div class="blog-content border border-top-0 rounded-bottom p-4">
+                        <p class="mb-3">{{ event.description }}</p>
+                        <a href="#" class="h4">{{ event.name }}</a>
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-primary rounded-pill py-2 px-4">Details</a>
+                            <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-secondary rounded-pill py-2 px-4">Update</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ path('app_event_new') }}" class="btn btn-primary rounded-pill py-2 px-4">Create Event</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+    <div class="mb-3">
+        {{ form_label(form.name, 'Event Name', {'label_attr': {'class': 'form-label text-dark'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Enter event name'}}) }}
+        {{ form_errors(form.name) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label text-dark'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4, 'placeholder': 'Describe the event'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.dateDebut, 'Start Date', {'label_attr': {'class': 'form-label text-dark'}}) }}
+        {{ form_widget(form.dateDebut, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.dateDebut) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.dateFin, 'End Date', {'label_attr': {'class': 'form-label text-dark'}}) }}
+        {{ form_widget(form.dateFin, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.dateFin) }}
+    </div>
+
+    <!-- Upload Image -->
+    <div class="mb-3">
+        {{ form_label(form.file, 'Upload Event Image', {'label_attr': {'class': 'form-label text-dark'}}) }}
+        {{ form_widget(form.file, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.file) }}
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+            {{ button_label|default('Save') }}
+        </button>
+    </div>
+
+{{ form_end(form) }}
