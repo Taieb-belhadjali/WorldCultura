@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+
+    {% for field in form %}
+        {% if field.vars.name != '_token' %} 
+            <div class="mb-3">
+                {{ form_label(field, null, {'label_attr': {'class': 'form-label fw-semibold text-primary'}}) }}
+                {{ form_widget(field, {'attr': {'class': 'form-control shadow-sm rounded-3 px-3'}}) }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {{ form_rest(form) }}
+
+    <button class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm">
+        {{ button_label|default('🔄 Save Changes') }}
+    </button>
+
+{{ form_end(form) }}
+

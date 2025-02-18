@@ -1,0 +1,71 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient text-white text-center py-4" style="background: linear-gradient(135deg, #6e8efb, #a777e3);">
+            <h2 class="fw-bold">📄 Post Details</h2>
+        </div>
+        <div class="card-body p-4">
+            <table class="table table-borderless">
+                <tbody>
+                    
+                    <tr>
+                        <th class="text-secondary">📌 Title:</th>
+                        <td class="fw-semibold">{{ post.title }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-secondary">📝 Content:</th>
+                        <td class="fw-semibold">{{ post.content }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-secondary">📅 Created On:</th>
+                        <td class="fw-semibold">{{ post.createDate }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-secondary">🖼️ Image:</th>
+                        <td>
+                            <div class="text-left">
+                                {% if post.image %}
+                                    <img src="{{ asset('uploads/images/' ~ post.image) }}" alt="Post Image" class="img-fluid rounded-3 shadow-lg" style="max-width: 300px;">
+                                {% else %}
+                                    <p class="text-muted fst-italic">No image available</p>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-light text-center py-3">
+            <a href="{{ path('app_post_back_index') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">⬅️ Back to List</a>
+            <a href="{{ path('app_post_back_edit', {'id': post.id}) }}" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold shadow-sm">✏️ Edit</a>
+            <a href="{{ path('app_comment_back_new', {'id': post.id}) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">Add a Comment</a>                    
+            <a <span class="ms-3">{{ include('post_back/_delete_form.html.twig') }}</span> </a>
+        </div>
+        {% for comment in comments %}
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa fa-user"></i> Comment #{{ comment.id }}</h5>
+                    <p class="card-text"><i class="fa fa-comment"></i> {{ comment.content }}</p>
+                    <p class="text-muted"><i class="fa fa-calendar"></i> {{ comment.createDate ? comment.createDate|date('Y-m-d H:i:s') : 'N/A' }}</p>
+                    
+                    <div class="d-flex justify-content-end">
+                        <a href="{{ path('app_comment_back_show', {'id': comment.id}) }}" class="btn btn-primary btn-sm me-2">
+                            <i class="fa fa-eye"></i> Show
+                        </a>
+                        <a href="{{ path('app_comment_back_edit', {'id': comment.id}) }}" class="btn btn-primary btn-sm me-2">
+                            <i class="fa fa-edit"></i> Edit
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">
+                <i class="fa fa-info-circle"></i> No comments found.
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

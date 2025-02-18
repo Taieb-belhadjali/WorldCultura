@@ -1,0 +1,26 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+{% for field in form %}
+    {% if field.vars.name != '_token' %}
+        <div class="mb-3">
+            {{ form_label(field, null, {'label_attr': {'class': 'form-label fw-semibold text-primary'}}) }}
+
+            {# Add 'is-invalid' class if there are errors #}
+            {% set fieldClass = field.vars.errors|length > 0 ? 'form-control is-invalid' : 'form-control shadow-sm rounded-3 px-3' %}
+            {{ form_widget(field, {'attr': {'class': fieldClass}}) }}
+
+            {# Display validation errors #}
+            {% for error in field.vars.errors %}
+                <div class="invalid-feedback">
+                    {{ error.message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endfor %}
+
+<button class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm">
+    {{ button_label|default('🔄 Save Changes') }}
+</button>
+
+{{ form_end(form) }}

@@ -1,0 +1,39 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" style="font-weight: bold; color: #34495e; text-transform: uppercase; letter-spacing: 1px;">Comment Index</h1>
+
+        <div class="table-responsive shadow-lg rounded" style="background: linear-gradient(135deg, #ecf0f1, #ffffff); padding: 20px; border-radius: 12px;">
+            <table class="table table-hover text-center" style="background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+                <thead >
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Create Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for comment in comments %}
+                    <tr style="border-bottom: 1px solid #ddd; transition: all 0.3s ease-in-out;">
+                        <td>{{ comment.id }}</td>
+                        <td>{{ comment.content }}</td>
+                        <td>{{ comment.createDate ? comment.createDate|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a href="{{ path('app_comment_back_show', {'id': comment.id}) }}" 
+                               class="btn btn-primary btn-sm shadow-sm" 
+                               style="background-color: #1a237e; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold;">
+                                Show
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

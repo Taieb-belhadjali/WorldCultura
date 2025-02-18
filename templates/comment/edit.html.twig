@@ -1,0 +1,28 @@
+{% extends 'baseBlog.html.twig' %}
+
+{% block title %}Edit Comment{% endblock %}
+
+{% block body %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-gradient text-white text-center py-4" style="background: linear-gradient(135deg, #6e8efb, #a777e3);">
+                <h2 class="fw-bold">✏️ Edit Your Comment</h2>
+            </div>
+            <div class="card-body p-4">
+                {{ include('comment/_form.html.twig', {'button_label': '🔄 Save Changes'}) }}
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ path('app_comment_index') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">⬅️ Return to list</a>
+        </div>
+        <div class="text-center mt-3">
+            {{ include('comment/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

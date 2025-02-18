@@ -1,0 +1,11 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block body %}
+    <div style="background-color:rgb(250, 250, 250); padding: 20px;">
+        <h1>Create new Post</h1>
+
+        {{ include('post_back/_form.html.twig') }}
+
+        <a href="{{ path('app_post_back_index') }}">back to list</a>
+    </div>
+{% endblock %}

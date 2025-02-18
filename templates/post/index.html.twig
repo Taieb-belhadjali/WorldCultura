@@ -1,0 +1,47 @@
+{% extends 'baseBlog.html.twig' %}
+
+{% block title %}Post Index{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h1 class="text-center mb-5 fw-bold text-dark display-4">📚 All Posts</h1>
+
+    <div class="row g-4">
+        {% for post in posts %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 rounded-4 overflow-hidden shadow-lg transform-hover h-100">
+                    <div class="position-relative overflow-hidden">
+                        <img class="img-fluid w-100 h-100 object-cover rounded-top transform-hover-img" src="{{ asset('uploads/images/' ~ post.image) }}" alt="Image">
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                            <a href="{{ path('app_post_show', {'id': post.id}) }}" class="btn btn-outline-light btn-lg rounded-circle shadow-lg transform-hover-button">
+                                <i class="fas fa-link"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex justify-content-between mb-3">
+                            <small class="text-muted">
+                                <i class="fa fa-calendar-alt text-primary me-2"></i>{{ post.createDate|date('d M Y') }}
+                            </small>
+                        </div>
+                        <a href="{{ path('app_post_show', {'id': post.id}) }}" class="h4 text-dark mb-3 fw-bold transform-hover-title">{{ post.title }}</a>
+                        <p class="text-muted mb-4">{{ post.content|slice(0, 150) }}...</p>
+                        <div class="mt-auto d-flex justify-content-between">
+                            <a href="{{ path('app_post_show', {'id': post.id}) }}" class="btn btn-primary rounded-pill py-2 px-4 shadow-sm transform-hover-button">Read More</a>
+                            <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-primary rounded-pill py-2 px-4 shadow-sm transform-hover-button">Update</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No records found.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{{ path('app_post_new') }}" class="btn btn-success rounded-pill py-3 px-5 shadow-lg transform-hover-button">Create New Post</a>
+    </div>
+</div>
+{% endblock %}
