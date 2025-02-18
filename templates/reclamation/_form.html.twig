@@ -1,0 +1,13 @@
+
+
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div style="background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 400px;">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-primary" style="width: 100%;">{{ button_label|default('Save') }}</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+
