@@ -44,7 +44,6 @@ class Product
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "L'image du produit ne peut pas être vide.")]
-    #[Assert\Url(message: "L'URL de l'image n'est pas valide.")]
     private ?string $image = null;
 
     // Temporary property to handle file uploads

@@ -31,14 +31,15 @@
                             <td class="py-4 px-4 text-sm">{{ item.product.name }}</td>
                             <td class="py-4 px-4 text-sm">
                                 <form action="{{ path('update_cart_quantity', { 'productId': productId }) }}" method="POST" class="flex items-center space-x-2">
-                                    <button type="submit" name="quantity" value="{{ item.quantity - 1 }}" class="btn btn-quantity" {% if item.quantity == 1 %}disabled{% endif %}>
-                                        <span class="text-xl font-bold">-</span>
-                                    </button>
-                                    <input type="number" name="quantity" value="{{ item.quantity }}" class="w-16 text-center border-gray-300 rounded-lg" readonly>
-                                    <button type="submit" name="quantity" value="{{ item.quantity + 1 }}" class="btn btn-quantity">
-                                        <span class="text-xl font-bold">+</span>
-                                    </button>
-                                </form>
+    <input type="hidden" name="quantity" value="{{ item.quantity }}">
+    <button type="submit" name="action" value="decrement" class="btn btn-quantity" {% if item.quantity == 1 %}disabled{% endif %}>
+        <span class="text-xl font-bold">-</span>
+    </button>
+    <input type="number" value="{{ item.quantity }}" class="w-16 text-center border-gray-300 rounded-lg" readonly>
+    <button type="submit" name="action" value="increment" class="btn btn-quantity">
+        <span class="text-xl font-bold">+</span>
+    </button>
+</form>
                             </td>
                             <td class="py-4 px-4 text-sm">{{ item.product.price }} €</td>
                             <td class="py-4 px-4 text-sm">{{ item.product.price * item.quantity }} €</td>
@@ -59,7 +60,7 @@
             <a href="{{ path('customer_products') }}" class="btn btn-secondary">
                 ← Retour aux produits
             </a>
-<p class="text-xl font-bold">Total: <span class="text-green-600 font-bold">{{ total }} €</span></p>
+            <p class="text-xl font-bold">Total: <span class="text-green-600 font-bold">{{ total }} €</span></p>
             <form action="{{ path('checkout') }}" method="POST">
                 <button type="submit" class="btn btn-primary">
                     Passer à la caisse

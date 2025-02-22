@@ -111,30 +111,30 @@ class CustomerController extends AbstractController
 
     // 5. Mettre à jour la quantité d'un produit dans le panier
     #[Route('/update-cart-quantity/{productId}', name: 'update_cart_quantity', methods: ['POST'])]
-    public function updateQuantity(Request $request, $productId, SessionInterface $session): Response
-    {
-        $quantity = $request->request->get('quantity');
-        
-        // Ensure the quantity is a valid number and greater than 0
-        if ($quantity < 1) {
-            $quantity = 1;
+    public function updateCartQuantity(Request $request, $productId, SessionInterface $session)
+{
+    // Récupérer le panier depuis la session
+    $cart = $session->get('cart', []);
+
+    // Récupérer l'action et la quantité
+    $action = $request->request->get('action');
+    $quantity = $request->request->get('quantity');
+
+    // Vérifier si le produit existe dans le panier
+    if (isset($cart[$productId])) {
+        if ($action === 'increment') {
+            $cart[$productId]['quantity']++;
+        } elseif ($action === 'decrement' && $cart[$productId]['quantity'] > 1) {
+            $cart[$productId]['quantity']--;
         }
-        
-        // Retrieve the current cart from the session
-        $cart = $session->get('cart', []);
-        
-        // Update the quantity of the specified product in the cart
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] = $quantity;
-        }
-        
-        // Save the updated cart back to the session
-        $session->set('cart', $cart);
-        
-        // Redirect back to the cart page
-        return $this->redirectToRoute('cart');
     }
 
+    // Mettre à jour la session avec le nouveau panier
+    $session->set('cart', $cart);
+
+    // Redirection vers la page panier
+    return $this->redirectToRoute('cart');
+}
     // 6. Valider le panier et créer une commande
     #[Route('/checkout', name: 'checkout', methods: ['POST'])]
     public function checkout(SessionInterface $session): Response
