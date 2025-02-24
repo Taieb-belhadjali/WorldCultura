@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}🛒Mon Panier{% endblock %}
+{% block title %}🛒 Mon Panier {% endblock %}
 
 {% block body %}
 <div class="container mx-auto p-6">
-    <h2 class="text-3xl font-semibold mb-6 text-center text-gray-700">🛒Mon Panier</h2>
+    <h2 class="text-3xl font-semibold mb-6 text-center text-gray-700">🛒 Mon Panier</h2>
 
     {% if cart is empty %}
         <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
@@ -31,15 +31,14 @@
                             <td class="py-4 px-4 text-sm">{{ item.product.name }}</td>
                             <td class="py-4 px-4 text-sm">
                                 <form action="{{ path('update_cart_quantity', { 'productId': productId }) }}" method="POST" class="flex items-center space-x-2">
-    <input type="hidden" name="quantity" value="{{ item.quantity }}">
-    <button type="submit" name="action" value="decrement" class="btn btn-quantity" {% if item.quantity == 1 %}disabled{% endif %}>
-        <span class="text-xl font-bold">-</span>
-    </button>
-    <input type="number" value="{{ item.quantity }}" class="w-16 text-center border-gray-300 rounded-lg" readonly>
-    <button type="submit" name="action" value="increment" class="btn btn-quantity">
-        <span class="text-xl font-bold">+</span>
-    </button>
-</form>
+                                    <button type="submit" name="action" value="decrement" class="btn btn-quantity" {% if item.quantity == 1 %}disabled{% endif %}>
+                                        <span class="text-xl font-bold">-</span>
+                                    </button>
+                                    <input type="number" value="{{ item.quantity }}" class="w-16 text-center border-gray-300 rounded-lg" readonly>
+                                    <button type="submit" name="action" value="increment" class="btn btn-quantity">
+                                        <span class="text-xl font-bold">+</span>
+                                    </button>
+                                </form>
                             </td>
                             <td class="py-4 px-4 text-sm">{{ item.product.price }} €</td>
                             <td class="py-4 px-4 text-sm">{{ item.product.price * item.quantity }} €</td>
@@ -61,18 +60,62 @@
                 ← Retour aux produits
             </a>
             <p class="text-xl font-bold">Total: <span class="text-green-600 font-bold">{{ total }} €</span></p>
-            <form action="{{ path('checkout') }}" method="POST">
-                <button type="submit" class="btn btn-primary">
-                    Passer à la caisse
-                </button>
-            </form>
+            <button id="checkout-button" class="btn btn-primary">Passer à la caisse</button>
         </div>
     {% endif %}
 </div>
 
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    document.getElementById('checkout-button').addEventListener('click', function (event) {
+        event.preventDefault();
+
+        // Préparer le panier sous forme d'un tableau d'objets
+        const cartItems = [];
+        {% for productId, item in cart %}
+            cartItems.push({
+                product: {
+                    id: {{ item.product.id }},
+                    name: "{{ item.product.name|e('js') }}",
+                    price: {{ item.product.price }}
+                },
+                quantity: {{ item.quantity }}
+            });
+        {% endfor %}
+
+        // Vérifier si le panier est vide
+        if (cartItems.length === 0) {
+            alert("Votre panier est vide.");
+            return;
+        }
+
+        // Créer la session de paiement via le backend
+        fetch('{{ path('payment_create') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                cart: cartItems
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Erreur: ' + data.error);
+            } else {
+                const stripe = Stripe('{{ stripe_public_key|e('js') }}');
+                stripe.redirectToCheckout({ sessionId: data.sessionId });
+            }
+        })
+        .catch(error => {
+            alert("Erreur lors de la création de la session de paiement.");
+        });
+    });
+</script>
+
 {% block stylesheets %}
 <style>
-    /* General button styling */
     .btn {
         padding: 10px 20px;
         font-weight: bold;

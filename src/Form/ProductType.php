@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Entity\Product;
@@ -6,9 +7,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\File;
 
 class ProductType extends AbstractType
 {
@@ -45,13 +48,30 @@ class ProductType extends AbstractType
             ->add('imageFile', FileType::class, [
                 'label' => 'Image (fichier)',
                 'required' => false,
-                'mapped' => false,
-                'data_class' => null,
+                'mapped' => false,  // Ensures the file is not stored directly in the entity
+                'data_class' => null,  // No class is needed for the file input
                 'constraints' => [
-                    new Assert\Image(['maxSize' => '5M', 'mimeTypes' => ['image/png', 'image/jpeg'], 'mimeTypesMessage' => 'Veuillez télécharger une image valide (PNG ou JPEG).']),
+                    new File([
+                        'maxSize' => '5M', // Maximum file size
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'], // Allowed image types
+                        'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG, GIF).',
+                    ])
+                ],
+            ])
+            ->add('tags', CollectionType::class, [
+                'entry_type' => TextType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'label' => 'Tags',
+            ])
+            ->add('stock', NumberType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'La quantité en stock est requise.']),
+                    new Assert\PositiveOrZero(['message' => 'La quantité en stock doit être un nombre positif ou égal à zéro.']),
                 ],
                 'attr' => [
-                    'required' => false,  // Désactive la vérification par défaut du navigateur
+                    'required' => false,
                 ],
             ]);
     }

@@ -1,5 +1,3 @@
-# config/services.yaml
-
 parameters:
     uploads_directory: '%kernel.project_dir%/public/uploads'
 
@@ -12,9 +10,6 @@ services:
             #$session: '@session'
 
     # Explicit definition for CartService
-   
-
-    # Ensure the session interface is correctly mapped
     Symfony\Component\HttpFoundation\Session\SessionInterface: '@session'
 
     # Make all classes in src/ available as services
@@ -25,5 +20,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # StripeService definition
+    App\Service\StripeService:
+        arguments:
+            $stripeSecretKey: '%env(STRIPE_SECRET_KEY)%'

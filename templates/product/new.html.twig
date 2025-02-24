@@ -33,6 +33,20 @@
                         {{ form_errors(form.imageFile) }}
                     </div>
 
+                    <div class="mb-3">
+                        {{ form_label(form.tags, 'Tags', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        <div class="form-control border-primary">
+                            {{ form_widget(form.tags, { 'attr': { 'class': 'form-control border-primary' } }) }}
+                        </div>
+                        {{ form_errors(form.tags) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.stock, 'Quantité en stock', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        {{ form_widget(form.stock, { 'attr': { 'class': 'form-control border-primary' } }) }}
+                        {{ form_errors(form.stock) }}
+                    </div>
+
                     <button class="btn btn-primary w-100 rounded-pill py-2 shadow-sm btn-hover">
                         <i class="fas fa-save"></i> Créer
                     </button>

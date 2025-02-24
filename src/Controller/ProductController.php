@@ -32,32 +32,52 @@ class ProductController extends AbstractController
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('imageFile')->getData();
-
+    
             if ($imageFile) {
+                // Get a unique filename for the image
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
-
+    
                 try {
+                    // Try moving the file to the uploads directory
                     $imageFile->move(
                         $this->getParameter('uploads_directory'),
                         $newFilename
                     );
+    
+                    // Associate the image filename with the product entity
+                    $product->setImage($newFilename);
                 } catch (FileException $e) {
+                    // Handle the exception in case file upload fails
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de l\'image.');
+                    return $this->render('product/new.html.twig', [
+                        'form' => $form->createView(),
+                    ]);
                 }
-
-                $product->setImage($newFilename);
             }
 
+            // Handle tags
+            $tags = $form->get('tags')->getData();
+            $product->setTags($tags);
+
+            // Handle stock
+            $stock = $form->get('stock')->getData();
+            $product->setStock($stock);
+            //CreatedAt
+            $product->setCreatedAt(new \DateTime());
+    
+            // Persist the product entity to the database
             $entityManager->persist($product);
             $entityManager->flush();
-
+    
+            // Set a success message and redirect
             $this->addFlash('success', 'Produit créé avec succès !');
             return $this->redirectToRoute('product_index');
         }
-
+    
+        // Return the form view if the form isn't submitted or isn't valid
         return $this->render('product/new.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -72,51 +92,66 @@ class ProductController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'product_form_edit', methods: ['GET', 'POST'])]
-public function editForm(Request $request, Product $product, EntityManagerInterface $entityManager): Response
-{
-    // Set the image file if it exists
-    if ($product->getImage()) {
-        $product->setImageFile(
-            new File($this->getParameter('uploads_directory') . '/' . $product->getImage())
-        );
-    }
-
-    $form = $this->createForm(ProductType::class, $product);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Handle the new image file if uploaded
-        $imageFile = $form->get('imageFile')->getData();
-        if ($imageFile) {
-            $newFilename = uniqid() . '.' . $imageFile->guessExtension();
-            try {
-                $imageFile->move(
-                    $this->getParameter('uploads_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de l\'image.');
-            }
-
-            $product->setImage($newFilename);
+    public function editForm(Request $request, Product $product, EntityManagerInterface $entityManager): Response
+    {
+        // Set the image file if it exists
+        if ($product->getImage()) {
+            $product->setImageFile(
+                new File($this->getParameter('uploads_directory') . '/' . $product->getImage())
+            );
         }
 
-        $entityManager->flush();
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
 
-        $this->addFlash('success', 'Produit modifié avec succès !');
-        return $this->redirectToRoute('product_index');
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Handle the new image file if uploaded
+            $imageFile = $form->get('imageFile')->getData();
+            if ($imageFile) {
+                $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+                try {
+                    $imageFile->move(
+                        $this->getParameter('uploads_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de l\'image.');
+                }
+
+                $product->setImage($newFilename);
+            }
+
+            // Handle tags
+            $tags = $form->get('tags')->getData();
+            $product->setTags($tags);
+
+            // Handle stock
+            $stock = $form->get('stock')->getData();
+            $product->setStock($stock);
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Produit modifié avec succès !');
+            return $this->redirectToRoute('product_index');
+        }
+
+        return $this->render('product/edit.html.twig', [
+            'form' => $form->createView(),
+            'product' => $product,
+        ]);
     }
-
-    return $this->render('product/edit.html.twig', [
-        'form' => $form->createView(),
-        'product' => $product,
-    ]);
-}
 
     #[Route('/{id}', name: 'product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
+            // Vérifier si le produit est lié à des commandes via OrderItem
+            if (!$product->getOrderItems()->isEmpty()) {
+                $this->addFlash('danger', 'Impossible de supprimer ce produit car il est lié à une ou plusieurs commandes.');
+                return $this->redirectToRoute('product_index');
+            }
+
+            // Supprimer l'image associée si elle existe
             if ($product->getImage()) {
                 $imagePath = $this->getParameter('uploads_directory') . '/' . $product->getImage();
                 if (file_exists($imagePath)) {
@@ -124,6 +159,7 @@ public function editForm(Request $request, Product $product, EntityManagerInterf
                 }
             }
 
+            // Supprimer le produit
             $entityManager->remove($product);
             $entityManager->flush();
 

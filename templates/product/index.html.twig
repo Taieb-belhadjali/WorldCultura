@@ -6,6 +6,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
+        /* Styles existants inchangés */
         body {
             background-color: #f8f9fa;
         }
@@ -102,16 +103,26 @@
     <div class="container">
         <h2>📋 Liste des produits</h2>
 
+        <!-- Bouton ajouter un produit -->
         <a href="{{ path('product_new') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm mb-4">
             <i class="fas fa-plus"></i> Ajouter un produit
         </a>
 
-        <!-- New button to navigate to orders list -->
+        <!-- Bouton pour la liste des commandes -->
         <div class="text-center mb-4">
             <a href="{{ path('order_index') }}" class="btn-command">
                 <i class="fas fa-truck"></i> Liste des commandes
             </a>
         </div>
+
+        <!-- Affichage des flash messages -->
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
 
         <table class="table table-bordered">
             <thead>
