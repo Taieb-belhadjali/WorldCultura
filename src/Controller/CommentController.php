@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\AkismetService;
 use App\Entity\Comment;
+use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,10 +32,15 @@ final class CommentController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_comment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{postId}', name: 'app_comment_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, int $postId): Response
     {
+        $post = $entityManager->getRepository(Post::class)->find($postId);
+
         $comment = new Comment();
+        $comment->setPost($post);
+        
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
@@ -42,18 +48,19 @@ final class CommentController extends AbstractController
             // Vérifier si le commentaire est du spam
             if ($this->akismetService->checkSpam($comment->getContent())) {
                 $this->addFlash('danger', '🚨 Votre commentaire a été détecté comme spam !');
-                return $this->redirectToRoute('app_comment_new');
+                return $this->redirectToRoute('app_comment_new',['postId' => $postId]);
             }
             $entityManager->persist($comment);
             $entityManager->flush();
         
             
-            return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_post_show', ['id' => $postId], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('comment/new.html.twig', [
             'comment' => $comment,
             'form' => $form,
+            'post' => $post
         ]);
     }
 

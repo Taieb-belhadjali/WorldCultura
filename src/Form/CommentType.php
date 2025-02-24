@@ -18,10 +18,7 @@ class CommentType extends AbstractType
             ->add('createDate', null, [
                 'widget' => 'single_text',
             ])
-            ->add('post', EntityType::class, [
-                'class' => post::class,
-                'choice_label' => 'id',
-            ])
+           
         ;
     }
 
