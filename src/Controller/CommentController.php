@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\AkismetService;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
@@ -14,6 +15,14 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/comment')]
 final class CommentController extends AbstractController
 {
+    private AkismetService $akismetService; // ✅ Déclare la propriété
+
+    public function __construct(AkismetService $akismetService) // ✅ Injection correcte
+    {
+        $this->akismetService = $akismetService;
+        dump("AkismetService Injected"); // Vérifier que le service est bien injecté
+    }
+
     #[Route(name: 'app_comment_index', methods: ['GET'])]
     public function index(CommentRepository $commentRepository): Response
     {
@@ -30,9 +39,15 @@ final class CommentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Vérifier si le commentaire est du spam
+            if ($this->akismetService->checkSpam($comment->getContent())) {
+                $this->addFlash('danger', '🚨 Votre commentaire a été détecté comme spam !');
+                return $this->redirectToRoute('app_comment_new');
+            }
             $entityManager->persist($comment);
             $entityManager->flush();
-
+        
+            
             return $this->redirectToRoute('app_comment_index', [], Response::HTTP_SEE_OTHER);
         }
 
