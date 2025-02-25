@@ -70,6 +70,17 @@ final class PostController extends AbstractController
             'comments' => $post->getComments(), // Ajout des commentaires
         ]);
     }
+    #[Route('/post/search', name: 'app_post_search', methods: ['GET'])]
+public function search(Request $request, PostRepository $postRepository): Response
+{
+    $query = $request->query->get('q', '');
+    $posts = $query ? $postRepository->searchByTitle($query) : $postRepository->findAll();
+
+    return $this->render('post/index.html.twig', [
+        'posts' => $posts,
+        'query' => $query,
+    ]);
+}
 
     #[Route('/{id}/edit', name: 'app_post_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Post $post, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
