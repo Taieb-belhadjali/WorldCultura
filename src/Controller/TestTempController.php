@@ -15,6 +15,13 @@ final class TestTempController extends AbstractController
             'controller_name' => 'TestTempController',
         ]);
     }
+    #[Route('/test/temp1', name: 'app_test_temp1')]
+    public function base1(): Response
+    {
+        return $this->render('base1.html.twig', [
+            'controller_name' => 'TestTempController',
+        ]);
+    }
 
     #[Route('/test/temp/about', name: 'app_test_temp_about')]
     public function about(): Response

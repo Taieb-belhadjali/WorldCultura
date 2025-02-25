@@ -1,0 +1,76 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+      class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center bg-light">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-8 col-lg-6 col-xxl-4">
+            <div class="card shadow-lg rounded-4">
+              <div class="card-body p-5">
+                <div class="text-center mb-4">
+                  <a href="{{ path('app_test_temp') }}" class="d-block">
+                    <img src="{{ asset('assets/images/logos/dark-logo.svg') }}" width="180" alt="Logo">
+                  </a>
+                  <p class="text-muted">Your Social Campaigns</p>
+                </div>
+
+                <!-- Display errors if any -->
+
+                <!-- Registration Form -->
+                {{ form_start(registrationForm) }}
+                  <div class="mb-3">
+                    {{ form_label(registrationForm.nom, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                    {{ form_widget(registrationForm.nom, {'attr': {'class': 'registrationForm-control shadow-sm'}}) }}
+                    {{ form_errors(registrationForm.nom) }}
+                  </div>
+                  <div class="mb-3">
+                    {{ form_label(registrationForm.prenom, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                    {{ form_widget(registrationForm.prenom, {'attr': {'class': 'registrationForm-control shadow-sm'}}) }}
+                    {{ form_errors(registrationForm.prenom) }}
+                  </div>
+                  <div class="mb-3">
+                    {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'registrationForm-control shadow-sm'}}) }}
+                    {{ form_errors(registrationForm.email) }}
+                  </div>
+
+                  <div class="mb-3">
+                    {{ form_label(registrationForm.plainPassword, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'registrationForm-control shadow-sm'}}) }}
+                    {{ form_errors(registrationForm.plainPassword) }}
+                  </div>
+
+                  <div class="mb-4 registrationForm-check">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'registrationForm-check-input'}}) }}
+                    {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'registrationForm-check-label'}}) }}
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                  </div>
+
+                  <button type="submit" class="btn btn-primary w-100 py-3 fs-5 mb-4 rounded-3">
+                    Register
+                  </button>
+
+                  <div class="text-center">
+                    <p class="fs-6 mb-0">Already have an Account?</p>
+                    <a class="text-primary fw-bold" href="{{ path('app_login') }}">Sign In</a>
+                  </div>
+                {{ form_end(registrationForm) }}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap & jQuery -->
+  <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
+  <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+{% endblock %}
