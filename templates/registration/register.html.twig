@@ -41,9 +41,9 @@
                   </div>
 
                   <div class="mb-3">
-                    {{ form_label(registrationForm.plainPassword, null, {'label_attr': {'class': 'fw-bold'}}) }}
-                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'registrationForm-control shadow-sm'}}) }}
-                    {{ form_errors(registrationForm.plainPassword) }}
+                    {{ form_label(registrationForm.password, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                    {{ form_widget(registrationForm.password, {'attr': {'class': 'registrationForm-control shadow-sm'}}) }}
+                    {{ form_errors(registrationForm.password    ) }}
                   </div>
 
                   <div class="mb-4 registrationForm-check">
@@ -60,6 +60,15 @@
                     <p class="fs-6 mb-0">Already have an Account?</p>
                     <a class="text-primary fw-bold" href="{{ path('app_login') }}">Sign In</a>
                   </div>
+
+                  <input type="hidden" id="form_captcha" name="form[captcha]" /><script>
+                    var recaptchaCallback_form_captcha = function() {
+                        grecaptcha.execute('<YOUR-RECAPTCHA-KEY>', {action: 'landing'}).then(function(token) {
+                            document.getElementById('form_captcha').value = token;
+                        });
+                    };
+                    </script><script src="https://www.google.com/recaptcha/api.js?render=<YOUR-RECAPTCHA-KEY>&onload=recaptchaCallback_form_captcha" async defer></script> 
+
                 {{ form_end(registrationForm) }}
 
               </div>

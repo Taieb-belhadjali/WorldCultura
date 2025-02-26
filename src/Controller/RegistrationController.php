@@ -24,21 +24,24 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
-            $plainPassword = $form->get('plainPassword')->getData();
+            $password = $form->get('password')->getData();
+ 
 
-            dump($plainPassword); 
-            die(); 
-
-            if (!$plainPassword) {
+            if (!$password) {
                 $this->addFlash('error', 'Please enter a password.');
                 return $this->redirectToRoute('app_register');
             }
 
+            $user->setRoles(['ROLE_USER']);
+
             // encode the plain password
-            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            $user->setPassword($userPasswordHasher->hashPassword($user, $password));
 
             $entityManager->persist($user);
             $entityManager->flush();
+
+            //dump('User saved');
+            //die();
 
             // do anything else you need here, like send an email
             return $this->redirectToRoute('app_test_temp');

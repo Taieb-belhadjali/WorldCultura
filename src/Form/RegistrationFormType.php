@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 
 class RegistrationFormType extends AbstractType
 {
@@ -21,11 +23,17 @@ class RegistrationFormType extends AbstractType
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
             ])
-            ->add('plainPassword', PasswordType::class, [
-                'mapped' => false,
+            ->add('password', PasswordType::class, [
+                'mapped' => true,
                 'attr' => ['autocomplete' => 'new-password'],
             ])
         ;
+        $builder->add('captcha', Recaptcha3Type::class, [
+            'constraints' => new Recaptcha3(),
+            'action_name' => 'homepage',
+            //'script_nonce_csp' => $nonceCSP,
+            'locale' => 'de',
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
