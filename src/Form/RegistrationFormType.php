@@ -29,10 +29,11 @@ class RegistrationFormType extends AbstractType
             ])
         ;
         $builder->add('captcha', Recaptcha3Type::class, [
-            'constraints' => new Recaptcha3(),
-            'action_name' => 'homepage',
+            'constraints' => [new Recaptcha3()],
+            'mapped' => false,
+            'action_name' => 'register',
             //'script_nonce_csp' => $nonceCSP,
-            'locale' => 'de',
+            'locale' => 'en',
         ]);
     }
 

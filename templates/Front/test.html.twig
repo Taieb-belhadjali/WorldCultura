@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de Test{% endblock %}
+
+{% block content %}
+    <h2>Test Symfony Mailer</h2>
+
+    {% if success is defined %}
+        <div style="color: green; font-weight: bold;">
+            {{ success }}
+        </div>
+    {% endif %}
+
+    {% if error is defined %}
+        <div style="color: red; font-weight: bold;">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form action="{{ path('test_email') }}" method="post">
+        <label for="email">Adresse Email :</label>
+        <input type="email" id="email" name="email" required>
+        
+        <button type="submit">Envoyer Email</button>
+    </form>
+{% endblock %}

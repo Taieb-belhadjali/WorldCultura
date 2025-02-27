@@ -45,5 +45,5 @@ final class TestTempController extends AbstractController
         return $this->render('front/booking.html.twig', [
             'controller_name' => 'TestTempController',
         ]);
-    }  
+    }
 }

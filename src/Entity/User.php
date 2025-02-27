@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -51,6 +53,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: 'Please enter your first name.')]
     #[Assert\Length(max: 255, maxMessage: 'Your first name cannot exceed {{ limit }} characters.')]
     private ?string $Prenom = null;
+
+    /**
+     * @var Collection<int, ResetPasswordRequest>
+     */
+    #[ORM\OneToMany(targetEntity: ResetPasswordRequest::class, mappedBy: 'User', orphanRemoval: true, cascade: ['persist'])]
+    private Collection $resetPasswordRequests;
+
+    public function __construct()
+    {
+        $this->resetPasswordRequests = new ArrayCollection();
+    }
     /*
     #[ORM\Column(length: 255)]
     private ?string $Password = null;
@@ -137,6 +150,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $Prenom): static
     {
         $this->Prenom = $Prenom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResetPasswordRequest>
+     */
+    public function getResetPasswordRequests(): Collection
+    {
+        return $this->resetPasswordRequests;
+    }
+
+    public function addResetPasswordRequest(ResetPasswordRequest $resetPasswordRequest): static
+    {
+        if (!$this->resetPasswordRequests->contains($resetPasswordRequest)) {
+            $this->resetPasswordRequests->add($resetPasswordRequest);
+            $resetPasswordRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResetPasswordRequest(ResetPasswordRequest $resetPasswordRequest): static
+    {
+        if ($this->resetPasswordRequests->removeElement($resetPasswordRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($resetPasswordRequest->getUser() === $this) {
+                $resetPasswordRequest->setUser(null);
+            }
+        }
 
         return $this;
     }
