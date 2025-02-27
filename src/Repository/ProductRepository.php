@@ -40,4 +40,17 @@ class ProductRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+ // Exemple dans ProductRepository.php
+public function findBySomeCriteria(Product $product)
+{
+    // Exemple de logique pour récupérer des produits similaires (par catégorie, par exemple)
+    return $this->createQueryBuilder('p')
+        ->andWhere('p.category = :category')
+        ->setParameter('category', $product->getCategory())
+        ->andWhere('p.id != :id')  // Éviter de récupérer le produit actuel
+        ->setParameter('id', $product->getId())
+        ->getQuery()
+        ->getResult();
+}
+
 }

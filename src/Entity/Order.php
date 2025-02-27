@@ -34,9 +34,13 @@ class Order
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'customerOrder', orphanRemoval: true)]
     private Collection $orderItems;
 
+    // Ajout de la constante pour l'état de la commande
+    const STATUS_PENDING = 'pending';
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable(); // Initialiser avec la date actuelle
     }
 
     public function getId(): ?int
@@ -52,7 +56,6 @@ class Order
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
@@ -64,7 +67,6 @@ class Order
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -76,7 +78,6 @@ class Order
     public function setTotalPrice(float $totalPrice): static
     {
         $this->totalPrice = $totalPrice;
-
         return $this;
     }
 

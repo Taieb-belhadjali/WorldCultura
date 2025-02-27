@@ -9,7 +9,7 @@
     {% if cart is empty %}
         <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
             <p class="text-gray-500 text-lg mb-6">Votre panier est vide.</p>
-            <a href="{{ path('customer_products') }}" class="btn btn-primary">
+            <a href="{{ path('app_products') }}" class="btn btn-primary">
                 ← Retour aux produits
             </a>
         </div>
@@ -56,7 +56,7 @@
         </div>
 
         <div class="mt-6 flex justify-between items-center">
-            <a href="{{ path('customer_products') }}" class="btn btn-secondary">
+            <a href="{{ path('app_products') }}" class="btn btn-secondary">
                 ← Retour aux produits
             </a>
             <p class="text-xl font-bold">Total: <span class="text-green-600 font-bold">{{ total }} €</span></p>
@@ -104,8 +104,14 @@
             if (data.error) {
                 alert('Erreur: ' + data.error);
             } else {
+                // Redirection vers Stripe Checkout
                 const stripe = Stripe('{{ stripe_public_key|e('js') }}');
-                stripe.redirectToCheckout({ sessionId: data.sessionId });
+                stripe.redirectToCheckout({ sessionId: data.sessionId })
+                    .then(function(result) {
+                        if (result.error) {
+                            alert(result.error.message);
+                        }
+                    });
             }
         })
         .catch(error => {
@@ -177,29 +183,9 @@
     }
 
     th, td {
-        padding: 12px 15px;
+        padding: 12px;
         text-align: left;
-        border-bottom: 1px solid #e2e8f0;
-    }
-
-    thead {
-        background-color: #f7fafc;
-    }
-
-    /* Input styling */
-    input[readonly] {
-        background-color: #f7fafc;
-        cursor: not-allowed;
-        border: 1px solid #e2e8f0;
-    }
-
-    /* Responsive styling */
-    @media (max-width: 768px) {
-        table {
-            width: 100%;
-            display: block;
-            overflow-x: auto;
-        }
+        font-size: 1rem;
     }
 </style>
 {% endblock %}

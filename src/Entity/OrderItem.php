@@ -20,6 +20,9 @@ class OrderItem
     #[ORM\Column]
     private ?float $price = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $productName = null;
+
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
@@ -77,6 +80,18 @@ class OrderItem
     public function setCustomerOrder(?Order $customerOrder): static
     {
         $this->customerOrder = $customerOrder;
+
+        return $this;
+    }
+
+    public function getProductName(): ?string
+    {
+        return $this->productName;
+    }
+
+    public function setProductName(?string $productName): static
+    {
+        $this->productName = $productName;
 
         return $this;
     }

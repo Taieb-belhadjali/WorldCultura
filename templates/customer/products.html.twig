@@ -26,14 +26,14 @@
                     <p class="product-price">{{ product.price }} €</p>
 
                     <!-- Add to cart button -->
-                    <form action="{{ path('add_to_cart', { 'productId': product.id }) }}" method="POST">
+                    <form action="{{ path('app_add_to_cart', { 'id': product.id }) }}" method="POST">
                         <button type="submit" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">
                             Ajouter au panier
                         </button>
                     </form>
 
                     <!-- Button to view product details -->
-                    <a href="{{ path('customer_product_details', { 'id': product.id }) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm mt-2">
+                    <a href="{{ path('app_product_details', { 'id': product.id }) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm mt-2">
                         Voir Détails
                     </a>
                 </div>
@@ -44,7 +44,7 @@
 
 <!-- Fixed Button at the bottom -->
 <div class="fixed-btn-container">
-    <a href="{{ path('cart') }}" class="btn btn-panier">
+    <a href="{{ path('app_cart') }}" class="btn btn-panier">
         🛒 Voir mon Panier
     </a>
 </div>

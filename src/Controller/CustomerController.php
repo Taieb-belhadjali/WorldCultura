@@ -2,27 +2,29 @@
 
 namespace App\Controller;
 
-use App\Entity\Order;
-use App\Entity\OrderItem;
 use App\Entity\Product;
+use App\Service\StripeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CustomerController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
+    private $entityManager;
+    private $stripeService;
+    private $requestStack;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, StripeService $stripeService, RequestStack $requestStack)
     {
         $this->entityManager = $entityManager;
+        $this->stripeService = $stripeService;
+        $this->requestStack = $requestStack;
     }
 
-    // 1. Voir tous les produits
-    #[Route('/products', name: 'customer_products', methods: ['GET'])]
+    #[Route('/products', name: 'app_products')]
     public function listProducts(): Response
     {
         $products = $this->entityManager->getRepository(Product::class)->findAll();
@@ -32,178 +34,131 @@ class CustomerController extends AbstractController
         ]);
     }
 
-    // Voir les pages produits
-    #[Route('/customer/product/{id}', name: 'customer_product_details')]
+    #[Route('/product/{id}', name: 'app_product_details')]
     public function productDetails(Product $product): Response
     {
-        $similarProducts = $this->entityManager->getRepository(Product::class)
-            ->createQueryBuilder('p')
-            ->where('p.id != :productId')
-            ->setParameter('productId', $product->getId())
-            ->setMaxResults(5) // Limite des produits similaires
-            ->getQuery()
-            ->getResult();
-
         return $this->render('customer/product_details.html.twig', [
             'product' => $product,
-            'products' => $similarProducts,
         ]);
     }
 
-    // 2. Ajouter un produit au panier
-    #[Route('/add-to-cart/{productId}', name: 'add_to_cart', methods: ['POST'])]
-    public function addToCart(int $productId, SessionInterface $session): Response
+    #[Route('/cart/add/{id}', name: 'app_add_to_cart')]
+    public function addToCart(Product $product): Response
     {
-        $product = $this->entityManager->getRepository(Product::class)->find($productId);
+        $cart = $this->requestStack->getSession()->get('cart', []);
 
-        if (!$product) {
-            $this->addFlash('error', 'Produit introuvable.');
-            return $this->redirectToRoute('customer_products');
-        }
-
-        $cart = $session->get('cart', []);
-
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity']++;
+        if (isset($cart[$product->getId()])) {
+            $cart[$product->getId()]['quantity']++;
         } else {
-            $cart[$productId] = [
-                'productId' => $productId,
-                'quantity' => 1,
-            ];
+            $cart[$product->getId()] = ['quantity' => 1, 'product' => $product];
         }
 
-        $session->set('cart', $cart);
-        $this->addFlash('success', 'Produit ajouté au panier !');
+        $this->requestStack->getSession()->set('cart', $cart);
 
-        return $this->redirectToRoute('customer_products');
+        $this->addFlash('success', 'Produit ajouté au panier avec succès.');
+        return $this->redirectToRoute('app_products');
     }
 
-    // 3. Voir le panier
-    #[Route('/cart', name: 'cart', methods: ['GET'])]
-    public function cart(SessionInterface $session): Response
+    #[Route('/cart', name: 'app_cart')]
+    public function showCart(): Response
     {
-        $cart = $session->get('cart', []);
-        $total = 0;
-        $products = [];
-
-        foreach ($cart as $productId => $item) {
-            $product = $this->entityManager->getRepository(Product::class)->find($productId);
-
-            if ($product) {
-                $products[] = [
-                    'product' => $product,
-                    'quantity' => $item['quantity'],
-                ];
-                $total += $product->getPrice() * $item['quantity'];
-            } else {
-                // Supprimer les produits inexistants du panier
-                unset($cart[$productId]);
-            }
-        }
-
-        // Mettre à jour le panier dans la session
-        $session->set('cart', $cart);
-
-        // Récupérer la clé publique Stripe
-        $stripePublicKey = 'pk_test_51QvzSGRuvIW9TZS5G8JqLZNI1Kt946YbEaes5mHLhi8eSu7Tr3ymGIQNy0YP4npVLFHWhe803VorTi5zdnKINuck00DlYTwlt2';
+        $cart = $this->requestStack->getSession()->get('cart', []);
+        $total = $this->calculateCartTotal($cart);
 
         return $this->render('customer/cart.html.twig', [
-            'cart' => $products,
+            'stripe_public_key' => 'pk_test_51QvzSGRuvIW9TZS5G8JqLZNI1Kt946YbEaes5mHLhi8eSu7Tr3ymGIQNy0YP4npVLFHWhe803VorTi5zdnKINuck00DlYTwlt2',
+            'cart' => $cart,
             'total' => $total,
-            'stripe_public_key' => $stripePublicKey,
         ]);
     }
 
-    // 4. Retirer un produit du panier
-    #[Route('/remove-from-cart/{productId}', name: 'remove_from_cart', methods: ['POST'])]
-    public function removeFromCart(int $productId, SessionInterface $session): Response
+    #[Route('/cart/update/{productId}', name: 'update_cart_quantity')]
+    public function updateCartQuantity(int $productId, Request $request): Response
     {
-        $cart = $session->get('cart', []);
+        $cart = $this->requestStack->getSession()->get('cart', []);
 
         if (isset($cart[$productId])) {
-            unset($cart[$productId]);
-            $session->set('cart', $cart);
-            $this->addFlash('success', 'Produit retiré du panier.');
-        } else {
-            $this->addFlash('error', 'Produit non trouvé dans le panier.');
-        }
+            $action = $request->request->get('action');
 
-        return $this->redirectToRoute('cart');
-    }
-
-    // 5. Mettre à jour la quantité d'un produit dans le panier
-    #[Route('/update-cart-quantity/{productId}', name: 'update_cart_quantity', methods: ['POST'])]
-    public function updateCartQuantity(Request $request, int $productId, SessionInterface $session): Response
-    {
-        $cart = $session->get('cart', []);
-        $action = $request->request->get('action');
-
-        if (isset($cart[$productId])) {
             if ($action === 'increment') {
                 $cart[$productId]['quantity']++;
             } elseif ($action === 'decrement' && $cart[$productId]['quantity'] > 1) {
                 $cart[$productId]['quantity']--;
             }
+
+            $this->requestStack->getSession()->set('cart', $cart);
+            $this->addFlash('success', 'Quantité mise à jour avec succès.');
         }
 
-        $session->set('cart', $cart);
-
-        return $this->redirectToRoute('cart');
+        return $this->redirectToRoute('app_cart');
     }
 
-    // 6. Valider le panier et créer une commande
-    #[Route('/checkout', name: 'checkout', methods: ['POST'])]
-    public function checkout(SessionInterface $session): Response
+    #[Route('/cart/remove/{productId}', name: 'remove_from_cart')]
+    public function removeFromCart(int $productId): Response
     {
-        $cart = $session->get('cart', []);
+        $cart = $this->requestStack->getSession()->get('cart', []);
 
-        if (empty($cart)) {
-            $this->addFlash('error', 'Votre panier est vide.');
-            return $this->redirectToRoute('cart');
+        if (isset($cart[$productId])) {
+            unset($cart[$productId]);
         }
 
-        $order = new Order();
-        $order->setStatus('PENDING');
-        $order->setCreatedAt(new \DateTimeImmutable());
-        $this->entityManager->persist($order);
+        $this->requestStack->getSession()->set('cart', $cart);
+        $this->addFlash('success', 'Produit supprimé du panier avec succès.');
 
-        $totalPrice = 0;
-        foreach ($cart as $productId => $item) {
-            $product = $this->entityManager->getRepository(Product::class)->find($productId);
+        return $this->redirectToRoute('app_cart');
+    }
 
-            if (!$product) {
-                $this->addFlash('error', "Le produit avec l'ID $productId est introuvable.");
-                return $this->redirectToRoute('cart');
-            }
+    #[Route('/checkout', name: 'app_checkout')]
+    public function checkout(): Response
+    {
+        $cart = $this->requestStack->getSession()->get('cart', []);
+        $total = $this->calculateCartTotal($cart);
 
-            // Vérification du stock
-            if ($product->getStock() < $item['quantity']) {
-                $this->addFlash('error', "Le produit {$product->getName()} n'a pas assez de stock.");
-                return $this->redirectToRoute('cart');
-            }
+        try {
+            $session = $this->stripeService->createCheckoutSession($cart);
+            return $this->redirect($session->url);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors de la création de la session Stripe.');
+            return $this->redirectToRoute('app_cart');
+        }
+    }
 
-            $product->setStock($product->getStock() - $item['quantity']);
-
-            $orderItem = new OrderItem();
-            $orderItem->setCustomerOrder($order);
-            $orderItem->setProduct($product);
-            $orderItem->setQuantity($item['quantity']);
-            $orderItem->setPrice($product->getPrice());
-
-            $this->entityManager->persist($orderItem);
-
-            $totalPrice += $product->getPrice() * $item['quantity'];
+    #[Route('/success', name: 'app_success')]
+    public function success(Request $request): Response
+    {
+        $sessionId = $request->get('session_id');
+        if (!$sessionId) {
+            throw new \Exception('Session ID is missing');
         }
 
-        $order->setTotalPrice($totalPrice);
-        $this->entityManager->flush();
+        try {
+            $session = $this->stripeService->retrieveCheckoutSession($sessionId);
+            $order = $this->stripeService->createOrderFromSession($session);
+            $this->requestStack->getSession()->remove('cart');
 
-        // Vider le panier
-        $session->remove('cart');
+            return $this->render('checkout/success.html.twig', [
+                'order' => $order,
+            ]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur lors du traitement du paiement.');
+            return $this->redirectToRoute('app_cart');
+        }
+    }
 
-        $this->addFlash('success', 'Votre commande a été passée avec succès !');
+    #[Route('/cancel', name: 'app_cancel')]
+    public function cancel(): Response
+    {
+        return $this->render('checkout/cancel.html.twig');
+    }
 
-        // Rediriger vers la page des produits après paiement ou validation
-        return $this->redirectToRoute('customer_products');
+    private function calculateCartTotal(array $cart): float
+    {
+        $total = 0;
+        foreach ($cart as $item) {
+            if (isset($item['product']) && $item['product'] instanceof Product) {
+                $total += $item['product']->getPrice() * $item['quantity'];
+            }
+        }
+        return $total;
     }
 }

@@ -24,7 +24,7 @@ class ProductType extends AbstractType
                     new Assert\Length(['min' => 3, 'minMessage' => 'Le nom du produit doit contenir au moins 3 caractères.']),
                 ],
                 'attr' => [
-                    'required' => false,  // Désactive la vérification par défaut du navigateur
+                    'required' => false,
                 ],
             ])
             ->add('description', TextType::class, [
@@ -33,7 +33,7 @@ class ProductType extends AbstractType
                     new Assert\Length(['min' => 10, 'minMessage' => 'La description doit contenir au moins 10 caractères.']),
                 ],
                 'attr' => [
-                    'required' => false,  // Désactive la vérification par défaut du navigateur
+                    'required' => false,
                 ],
             ])
             ->add('price', NumberType::class, [
@@ -42,18 +42,18 @@ class ProductType extends AbstractType
                     new Assert\Positive(['message' => 'Le prix doit être un nombre positif.']),
                 ],
                 'attr' => [
-                    'required' => false,  // Désactive la vérification par défaut du navigateur
+                    'required' => false,
                 ],
             ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Image (fichier)',
                 'required' => false,
-                'mapped' => false,  // Ensures the file is not stored directly in the entity
-                'data_class' => null,  // No class is needed for the file input
+                'mapped' => false, // S'assurer que l'image n'est pas mappée à l'entité
+                'data_class' => null,  // Pas de classe associée pour ce champ
                 'constraints' => [
                     new File([
-                        'maxSize' => '5M', // Maximum file size
-                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'], // Allowed image types
+                        'maxSize' => '5M',
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'],
                         'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG, GIF).',
                     ])
                 ],
@@ -79,7 +79,7 @@ class ProductType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
+            'data_class' => Product::class, // Lier directement à Product
         ]);
     }
 }

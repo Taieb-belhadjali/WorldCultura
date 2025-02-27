@@ -6,7 +6,7 @@
 <div class="container mt-8 relative">
     <!-- Bouton retour en haut à gauche -->
     <div class="absolute top-0 left-0 mt-4 ml-4">
-        <a href="{{ path('customer_products') }}" class="btn-back-to-products">
+        <a href="{{ path('app_products') }}" class="btn-back-to-products">
             Retour aux produits 🛍️
         </a>
     </div>
@@ -24,7 +24,7 @@
             <p class="text-xl font-bold text-gray-900 mb-4">{{ product.price }} € 💰</p>
 
             <!-- Formulaire pour ajouter au panier -->
-            <form action="{{ path('add_to_cart', { 'productId': product.id }) }}" method="POST">
+            <form action="{{ path('app_add_to_cart', { 'id': product.id }) }}" method="POST">
                 <div class="flex items-center mb-6">
                     <button type="submit" class="btn-add-to-cart">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
@@ -41,7 +41,7 @@
     <div class="mt-12">
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Produits Similaires 🛍️</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {% for similar_product in products %}
+            {% for similar_product in product %}
                 {% if similar_product.id != product.id %}
                     <div class="product-card bg-white p-4 shadow-md rounded-lg hover:shadow-xl transition-all">
                         <img src="{{ asset('uploads/' ~ similar_product.image) }}" alt="{{ similar_product.name }}" class="product-image mb-4">
