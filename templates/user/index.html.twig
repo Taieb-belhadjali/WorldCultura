@@ -7,6 +7,37 @@
     <!-- Header -->
     <h1 class="mb-5 text-center text-dark">User Index</h1>
 
+    <!-- Search Form -->
+    <form method="get" action="{{ path('app_user_index') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="searchTerm" class="form-label">Search by Name or Email:</label>
+                <input type="text" name="searchTerm" id="searchTerm" class="form-control" value="{{ searchTerm }}" />
+            </div>
+
+            <div class="col-md-4">
+                <label for="role" class="form-label">Filter by Role:</label>
+                <select name="role" id="role" class="form-select">
+                    <option value="">All Roles</option>
+                    <option value="ROLE_ADMIN" {% if selectedRole == 'ROLE_ADMIN' %}selected{% endif %}>Admin</option>
+                    <option value="ROLE_USER" {% if selectedRole == 'ROLE_USER' %}selected{% endif %}>User</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="sortOrder" class="form-label">Sort by Name:</label>
+                <select name="sortOrder" id="sortOrder" class="form-select">
+                    <option value="ASC" {% if sortOrder == 'ASC' %}selected{% endif %}>A → Z</option>
+                    <option value="DESC" {% if sortOrder == 'DESC' %}selected{% endif %}>Z → A</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
     <!-- Table -->
     <div class="table-responsive-sm">
         <table class="table table-bordered text-dark" style="width: 80%; margin: 0 auto; border-color: black;">
@@ -17,7 +48,6 @@
                     <th>Prenom</th>
                     <th>Email</th>
                     <th>Roles</th>
-                    <th>Password</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -25,25 +55,86 @@
             {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
-                    <td>{{ user.Nom }}</td>
-                    <td>{{ user.Prenom }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.prenom }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.roles ? user.roles|join(', ') : 'No roles assigned' }}</td>
-                    <td>{{ user.password }}</td>
                     <td>
                         <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-info btn-sm">Show</a>
-                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="7" class="text-center">No records found</td>
+                    <td colspan="6" class="text-center">No records found</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <!-- User Statistics -->
+    {% block statistics %}
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h3>User Statistics</h3>
+
+            {% set total_users = counts['total'] %}
+
+            {% set admin_percentage = total_users > 0 ? (counts['adminCount'] / total_users) * 100 : 0 %}
+            {% set user_percentage = total_users > 0 ? (counts['userCount'] / total_users) * 100 : 0 %}
+
+            <div class="progress mb-3">
+                <div class="progress-bar bg-danger" role="progressbar" 
+                     style="width: {{ admin_percentage }}%;" 
+                     aria-valuenow="{{ admin_percentage }}" 
+                     aria-valuemin="0" aria-valuemax="100">
+                    Admins - {{ admin_percentage|number_format(2) }}%
+                </div>
+            </div>
+
+            <div class="progress mb-3">
+                <div class="progress-bar bg-primary" role="progressbar" 
+                     style="width: {{ user_percentage }}%;" 
+                     aria-valuenow="{{ user_percentage }}" 
+                     aria-valuemin="0" aria-valuemax="100">
+                    Users - {{ user_percentage|number_format(2) }}%
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h3>Distribution Of Users</h3>
+            <canvas id="roleChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('roleChart').getContext('2d');
+        var roleChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Admins', 'Users'],
+                datasets: [{
+                    data: [
+                        {{ admin_percentage }},
+                        {{ user_percentage }}
+                    ],
+                    backgroundColor: ['#dc3545', '#007bff'],
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    </script>
+    {% endblock %}
 
     <!-- Create New Button -->
     <div class="text-center mt-4">

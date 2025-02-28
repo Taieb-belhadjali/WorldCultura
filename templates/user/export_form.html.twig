@@ -1,0 +1,61 @@
+{% block title %}User Information{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>User Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>User Information</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ user.nom }}</td>
+        </tr>
+        <tr>
+            <th>Prénom</th>
+            <td>{{ user.prenom }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Roles</th>
+            <td>{{ user.roles ? user.roles|join(', ') : 'No roles assigned' }}</td>
+        </tr>
+    </table>
+</body>
+</html>
+{% endblock %}

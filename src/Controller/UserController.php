@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 #[Route('/user')]
 final class UserController extends AbstractController
@@ -28,11 +30,25 @@ final class UserController extends AbstractController
     }
     
     #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository): Response
     {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
+       // Get search term and sort order from URL parameters
+    $searchTerm = $request->query->get('searchTerm', null);
+    $role = $request->query->get('role', null);  // Get the selected role from the query parameter
+    $sortOrder = $request->query->get('sortOrder', 'ASC'); // Default to ASC if no sortOrder is specified
+
+    // Fetch users from the repository using the search term and sort order
+    $users = $userRepository->findBySearchTermAndSort($searchTerm, $role, $sortOrder);
+
+    $counts = $userRepository->getUserStatistics();  // This should return the counts (total, adminCount, userCount)
+
+    return $this->render('user/index.html.twig', [
+        'users' => $users,
+        'counts' => $counts,  // Pass counts to the template
+        'searchTerm' => $searchTerm,
+        'selectedRole' => $role,
+        'sortOrder' => $sortOrder,
+    ]);
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
@@ -105,8 +121,37 @@ public function delete(Request $request, User $user, EntityManagerInterface $ent
 
     return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
 }
+#[Route('/{id}/export-pdf', name: 'app_user_export_pdf')]
+public function exportPdf(User $user): Response
+{
+    // Set Dompdf options
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isPhpEnabled', true);
 
+    // Initialize Dompdf with options
+    $dompdf = new Dompdf($options);
 
-    
+    // Render the HTML view
+    $html = $this->renderView('user/export_form.html.twig', ['user' => $user]);
+
+    // Check if HTML is empty (debugging)
+    if (empty($html)) {
+        throw new \Exception("Exported HTML is empty.");
+    }
+
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait'); // Set paper size
+    $dompdf->render();
+
+    // Output PDF to a file for debugging
+    file_put_contents('debug.pdf', $dompdf->output());
+
+    // Return response with PDF content
+    return new Response($dompdf->output(), 200, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="Profile.pdf"',
+    ]);
+}
 }
 

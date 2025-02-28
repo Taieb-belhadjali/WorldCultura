@@ -42,6 +42,7 @@
         <a href="{{ path('app_user_index') }}" class="btn btn-secondary">Back to List</a>
         <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-warning">Edit</a>
         <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger">Delete</a>
+        <a href="{{path('app_user_export_pdf',{'id':user.id})}}" class="btn btn-success btn-sm">Export</a>
     </div>
 </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 

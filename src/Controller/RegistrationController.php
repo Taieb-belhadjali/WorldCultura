@@ -42,7 +42,7 @@ class RegistrationController extends AbstractController
 
             //dump('User saved');
             //die();
-
+            
             // do anything else you need here, like send an email
             return $this->redirectToRoute('app_test_temp');
            //return $security->login($user, AppCustomAuthenticator::class, 'main');
