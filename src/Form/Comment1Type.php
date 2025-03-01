@@ -15,13 +15,7 @@ class Comment1Type extends AbstractType
     {
         $builder
             ->add('content')
-            ->add('createDate', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('post', EntityType::class, [
-                'class' => Post::class,
-                'choice_label' => 'id',
-            ])
+            
         ;
     }
 

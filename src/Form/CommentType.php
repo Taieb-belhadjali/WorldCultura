@@ -15,10 +15,6 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('content')
-            ->add('createDate', null, [
-                'widget' => 'single_text',
-            ])
-           
         ;
     }
 

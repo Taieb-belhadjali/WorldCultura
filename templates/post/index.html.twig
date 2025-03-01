@@ -4,36 +4,36 @@
 
 {% block body %}
 <div class="container py-5">
-                            <!-- Barre de recherche en haut, centrée et pleine largeur -->
-                <div class="container my-4">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            <div class="card p-3 shadow-sm bg-light rounded-4">
-                                <form method="get" action="{{ path('app_post_search') }}">
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-white border-0 rounded-start-4"><i class="fas fa-search text-primary"></i></span>
-                                        <input type="text" name="q" class="form-control border-0 shadow-none" placeholder="Search posts..." value="{{ query ?? '' }}">
-                                        <button class="btn btn-primary rounded-end-4 shadow-sm" type="submit">
-                                            <i class="fas fa-arrow-right"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Barre de recherche et filtres -->
+    <div class="d-flex flex-column align-items-center mb-4">
+        <input class="form-control w-50 border-2 shadow-sm mb-3" 
+               type="text" 
+               placeholder="🔍 Search posts..." 
+               id="searchInput">
+        
+        <div class="d-flex align-items-center gap-3">
+            <select id="sortSelect" class="form-select w-auto shadow-sm">
+                <option value="newest"> Newest posts</option>
+                <option value="oldest"> Oldest posts</option>
+            </select>
+            <label for="daysBefore" class="mb-0">Days Before:</label>
+            <input type="range" id="daysBefore" min="0" max="365" step="1" value="30" class="form-range w-25">
+            <span id="beforeLabel">30</span> days
+        </div>
+    </div>
 
+    <h1 class="text-center mb-5 fw-bold text-dark display-4">  Posts</h1>
 
-    <h1 class="text-center mb-5 fw-bold text-dark display-4">📚 All Posts</h1>
- 
-    <div class="row g-4">
-        {% for post in posts %}
-            <div class="col-lg-4 col-md-6">
+    <div class="row g-4" id="postsContainer">
+        {% for post in pagination %}
+            <div class="col-lg-4 col-md-6 post-card" data-date="{{ post.createDate|date('Y-m-d') }}">
                 <div class="card border-0 rounded-4 overflow-hidden shadow-lg transform-hover h-100">
                     <div class="position-relative overflow-hidden">
-                        <img class="img-fluid w-100 h-100 object-cover rounded-top transform-hover-img" src="{{ asset('uploads/images/' ~ post.image) }}" alt="Image">
+                        <img class="img-fluid w-100 h-100 object-cover rounded-top transform-hover-img" 
+                             src="{{ asset('uploads/images/' ~ post.image) }}" alt="Image">
                         <div class="position-absolute top-50 start-50 translate-middle">
-                            <a href="{{ path('app_post_show', {'id': post.id}) }}" class="btn btn-outline-light btn-lg rounded-circle shadow-lg transform-hover-button">
+                            <a href="{{ path('app_post_show', {'id': post.id}) }}" 
+                               class="btn btn-outline-light btn-lg rounded-circle shadow-lg transform-hover-button">
                                 <i class="fas fa-link"></i>
                             </a>
                         </div>
@@ -41,14 +41,18 @@
                     <div class="card-body p-4 d-flex flex-column">
                         <div class="d-flex justify-content-between mb-3">
                             <small class="text-muted">
-                                <i class="fa fa-calendar-alt text-primary me-2"></i>{{ post.createDate|date('d M Y') }}
+                                <i class="fa fa-calendar-alt text-primary me-2"></i>
+                                <span class="post-date">{{ post.createDate|date('d M Y') }}</span>
                             </small>
                         </div>
-                        <a href="{{ path('app_post_show', {'id': post.id}) }}" class="h4 text-dark mb-3 fw-bold transform-hover-title">{{ post.title }}</a>
+                        <a href="{{ path('app_post_show', {'id': post.id}) }}" 
+                           class="h4 text-dark mb-3 fw-bold transform-hover-title">{{ post.title }}</a>
                         <p class="text-muted mb-4">{{ post.content|slice(0, 150) }}...</p>
                         <div class="mt-auto d-flex justify-content-between">
-                            <a href="{{ path('app_post_show', {'id': post.id}) }}" class="btn btn-primary rounded-pill py-2 px-4 shadow-sm transform-hover-button">Read More</a>
-                            <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-primary rounded-pill py-2 px-4 shadow-sm transform-hover-button">Update</a>
+                            <a href="{{ path('app_post_show', {'id': post.id}) }}" 
+                               class="btn btn-primary rounded-pill py-2 px-4 shadow-sm transform-hover-button">Read More</a>
+                            <a href="{{ path('app_post_edit', {'id': post.id}) }}" 
+                               class="btn btn-primary rounded-pill py-2 px-4 shadow-sm transform-hover-button">Update</a>
                         </div>
                     </div>
                 </div>
@@ -60,9 +64,66 @@
         {% endfor %}
     </div>
 
-    <div class="text-center mt-5">
-        <a href="{{ path('app_post_new') }}" class="btn btn-success rounded-pill py-3 px-5 shadow-lg transform-hover-button">Create New Post</a>
+    <!-- Pagination Controls -->
+    <div class="d-flex justify-content-center mt-4">
+        {{ knp_pagination_render(pagination, 'pagination/bootstrap_v6_pagination.html.twig') }}
     </div>
-    
+
+    <div class="text-center mt-5">
+        <a href="{{ path('app_post_new') }}" 
+           class="btn btn-success rounded-pill py-3 px-5 shadow-lg transform-hover-button">Create New Post</a>
+    </div>
 </div>
+
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function() {
+        let filter = this.value.toLowerCase().trim();
+        let posts = document.querySelectorAll(".post-card");
+        
+        posts.forEach(function(post) {
+            let title = post.querySelector(".h4").innerText.toLowerCase();
+            let description = post.querySelector("p").innerText.toLowerCase();
+            
+            post.style.display = (title.includes(filter) || description.includes(filter)) ? "block" : "none";
+        });
+    });
+
+    document.getElementById("sortSelect").addEventListener("change", function() {
+        let postsContainer = document.getElementById("postsContainer");
+        let posts = Array.from(postsContainer.getElementsByClassName("post-card"));
+        
+        posts.sort((a, b) => {
+            let dateA = new Date(a.getAttribute("data-date"));
+            let dateB = new Date(b.getAttribute("data-date"));
+            
+            return this.value === "newest" ? dateB - dateA : dateA - dateB;
+        });
+        
+        posts.forEach(post => postsContainer.appendChild(post));
+    });
+
+    function filterByDaysRange() {
+        let daysBefore = parseInt(document.getElementById("daysBefore").value);
+        let posts = document.querySelectorAll(".post-card");
+        let currentDate = new Date();
+
+        document.getElementById("beforeLabel").textContent = daysBefore;
+
+        let startDate = new Date();
+        startDate.setDate(currentDate.getDate() - daysBefore);
+
+        posts.forEach(function(post) {
+            let postDate = new Date(post.getAttribute("data-date"));
+
+            if (postDate >= startDate) {
+                post.style.display = "block";
+            } else {
+                post.style.display = "none";
+            }
+        });
+    }
+
+    document.getElementById("daysBefore").addEventListener("input", filterByDaysRange);
+</script>
+
 {% endblock %}

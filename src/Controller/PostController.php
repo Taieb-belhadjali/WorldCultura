@@ -12,17 +12,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 #[Route('/post')]
 final class PostController extends AbstractController
 {
     #[Route(name: 'app_post_index', methods: ['GET'])]
-    public function index(PostRepository $postRepository): Response
-    {
-        return $this->render('post/index.html.twig', [
-            'posts' => $postRepository->findAll(),
-        ]);
-    }
+public function index(PostRepository $postRepository, PaginatorInterface $paginator, Request $request): Response
+{
+    $query = $postRepository->createQueryBuilder('p')
+        ->orderBy('p.createDate', 'DESC') // Sort posts by newest first
+        ->getQuery();
+
+    $pagination = $paginator->paginate(
+        $query,
+        $request->query->getInt('page', 1), // Get the current page number (default: 1)
+        5 // Number of posts per page
+    );
+    
+    return $this->render('post/index.html.twig', [
+        'pagination' => $pagination, // Send paginated posts to Twig
+    ]);
+}
 
     #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response

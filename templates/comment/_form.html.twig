@@ -4,7 +4,10 @@
         {% if field.vars.name != '_token' %} 
             <div class="mb-3">
                 {{ form_label(field, null, {'label_attr': {'class': 'form-label fw-semibold text-primary'}}) }}
+                <div class="d-flex align-items-center">
                 {{ form_widget(field, {'attr': {'class': 'form-control shadow-sm rounded-3 px-3'}}) }}
+                
+                </div>
             </div>
         {% endif %}
     {% endfor %}

@@ -27,7 +27,7 @@ class PostType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('createDate');
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

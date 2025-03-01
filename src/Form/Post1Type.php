@@ -27,7 +27,7 @@ class Post1Type extends AbstractType
                     ]),
                 ],
             ])
-            ->add('createDate')
+        
             
         ;
     }

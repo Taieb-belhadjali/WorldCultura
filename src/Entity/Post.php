@@ -37,8 +37,6 @@ class Post
     private ?File $imageFile = null; // Temporary file property for uploads
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Date is blank")]
-    #[Assert\Regex(pattern: "/\d{2}-\d{2}-\d{4}/", message: "the date should be DD-MM-YYYY.")]
     private ?string $createDate = null;
 
     
@@ -51,6 +49,7 @@ class Post
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->createDate = (new \DateTime())->format('d-m-Y');
     }
 
     public function getId(): ?int

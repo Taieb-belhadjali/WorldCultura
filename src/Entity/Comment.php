@@ -22,7 +22,6 @@ class Comment
     private ?string $content = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\NotBlank(message: "Date is blank.")]
     private ?\DateTimeInterface $createDate = null;
 
 
@@ -57,6 +56,10 @@ class Comment
         $this->createDate = $createDate;
 
         return $this;
+    }
+    public function __construct()
+    {
+        $this->createDate = new \DateTime(); // Définit automatiquement la date à maintenant
     }
 
 
