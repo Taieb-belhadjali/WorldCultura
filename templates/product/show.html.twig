@@ -1,20 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}🛍️Détails du produit{% endblock %}
+{% block title %}🛍️ Détails du produit ✨{% endblock %}
 
 {% block body %}
     <div class="container mt-4">
         <div class="product-details-card shadow-lg p-4">
             <!-- Image du produit -->
             <div class="product-image-container">
-                <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="product-image">
+                {% if product.image %}
+                    <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="product-image">
+                {% else %}
+                    <img src="{{ asset('images/default-product.jpg') }}" alt="Image par défaut" class="product-image">
+                {% endif %}
             </div>
 
             <!-- Détails du produit -->
             <div class="product-info">
-                <h1 class="product-title">{{ product.name }} 🛍️</h1>
-                <p class="product-price">{{ product.price }} € 💰</p>
+                <h1 class="product-title">{{ product.name }} 🛒</h1>
+                <p class="product-price">{{ product.price|number_format(2, '.', ',') }} € 💸</p>
                 <p class="product-description">{{ product.description }}</p>
+
+                <!-- Nouvelle information -->
+                <div class="product-category">
+                    <span class="badge bg-primary">Catégorie 🏷️:</span> {{ product.category ? product.category : 'Aucune catégorie 📂' }}
+                </div>
+
+                <div class="product-tags">
+                    <span class="badge bg-info">Tags 🏷️:</span>
+                    {% if tags|length > 0 %}
+                        {% for tag in tags %}
+                            <span class="tag-bubble">{{ tag }}</span>
+                        {% endfor %}
+                    {% else %}
+                        Aucun tag 🏷️
+                    {% endif %}
+                </div>
+
+                <div class="product-stock">
+                    <span class="badge bg-success">Stock 📦:</span> {{ product.stock }} unité(s) disponible(s)
+                </div>
+
+                <div class="product-created-at">
+                    <span class="badge bg-secondary">Créé le 📅:</span> {{ product.createdAt|date('d/m/Y H:i') }}
+                </div>
+
+                <div class="product-updated-at">
+                    <span class="badge bg-warning">Dernière mise à jour ⏰:</span> {{ product.updatedAt|date('d/m/Y H:i') }}
+                </div>
 
                 <!-- Boutons -->
                 <div class="product-actions">
@@ -89,6 +121,71 @@
             color: #4a5568;
             margin-bottom: 20px;
             line-height: 1.5;
+        }
+
+        /* Nouvelles informations */
+        .product-category,
+        .product-stock,
+        .product-created-at,
+        .product-updated-at {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .badge.bg-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .badge.bg-info {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+
+        .badge.bg-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .badge.bg-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .badge.bg-warning {
+            background-color: #ffc107;
+            color: #fff;
+        }
+
+        /* Bulles de tags */
+        .product-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .tag-bubble {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .tag-bubble:hover {
+            background-color: #3182ce;
+            color: white;
         }
 
         /* Boutons */

@@ -5,30 +5,39 @@ use App\Entity\Product;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Faker\Factory;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\File;
-use Faker\Provider\Image;
-use Faker\Provider\Lorem;
 
 class ProductFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create(); // Create a Faker instance
+        $faker = Factory::create(); // Créer une instance de Faker
 
-        for ($i = 0; $i < 10; $i++) { // Generate 10 products
+        $categories = ['Électronique', 'Livres', 'Maison', 'Vêtements', 'Autres']; // Liste des catégories
+        $tagsList = ['Promotion', 'Nouveau', 'Best-seller', 'Solde', 'Exclusif']; // Liste des tags
+
+        for ($i = 0; $i < 10; $i++) { // Générer 10 produits
             $product = new Product();
-            $product->setName($faker->word()); // Random product name
-            $product->setDescription($faker->paragraph()); // Random product description
-            $product->setPrice($faker->randomFloat(2, 5, 100)); // Random price between 5 and 100
-            $product->setImage('default-image.jpg');  // Assigner une image par défaut
+            $product->setName($faker->word()); // Nom aléatoire
+            $product->setDescription($faker->paragraph()); // Description aléatoire
+            $product->setPrice($faker->randomFloat(2, 5, 100)); // Prix aléatoire entre 5 et 100
+            $product->setImage('default-image.jpg'); // Image par défaut
 
-            $manager->persist($product); // Persist the product
+            // Assigner une catégorie aléatoire parmi celles définies
+            $category = $faker->randomElement($categories); // Catégorie aléatoire
+            $product->setCategory($category); // Assigner la catégorie au produit
 
-            // Optionally set categories or other fields as needed:
-            // $product->setCategory($this->getReference('some-category')); // If you have categories
+            // Assigner une quantité de stock aléatoire
+            $stock = $faker->numberBetween(0, 100); // Stock aléatoire entre 0 et 100
+            $product->setStock($stock); // Assigner la quantité de stock
+
+            // Assigner des tags aléatoires
+            $tags = $faker->randomElements($tagsList, $faker->numberBetween(1, 3)); // Choisir entre 1 et 3 tags aléatoires
+            $product->setTags(implode(', ', $tags)); // Les tags séparés par des virgules
+            $product->setUpdatedAt(new \DateTime()); // Date actuelle pour "updatedAt"
+
+            $manager->persist($product); // Persister le produit
         }
 
-        $manager->flush(); // Save all products
+        $manager->flush(); // Sauvegarder tous les produits
     }
 }

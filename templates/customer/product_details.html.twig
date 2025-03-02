@@ -41,13 +41,13 @@
     <div class="mt-12">
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Produits Similaires 🛍️</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {% for similar_product in product %}
+            {% for similar_product in products %}
                 {% if similar_product.id != product.id %}
                     <div class="product-card bg-white p-4 shadow-md rounded-lg hover:shadow-xl transition-all">
                         <img src="{{ asset('uploads/' ~ similar_product.image) }}" alt="{{ similar_product.name }}" class="product-image mb-4">
                         <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ similar_product.name }} 🏷️</h3>
                         <p class="text-lg text-gray-600 mb-2">{{ similar_product.price }} € 💰</p>
-                        <a href="{{ path('customer_product_details', { 'id': similar_product.id }) }}" class="text-blue-600 hover:text-blue-800">Voir détails 🔍</a>
+                        <a href="{{ path('app_product_details', { 'id': similar_product.id }) }}" class="text-blue-600 hover:text-blue-800">Voir détails 🔍</a>
                     </div>
                 {% endif %}
             {% endfor %}

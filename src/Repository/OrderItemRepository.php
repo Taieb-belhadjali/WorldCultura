@@ -40,4 +40,17 @@ class OrderItemRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function findTopSellingProducts()
+    {
+        return $this->createQueryBuilder('oi')
+            ->select('p.name', 'SUM(oi.quantity) as totalQuantity') // on compte les quantités vendues
+            ->join('oi.product', 'p') // jointure avec la table Product
+            ->groupBy('p.id') // on regroupe par produit
+            ->orderBy('totalQuantity', 'DESC') // on trie par quantité décroissante
+            ->setMaxResults(5) // on limite le nombre de produits (top 5 par exemple)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
+

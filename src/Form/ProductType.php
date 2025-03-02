@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -19,37 +20,30 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'label' => 'Nom du produit',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le nom du produit est requis.']),
                     new Assert\Length(['min' => 3, 'minMessage' => 'Le nom du produit doit contenir au moins 3 caractères.']),
                 ],
-                'attr' => [
-                    'required' => false,
-                ],
             ])
             ->add('description', TextType::class, [
+                'label' => 'Description',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'La description est requise.']),
                     new Assert\Length(['min' => 10, 'minMessage' => 'La description doit contenir au moins 10 caractères.']),
                 ],
-                'attr' => [
-                    'required' => false,
-                ],
             ])
             ->add('price', NumberType::class, [
+                'label' => 'Prix',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le prix est requis.']),
                     new Assert\Positive(['message' => 'Le prix doit être un nombre positif.']),
-                ],
-                'attr' => [
-                    'required' => false,
                 ],
             ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Image (fichier)',
                 'required' => false,
-                'mapped' => false, // S'assurer que l'image n'est pas mappée à l'entité
-                'data_class' => null,  // Pas de classe associée pour ce champ
+                'mapped' => false, // Non mappé à l'entité Product
                 'constraints' => [
                     new File([
                         'maxSize' => '5M',
@@ -58,20 +52,28 @@ class ProductType extends AbstractType
                     ])
                 ],
             ])
-            ->add('tags', CollectionType::class, [
-                'entry_type' => TextType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'by_reference' => false,
-                'label' => 'Tags',
+            ->add('tags', TextType::class, [
+                'required' => false,
+                'label' => 'Tags (séparés par des virgules)',
+                'attr' => ['placeholder' => 'Exemple: tag1, tag2'],
+            ])
+            ->add('category', ChoiceType::class, [
+                'label' => 'Catégorie',
+                'choices' => [
+                    'Électronique' => 'Électronique',
+                    'Livres' => 'Livres',
+                    'Vêtements' => 'Vêtements',
+                    'Maison' => 'Maison',
+                    'Autres' => 'Autres',
+                ],
+                'placeholder' => 'Choisissez une catégorie',
+                'required' => true,
             ])
             ->add('stock', NumberType::class, [
+                'label' => 'Stock',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'La quantité en stock est requise.']),
                     new Assert\PositiveOrZero(['message' => 'La quantité en stock doit être un nombre positif ou égal à zéro.']),
-                ],
-                'attr' => [
-                    'required' => false,
                 ],
             ]);
     }

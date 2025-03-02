@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}✏️Modifier un produit{% endblock %}
+{% block title %}✏️ Modifier un produit{% endblock %}
 
 {% block body %}
 <div class="container mt-4 emoji-background">
     <h1 class="text-center mb-4 text-primary">✏️ Modifier un produit</h1>
 
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8 col-lg-6">
             <div class="card shadow-lg p-4 border-0 rounded-lg">
                 {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
                     {{ form_errors(form) }}
@@ -30,6 +30,21 @@
                     <div class="mb-3">
                         {{ form_label(form.imageFile, '🖼️ Image (fichier)', {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.tags, '🏷️ Tags (séparés par des virgules)', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.tags, {'attr': {'class': 'form-control', 'placeholder': 'ex: olive, huile, épices'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.category, '🗂️ Catégorie', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.stock, '📦 Stock', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.stock, {'attr': {'class': 'form-control', 'type': 'number', 'min': 0}}) }}
                     </div>
 
                     <button class="btn btn-primary w-100 mt-3">
@@ -66,6 +81,7 @@
     .card {
         background-color: #ffffff;
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
     }
 
     /* Bouton principal */

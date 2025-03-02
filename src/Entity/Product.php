@@ -51,8 +51,8 @@ class Product
     #[ORM\Column]
     private ?int $views = 0;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private ?array $tags = [];
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $tags = null;
 
     #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeInterface $createdAt = null;
@@ -68,6 +68,9 @@ class Product
 
     #[ORM\Column]
     private ?int $stock = 0;
+
+    #[ORM\Column(length: 255, nullable: false)]
+    private ?string $category = null;
 
     public function __construct()
     {
@@ -117,6 +120,17 @@ class Product
 
         return $this;
     }
+    public function getCategory(): ?string
+{
+    return $this->category;
+}
+
+public function setCategory(string $category): static
+{
+    $this->category = $category;
+
+    return $this;
+}
 
     public function getImage(): ?string
     {
@@ -154,12 +168,12 @@ class Product
         return $this;
     }
 
-    public function getTags(): ?array
+    public function getTags(): ?string
     {
         return $this->tags;
     }
 
-    public function setTags(?array $tags): static
+    public function setTags(?string $tags): self
     {
         $this->tags = $tags;
 

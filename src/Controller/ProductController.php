@@ -54,6 +54,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         }
 
         $product->setCreatedAt(new \DateTime());
+        $product->setUpdatedAt(new \DateTime());
         $entityManager->persist($product);
         $entityManager->flush();
 
@@ -76,10 +77,13 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
             throw $this->createNotFoundException('Produit non trouvé.');
         }
         // $products = $productRepository->findBySomeCriteria($product);  // Remplace cette ligne par ta logique pour récupérer des produits similaires
+        $productTags = $product->getTags(); // suppose que c'est une chaîne comme "olive,oil,tag1,tag2"
 
+        $tagsArray = explode(',', $productTags); // On découpe la chaîne en tableau
 
         return $this->render('product/show.html.twig', [
             'product' => $product,
+            'tags' => $tagsArray,
             // 'products' => $products,
         ]);
     }
@@ -117,7 +121,7 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
 
                 $product->setImage($newFilename);
             }
-
+            $product->setUpdatedAt(new \DateTime());
             $entityManager->flush();
 
             $this->addFlash('success', 'Produit modifié avec succès !');
