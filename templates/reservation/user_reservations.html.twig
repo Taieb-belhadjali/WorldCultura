@@ -1,10 +1,10 @@
-{% extends 'dashboard.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Liste des Réservations{% endblock %}
 
 {% block body %}
     <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
-        <h1 class="display-6 mb-4 text-center text-primary">Liste des Réservations</h1>
+        <h1 class="display-6 mb-4 text-center text-primary">Liste de mes Réservations</h1>
 
         <!-- Barre de recherche -->
         <div class="text-center mb-4">
@@ -23,13 +23,16 @@
                     <thead class="table-primary text-dark">
                         <tr class="text-center">
                             <th>ID</th>
-                            <th>Utilisateur</th>
+                            <th>nom de voyageur</th>
                             <th>Email</th>
                             <th>Contact</th>
                             <th>Départ</th>
                             <th>Destination</th>
+                            <th>Date de départ</th> <!-- Ajouté ici -->
+                            <th>Date d'arrivée</th> <!-- Ajouté ici -->
                             <th>Prix (€)</th>
                             <th>Agence</th>
+                            
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -42,25 +45,30 @@
                                 <td>{{ reservation.contact }}</td>
                                 <td>{{ reservation.rehla.depart }}</td>
                                 <td>{{ reservation.rehla.destination }}</td>
+<td>
+                                 <!-- Affichage de la date de départ -->
+                                    {{ reservation.rehla.departDate ? reservation.rehla.departDate|date('Y-m-d H:i') : 'Non définie' }}
+                                </td>
+                                <td>
+                                    <!-- Affichage de la date d'arrivée -->
+                                    {{ reservation.rehla.arrivalDate ? reservation.rehla.arrivalDate|date('Y-m-d H:i') : 'Non définie' }}
+                                </td>
+
+
                                 <td>{{ reservation.rehla.price }}</td>
                                 <td>{{ reservation.rehla.agence.nom }}</td>
+                               
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-
-                                    <a href="{{ path('reservation_qrcode', {'id': reservation.id}) }}" class="btn btn-outline-success btn-sm" target="_blank">
-    <i class="bi bi-qr-code"></i>
-</a>
-
-
-                                        <!-- Bouton pour imprimer la réservation -->
-                                        <a href="{{ path('generate_pdf', {'id': reservation.id}) }}" class="btn btn-outline-info btn-sm" target="_blank">
-                                            <i class="bi bi-printer"></i>
-                                        </a>
-
-                                        <!-- Bouton pour annuler la réservation -->
                                         <a href="{{ path('reservation_delete', {'id': reservation.id}) }}" class="btn btn-outline-danger btn-sm">
-                                            <i class="bi bi-x-circle"></i>
+                                            <i class="bi bi-trash"></i> Annuler
                                         </a>
+                                         <!-- Bouton Payer -->
+        <a href="{{ path('payment_checkout', {'id': reservation.id}) }}" class="btn btn-outline-success btn-sm">
+            <i class="bi bi-credit-card"></i> Payer
+        </a>
+    </div>
+</td>
                                     </div>
                                 </td>
                             </tr>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket de Réservation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .ticket-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+        }
+        .ticket-header {
+            background: #003366; /* Bleu foncé */
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-image: url('https://img.freepik.com/vecteurs-premium/illustration-silhouette-avion_77417-2028.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        th, td {
+            padding: 8px 12px;
+            border-bottom: none; /* Bordure supprimée */
+            background: rgba(255, 255, 255, 0.7); /* Fond blanc semi-transparent pour contraster avec l'image */
+        }
+        th {
+            text-align: left;
+            color: #999;
+        }
+        td {
+            color: #333;
+        }
+        .value-right {
+            text-align: right;
+            border-right: 2px dashed #ddd; /* Ligne discontinue après la cellule "Agence" */
+        }
+        .ticket-footer {
+            background: #eee;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+        }
+        .qr-code img {
+            max-width: 100%; /* S'adapte à la largeur de la cellule */
+            height: auto; /* Maintient les proportions de l'image */
+        }
+    </style>
+</head>
+<body>
+<div class="ticket-container">
+    <div class="ticket-header">
+        World Cultura
+    </div>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <td>{{ reservation.userName }}</td>
+            <th>Agence</th>
+            <td class="value-right">{{ reservation.rehla.agence.nom }}</td>
+            <th>Nom du passager</th>
+            <td>{{ reservation.userName }}</td>
+        </tr>
+        <tr>
+            <th>Départ</th>
+            <td>{{ reservation.rehla.depart }}</td>
+            <th>Destination</th>
+            <td class="value-right">{{ reservation.rehla.destination }}</td>
+            <th>Destination</th>
+            <td class="value-right">{{ reservation.rehla.destination }}</td>
+        </tr>
+        <tr>
+            <th>Date de départ</th>
+            <td>{{ reservation.rehla.departDate ? reservation.rehla.departDate|date('Y-m-d H:i') : 'Non définie' }}</td>
+            <th>Date d'arrivée</th>
+            <td class="value-right">{{ reservation.rehla.arrivalDate ? reservation.rehla.arrivalDate|date('Y-m-d H:i') : 'Non définie' }}</td>
+            <th>Vol</th>
+            <td>F 0575</td>
+        </tr>
+        <tr>
+            <th>Prix</th>
+            <td>{{ reservation.rehla.price }} €</td>
+            <th>QR Code</th>
+            <td class="qr-code">
+                <img src="https://cdn.socketmobile.com/sitefinity-assets/images/default-source/barcodes/gs1-databar.png?sfvrsn=776558b2_15">
+            </td>
+            <th>Siège</th>
+            <td>55L</td>
+        </tr>
+    </table>
+</div>
+
+<div class="ticket-footer">
+    Merci d'avoir réservé avec nous !
+</div>
+</body>
+</html>

@@ -4,8 +4,59 @@
 
 {% block body %}
     <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
-        <h1 class="display-6 mb-4 text-center text-primary">Liste des Rehlas</h1>
+        
+        <!-- Liste des Rehlas -->
+        <div class="col-md-8 col-lg-6">
+            <div class="d-flex justify-content-between mb-3">
+                <h1>Liste des Rehlas</h1>
+                <div class="d-flex align-items-center">
+                    <label for="resultsPerPage" class="me-2">Résultats par page:</label>
+                    <select id="resultsPerPage" class="form-select w-auto">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Filtres -->
+        <div class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" id="departInput" class="form-control" placeholder="Rechercher départ...">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher destination...">
+                </div>
+                
+                <div class="col-md-2">
+                    <input type="date" id="departDateInput" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <input type="date" id="arrivalDateInput" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="agenceInput" class="form-control" placeholder="Rechercher compagnie...">
+                </div>
 
+                <!-- Filtre par prix -->
+                <div class="col-md-3">
+                   
+                    <label for="minPriceRange">Prix min: <span id="minPriceLabel">0</span> €</label>
+                    <input type="range" class="form-range" id="minPriceRange" min="0" max="2000" step="10" value="0">
+                </div>
+                <div class="col-md-3">
+                    <label for="maxPriceRange">Prix max: <span id="maxPriceLabel">2000</span> €</label>
+                    <input type="range" class="form-range" id="maxPriceRange" min="0" max="2000" step="10" value="2000">
+                </div>
+                
+                <div class="col-md-2">
+                    <button id="resetFilters" class="btn btn-danger w-100">Réinitialiser</button>
+                </div>
+            </div>
+        </div>
+        
         <div class="table-responsive">
             <table class="table table-hover table-striped align-middle">
                 <thead class="table-primary text-dark">
@@ -21,9 +72,9 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="rehlasContainer">
                 {% for rehla in rehlas %}
-                    <tr class="text-center">
+                    <tr class="text-center blog-item" data-price="{{ rehla.price }}" data-destination="{{ rehla.destination|lower }}" data-depart="{{ rehla.depart|lower }}" data-departdate="{{ rehla.departDate|date('Y-m-d') }}" data-arrivaldate="{{ rehla.arrivalDate|date('Y-m-d') }}" data-agence="{{ rehla.agence.nom|lower }}">
                         <td>{{ rehla.id }}</td>
                         <td>{{ rehla.depart }}</td>
                         <td>{{ rehla.destination }}</td>
@@ -49,24 +100,94 @@
                             </div>
                         </td>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="9" class="text-center text-muted">
-                            <div class="py-4">
-                                <i class="bi bi-emoji-frown display-6 text-muted"></i>
-                                <p class="mt-2">Aucune donnée trouvée</p>
-                            </div>
-                        </td>
-                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
-
-        <div class="d-flex justify-content-center mt-4">
-            <a href="{{ path('app_rehla_new') }}" class="btn btn-dark btn-lg text-white shadow-sm" style="background-color: #002B5C; border: none;">
-                <i class="bi bi-plus-circle"></i> Nouvelle Rehla
-            </a>
+        
+        <!-- Pagination Controls -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <button id="prevPage" class="btn btn-secondary" disabled>Précédent</button>
+            <button id="nextPage" class="btn btn-secondary">Suivant</button>
         </div>
     </div>
+
+    <script>
+        let currentPage = 1;
+        let resultsPerPage = parseInt(document.getElementById("resultsPerPage").value);
+        let filteredRehlas = Array.from(document.querySelectorAll(".blog-item"));
+        
+        // Mise à jour de l'affichage des filtres
+        function updatePagination() {
+            let totalRehlas = filteredRehlas.length;
+            
+            document.querySelectorAll(".blog-item").forEach(item => item.style.display = "none");
+            
+            let startIndex = (currentPage - 1) * resultsPerPage;
+            let endIndex = Math.min(startIndex + resultsPerPage, totalRehlas);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                filteredRehlas[i].style.display = "";
+            }
+            
+            document.getElementById("prevPage").disabled = currentPage === 1;
+            document.getElementById("nextPage").disabled = currentPage * resultsPerPage >= totalRehlas;
+        }
+        
+        document.getElementById("prevPage").addEventListener("click", function() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+            }
+        });
+        
+        document.getElementById("nextPage").addEventListener("click", function() {
+            currentPage++;
+            updatePagination();
+        });
+        
+        function filterRehlas() {
+            let searchValue = document.getElementById("searchInput").value.toLowerCase();
+            let departValue = document.getElementById("departInput").value.toLowerCase();
+            let departDate = document.getElementById("departDateInput").value;
+            let arrivalDate = document.getElementById("arrivalDateInput").value;
+            let agenceValue = document.getElementById("agenceInput").value.toLowerCase();
+            let minPrice = parseFloat(document.getElementById("minPriceRange").value) || 0;
+            let maxPrice = parseFloat(document.getElementById("maxPriceRange").value) || 2000;
+
+            filteredRehlas = Array.from(document.querySelectorAll(".blog-item")).filter(rehla => {
+                let price = parseFloat(rehla.getAttribute("data-price"));
+                return rehla.getAttribute("data-destination").includes(searchValue) &&
+                       rehla.getAttribute("data-depart").includes(departValue) &&
+                       (!departDate || rehla.getAttribute("data-departdate") === departDate) &&
+                       (!arrivalDate || rehla.getAttribute("data-arrivaldate") === arrivalDate) &&
+                       rehla.getAttribute("data-agence").toLowerCase().includes(agenceValue) &&
+                       price >= minPrice && price <= maxPrice;
+            });
+            
+            currentPage = 1;
+            updatePagination();
+        }
+        
+        document.querySelectorAll("input").forEach(input => input.addEventListener("input", filterRehlas));
+        document.getElementById("resultsPerPage").addEventListener("change", function() {
+            resultsPerPage = parseInt(this.value);
+            updatePagination();
+        });
+        document.getElementById("resetFilters").addEventListener("click", function() {
+            document.querySelectorAll("input").forEach(input => input.value = "");
+            document.getElementById("resultsPerPage").value = "10";
+            filterRehlas();
+        });
+
+        // Mise à jour dynamique des valeurs des curseurs
+        document.getElementById("minPriceRange").addEventListener("input", function() {
+            document.getElementById("minPriceLabel").textContent = this.value;
+        });
+        document.getElementById("maxPriceRange").addEventListener("input", function() {
+            document.getElementById("maxPriceLabel").textContent = this.value;
+        });
+        
+        updatePagination();
+    </script>
 {% endblock %}

@@ -6,8 +6,13 @@
     <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
         <h1 class="display-6 mb-4 text-center text-primary">Liste des Compagnies Aériennes</h1>
 
+        <!-- Barre de recherche -->
+        <div class="text-center mb-4">
+            <input class="form-control w-50 mx-auto" type="text" placeholder="Rechercher une compagnie..." id="searchInput">
+        </div>
+
         <div class="table-responsive">
-            <table class="table table-hover table-striped align-middle">
+            <table class="table table-hover table-striped align-middle" id="compagnieTable">
                 <thead class="table-primary text-dark">
                     <tr class="text-center">
                         <th>ID</th>
@@ -16,6 +21,7 @@
                         <th>Description</th>
                         <th>Contact</th>
                         <th>Actions</th>
+                        <th>Favori</th>  <!-- Déplacement de la colonne "Favori" ici -->
                     </tr>
                 </thead>
                 <tbody>
@@ -44,10 +50,21 @@
                                 </a>
                             </div>
                         </td>
+                        <td>
+                            <form action="{{ path('toggle_favorite', { 'id': compagnie_aerienne.id }) }}" method="POST">
+                                <button type="submit" class="btn btn-link p-0">
+                                    {% if compagnie_aerienne.id in app.session.get('favorites', []) %}
+                                        <i class="bi bi-star-fill text-warning"></i>  <!-- Étoile pleine pour les favoris -->
+                                    {% else %}
+                                        <i class="bi bi-star text-muted"></i>  <!-- Étoile vide pour les non-favoris -->
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="6" class="text-center text-muted">
+                        <td colspan="7" class="text-center text-muted">
                             <div class="py-4">
                                 <i class="bi bi-emoji-frown display-6 text-muted"></i>
                                 <p class="mt-2">Aucune compagnie aérienne trouvée.</p>
@@ -65,4 +82,32 @@
             </a>
         </div>
     </div>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchQuery = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#compagnieTable tbody tr');
+            
+            rows.forEach(function(row) {
+                const cells = row.getElementsByTagName('td');
+                let found = false;
+                
+                // Vérifier chaque cellule de la ligne
+                for (let i = 0; i < cells.length; i++) {
+                    const cellText = cells[i].textContent.toLowerCase();
+                    if (cellText.includes(searchQuery)) {
+                        found = true;
+                        break;  // Si on trouve une correspondance, on arrête la recherche
+                    }
+                }
+
+                // Afficher ou masquer la ligne en fonction de la recherche
+                if (found) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 {% endblock %}

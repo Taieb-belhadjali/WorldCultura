@@ -11,7 +11,7 @@
                 <!-- Formulaire -->
                 <div class="card mb-4">
                     <div class="card-body">
-                        {{ form_start(form) }}
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
                         {% for field in form %}
                             {% if field.vars.name != '_token' %}

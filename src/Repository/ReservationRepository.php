@@ -51,4 +51,23 @@ class ReservationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    // Nouvelle méthode pour la somme des réservations
+    public function getTotalReservations(): int
+    {
+        return (int) $this->createQueryBuilder('r')
+            ->select('COUNT(r.id)') // Calcul de la somme des réservations
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    // Nouvelle méthode pour la somme du chiffre d'affaire
+    public function getTotalChiffreAffaire(): float
+    {
+        return (float) $this->createQueryBuilder('r')
+            ->select('SUM(rehla.price)') // Calcul de la somme des chiffres d'affaire
+            ->join('r.rehla', 'rehla')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

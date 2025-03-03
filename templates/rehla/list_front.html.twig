@@ -3,93 +3,277 @@
 {% block title %}Liste des Rehlas front{% endblock %}
 
 {% block body %}
-    <div class="container my-5">
-        <div class="row">
-            <!-- Partie gauche pour recherche, tri, filtrage -->
-            <div class="col-md-3">
-                <h4 class="mb-4">Filtres et Recherche</h4>
+<div class="container my-5">
+<div class="row">
+<!-- Sidebar (Filtres) -->
+<div class="col-md-4 col-lg-3 mb-4">
+<div class="card shadow-sm">
+<div class="card-header bg-primary text-white text-center">
+<h4 class="mb-0">Filtres de Recherche</h4>
+</div>
+<div class="card-body">
+<button id="resetFilters" class="btn btn-secondary w-100 mb-3">Réinitialiser les filtres</button>
+                    <div class="mb-3">
+                        <label for="departInput" class="form-label">Départ</label>
+                        <input class="form-control form-control-lg" type="text" id="departInput" placeholder="Rechercher un départ...">
+                    </div>
 
-                <!-- Recherche et filtres dans l'URL -->
-                <div class="mb-3">
-                    <label class="form-label">Recherche par destination</label>
-                    <input type="text" class="form-control" id="search" name="search" placeholder="Ex. Paris" value="{{ app.request.query.get('search') }}" oninput="applyFilters()">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Date de départ</label>
-                    <input type="date" class="form-control" id="departDate" name="departDate" value="{{ app.request.query.get('departDate') }}" oninput="applyFilters()">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Prix (max.)</label>
-                    <input type="number" class="form-control" id="priceRange" name="priceRange" value="{{ app.request.query.get('priceRange') }}" oninput="applyFilters()">
-                </div>
-            </div>
+                    <div class="mb-3">
+                        <label for="searchInput" class="form-label">Destination</label>
+                        <input class="form-control form-control-lg" type="text" id="searchInput" placeholder="Rechercher une destination...">
+                    </div>
 
-            <!-- Partie centrale pour la liste des Rehlas -->
-            <div class="col-md-6">
-                <h1 class="mb-4">Liste des Rehlas</h1>
+                    <div class="mb-3">
+                        <h5 class="h6">Filtrer par prix</h5>
+                        <label>Prix min: <span id="minPriceLabel">0</span> €</label>
+                        <input type="range" class="form-range" id="minPriceRange" min="0" max="2000" step="10" value="0">
+                        <label>Prix max: <span id="maxPriceLabel">2000</span> €</label>
+                        <input type="range" class="form-range" id="maxPriceRange" min="0" max="2000" step="10" value="2000">
+                    </div>
 
-                {% for rehla in rehlas %}
-                    <div class="card mb-3 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="card-title">{{ rehla.depart }} → {{ rehla.destination }}</h5>
-                                    <p class="text-muted mb-1">
-                                        {{ rehla.departDate ? rehla.departDate|date('d/m/Y H:i') : '-' }}  
-                                        ⏳ {{ rehla.arrivalDate ? rehla.arrivalDate|date('d/m/Y H:i') : '-' }}
-                                    </p>
-                                    <p class="mb-1"><strong>Prix :</strong> {{ rehla.price }} €</p>
-                                    <p class="text-muted">Agent aérienne : {{ rehla.agence.nom }}</p>
-                                </div>
-                                <div class="text-end">
-                                    <p class="fw-bold text-primary">{{ rehla.price }} €</p>
-                                    <a href="{{ path('reservation_new', {'id': rehla.id}) }}" class="btn btn-primary">Réserver</a>
-                                </div>
+                    <div class="mb-3">
+                        <h5 class="h6">Filtrer par date</h5>
+                        <label for="departDateInput">Date de départ</label>
+                        <input type="date" class="form-control form-control-lg" id="departDateInput">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="arrivalDateInput">Date d'arrivée</label>
+                        <input type="date" class="form-control form-control-lg" id="arrivalDateInput">
+                    </div>
+
+                    <div class="mb-3">
+                        <h5 class="h6">Filtrer par agence</h5>
+                        {% for agence in agences %}
+                            <div class="form-check">
+                                <input class="form-check-input agence-filter" type="checkbox" value="{{ agence.nom }}" id="agence_{{ agence.id }}">
+                                <label class="form-check-label" for="agence_{{ agence.id }}">
+                                    {{ agence.nom }}
+                                </label>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                {% else %}
-                    <p class="text-center text-muted">Aucune rehla disponible.</p>
-                {% endfor %}
-            </div>
-
-            <!-- Partie droite pour les publicités -->
-            <div class="col-md-3">
-                <h4 class="mb-4">Publicités</h4>
-                <div class="card">
-                    <img src="https://business.ladn.eu/wp-content/uploads/2017/03/bmw.jpeg" class="card-img-top" alt="Publicité 1">
-                    <div class="card-body">
-                        <p class="card-text">
-    <strong>BMW - Conduisez l'excellence</strong><br>
-    "La route est à vous, faites-la vôtre avec BMW."
-</p>
-
-                    </div>
-                </div>
-                <div class="card mt-3">
-                    <img src="https://scontent.ftun10-2.fna.fbcdn.net/v/t1.6435-9/120132198_1648609238673989_3883431477855060586_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=xlVxxtBfZmAQ7kNvgF-UFDz&_nc_oc=AdjcXbBo5SG55TzK0UurnDpEZY_xf8ogVCBCBT_eqjExGp_qApxP5rGMRKeNeju7NqI&_nc_zt=23&_nc_ht=scontent.ftun10-2.fna&_nc_gid=AwqJwtddBQqlfYjENNsbigB&oh=00_AYB4SIHLbPcQzRqDAabqxuNwNHiNC1JPBq9xNb7H5go-qA&oe=67D9A5E0" class="card-img-top" alt="Publicité 2">
-                   <div class="card-body">
-                        <p class="card-text">
-    <strong>BMW - Conduisez l'excellence</strong><br>
-    "La route est à vous, faites-la vôtre avec BMW."
-</p>
                 </div>
             </div>
         </div>
+
+        <!-- Liste des Rehlas -->
+        <div class="col-md-8 col-lg-6">
+            <div class="d-flex justify-content-between mb-3">
+                <h1>Liste des Rehlas</h1>
+                <div class="d-flex align-items-center">
+                    <label for="resultsPerPage" class="me-2">Résultats par page:</label>
+                    <select id="resultsPerPage" class="form-select w-auto">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Liste des éléments -->
+           <div id="rehla-list">
+    {% for rehla in rehlas %}
+        <div class="card mb-3 shadow-sm blog-item" 
+            data-price="{{ rehla.price }}" 
+            data-destination="{{ rehla.destination|lower }}" 
+            data-depart="{{ rehla.depart|lower }}" 
+            data-departdate="{{ rehla.departDate ? rehla.departDate|date('Y-m-d') : '' }}" 
+            data-arrivaldate="{{ rehla.arrivalDate ? rehla.arrivalDate|date('Y-m-d') : '' }}"
+            data-agence="{{ rehla.agence ? rehla.agence.nom : '' }}">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title h4">{{ rehla.depart }} → {{ rehla.destination }}</h5>
+                        <p class="text-muted mb-1">
+                            {{ rehla.departDate ? rehla.departDate|date('d/m/Y H:i') : '-' }}
+                            ⏳ {{ rehla.arrivalDate ? rehla.arrivalDate|date('d/m/Y H:i') : '-' }}
+                        </p>
+                        <strong>Agence :</strong> {{ rehla.agence ? rehla.agence.nom : 'Non spécifié' }}
+                        <p class="mb-1"><strong>Prix :</strong> {{ rehla.price }} €</p>
+                        {% if rehla.weather is defined and rehla.weather.main is defined %}
+                            <p><strong>Météo :</strong> {{ rehla.weather.main.temp }}°C, {{ rehla.weather.weather[0].description }}</p>
+                        {% else %}
+                            <p>Météo non disponible</p>
+                        {% endif %}
+                    </div>
+                    <div class="text-end">
+                        <p class="fw-bold text-primary">{{ rehla.price }} €</p>
+                        <a href="{{ path('reservation_new', {'id': rehla.id}) }}" class="btn btn-primary">Réserver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center text-muted">Aucune rehla disponible.</p>
+    {% endfor %}
+    <div id="noResultsMessage" class="text-center text-muted" style="display: none;">
+        Aucun Rehla ne correspond à vos critères de recherche.
+    </div>
+</div>
+
+
+            <!-- Pagination Controls -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <button id="prevPage" class="btn btn-secondary" disabled>Précédent</button>
+                <button id="nextPage" class="btn btn-secondary">Suivant</button>
+            </div>
+        </div>
+
+        <!-- Publicités -->
+
+
+
+
+        <div class="col-md-4 col-lg-3 mb-4">
+
+<div class="card mt-3 shadow-sm">
+        <div class="card-body text-center">
+            <a href="{{ path('reservation_user') }}" class="btn btn-primary w-100">Consulter mes réservations</a>
+        </div>
     </div>
 
-    <script>
-        function applyFilters() {
-            const search = document.getElementById('search').value;
-            const departDate = document.getElementById('departDate').value;
-            const priceRange = document.getElementById('priceRange').value;
-            
-            const params = new URLSearchParams();
-            if (search) params.set('search', search);
-            if (departDate) params.set('departDate', departDate);
-            if (priceRange) params.set('priceRange', priceRange);
 
-            window.location.search = params.toString();  // Met à jour l'URL avec les filtres
+            <h4 class="mb-4">Publicités</h4>
+            <div class="card shadow-sm">
+                <img src="https://business.ladn.eu/wp-content/uploads/2017/03/bmw.jpeg" class="card-img-top" alt="Publicité 1">
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>BMW - Conduisez l'excellence</strong><br>
+                        "La route est à vous, faites-la vôtre avec BMW."
+                    </p>
+                </div>
+            </div>
+            <div class="card mt-3 shadow-sm">
+                <img src="https://scontent.ftun10-2.fna.fbcdn.net/v/t1.6435-9/120132198_1648609238673989_3883431477855060586_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=xlVxxtBfZmAQ7kNvgF-UFDz&_nc_oc=AdjcXbBo5SG55TzK0UurnDpEZY_xf8ogVCBCBT_eqjExGp_qApxP5rGMRKeNeju7NqI&_nc_zt=23&_nc_ht=scontent.ftun10-2.fna&_nc_gid=AwqJwtddBQqlfYjENNsbigB&oh=00_AYB4SIHLbPcQzRqDAabqxuNwNHiNC1JPBq9xNb7H5go-qA&oe=67D9A5E0" class="card-img-top" alt="Publicité 2">
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>BMW - Conduisez l'excellence</strong><br>
+                        "La route est à vous, faites-la vôtre avec BMW."
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let currentPage = 1;
+    let resultsPerPage = 10;
+    let filteredRehlas = [];
+    const noResultsMessage = document.getElementById('noResultsMessage');
+
+    function updatePagination() {
+        let rehlas = filteredRehlas;
+        let totalRehlas = rehlas.length;
+
+        // Masquer tous les éléments
+        document.querySelectorAll(".blog-item").forEach(item => item.style.display = "none");
+
+        // Afficher les éléments de la page courante
+        let startIndex = (currentPage - 1) * resultsPerPage;
+        let endIndex = Math.min(startIndex + resultsPerPage, totalRehlas);
+
+        for (let i = startIndex; i < endIndex; i++) {
+            rehlas[i].style.display = "";
         }
-    </script>
+
+        // Gérer l'affichage du message "Aucun résultat"
+        if (totalRehlas === 0) {
+            noResultsMessage.style.display = "block";
+            document.getElementById('prevPage').style.display = 'none';
+            document.getElementById('nextPage').style.display = 'none';
+        } else {
+            noResultsMessage.style.display = "none";
+            document.getElementById('prevPage').style.display = 'inline-block';
+            document.getElementById('nextPage').style.display = 'inline-block';
+        }
+
+        // Gérer l'état des boutons de pagination
+        document.getElementById("prevPage").disabled = currentPage === 1;
+        document.getElementById("nextPage").disabled = currentPage * resultsPerPage >= totalRehlas;
+    }
+
+    // Contrôles de pagination
+    document.getElementById("prevPage").addEventListener("click", function() {
+        if (currentPage > 1) {
+            currentPage--;
+            updatePagination();
+        }
+    });
+
+    document.getElementById("nextPage").addEventListener("click", function() {
+        currentPage++;
+        updatePagination();
+    });
+
+    // Nombre de résultats par page
+    document.getElementById("resultsPerPage").addEventListener("change", function(event) {
+        resultsPerPage = parseInt(event.target.value);
+        currentPage = 1;
+        updatePagination();
+    });
+
+    // Réinitialisation des filtres
+    document.getElementById('resetFilters').addEventListener('click', function() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('departInput').value = '';
+        document.getElementById('minPriceRange').value = 0;
+        document.getElementById('maxPriceRange').value = 2000;
+        document.getElementById('minPriceLabel').textContent = '0';
+        document.getElementById('maxPriceLabel').textContent = '2000';
+        document.getElementById('departDateInput').value = '';
+        document.getElementById('arrivalDateInput').value = '';
+        document.querySelectorAll('.agence-filter').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        filterRehlas();
+    });
+
+    // Filtrage des Rehlas
+    function filterRehlas() {
+        let searchValue = document.getElementById("searchInput").value.toLowerCase();
+        let departValue = document.getElementById("departInput").value.toLowerCase();
+        let minPrice = parseInt(document.getElementById("minPriceRange").value);
+        let maxPrice = parseInt(document.getElementById("maxPriceRange").value);
+        let departDate = document.getElementById("departDateInput").value;
+        let arrivalDate = document.getElementById("arrivalDateInput").value;
+        
+        document.getElementById("minPriceLabel").innerText = minPrice;
+        document.getElementById("maxPriceLabel").innerText = maxPrice;
+
+        let selectedAgences = Array.from(document.querySelectorAll(".agence-filter:checked")).map(cb => cb.value);
+        
+        let rehlas = document.querySelectorAll(".blog-item");
+        
+        filteredRehlas = Array.from(rehlas).filter(function(rehla) {
+            let price = parseInt(rehla.getAttribute("data-price"));
+            let destination = rehla.getAttribute("data-destination");
+            let depart = rehla.getAttribute("data-depart");
+            let rehlaDepartDate = rehla.getAttribute("data-departdate");
+            let rehlaArrivalDate = rehla.getAttribute("data-arrivaldate");
+            let agence = rehla.getAttribute("data-agence");
+
+            let matchDate = (!departDate || rehlaDepartDate === departDate) && (!arrivalDate || rehlaArrivalDate === arrivalDate);
+            let matchAgence = selectedAgences.length === 0 || selectedAgences.includes(agence);
+
+            return price >= minPrice && 
+                   price <= maxPrice && 
+                   destination.includes(searchValue) && 
+                   depart.includes(departValue) && 
+                   matchDate && 
+                   matchAgence;
+        });
+
+        currentPage = 1;
+        updatePagination();
+    }
+
+    // Écouteurs d'événements pour les filtres
+    document.querySelectorAll("input").forEach(input => input.addEventListener("input", filterRehlas));
+    
+    // Initialisation
+    filterRehlas();
+</script>
 {% endblock %}

@@ -9,16 +9,30 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/compagnie/aerienne')]
 final class CompagnieAerienneController extends AbstractController
 {
     #[Route(name: 'app_compagnie_aerienne_index', methods: ['GET'])]
-    public function index(CompagnieAerienneRepository $compagnieAerienneRepository): Response
+    public function index(CompagnieAerienneRepository $compagnieAerienneRepository, SessionInterface $session): Response
     {
+        // Récupérer toutes les compagnies aériennes
+        $compagnies = $compagnieAerienneRepository->findAll();
+
+        // Récupérer les favoris depuis la session
+        $favorites = $session->get('favorites', []);
+
+        // Trier les compagnies pour que les favoris apparaissent en premier
+        usort($compagnies, function($a, $b) use ($favorites) {
+            $aFavorite = in_array($a->getId(), $favorites);
+            $bFavorite = in_array($b->getId(), $favorites);
+            return $bFavorite <=> $aFavorite;  // Les favoris en premier
+        });
+
         return $this->render('compagnie_aerienne/index.html.twig', [
-            'compagnie_aeriennes' => $compagnieAerienneRepository->findAll(),
+            'compagnie_aeriennes' => $compagnies,
         ]);
     }
 
@@ -93,5 +107,27 @@ final class CompagnieAerienneController extends AbstractController
         }
 
         return $this->redirectToRoute('app_compagnie_aerienne_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/toggle-favorite', name: 'toggle_favorite', methods: ['POST'])]
+    public function toggleFavorite(int $id, SessionInterface $session, CompagnieAerienneRepository $compagnieAerienneRepository): Response
+    {
+        // Récupérer les favoris existants depuis la session
+        $favorites = $session->get('favorites', []);
+
+        // Vérifier si l'ID de la compagnie est déjà dans les favoris
+        if (in_array($id, $favorites)) {
+            // Si c'est déjà un favori, on le retire
+            $favorites = array_diff($favorites, [$id]);
+        } else {
+            // Sinon, on l'ajoute aux favoris
+            $favorites[] = $id;
+        }
+
+        // Mettre à jour la session
+        $session->set('favorites', $favorites);
+
+        // Rediriger vers la page d'index
+        return $this->redirectToRoute('app_compagnie_aerienne_index');
     }
 }

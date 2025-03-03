@@ -4,77 +4,140 @@
 
 {% block body %}
     <div class="container mt-5" style="background-color: #ffffff; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
-        <h1 class="display-6 mb-4 text-center text-primary">Statistiques génerales</h1>
+        <h1 class="display-6 mb-4 text-center text-primary">Statistiques générales</h1>
         
+        <!-- Graphiques Chart.js -->
         <div class="row">
-            <!-- Top Compagnies Aériennes -->
-            <div class="col-md-4">
+            <!-- Top Compagnies Aériennes (Circulaire) -->
+            <div class="col-md-6">
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header" style="background-color: #002B5C; color: white;">
                         Top Compagnies Aériennes
                     </div>
                     <div class="card-body">
-                        {% if topCompagnies is not empty %}
-                            <ul class="list-group list-group-flush">
-                                {% for compagnie in topCompagnies %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>{{ compagnie.compagnie }}</span>
-                                        <span class="badge bg-secondary rounded-pill">{{ compagnie.totalReservations }} réservations</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p class="text-center text-muted">Aucune donnée disponible.</p>
-                        {% endif %}
+                        <canvas id="topCompagniesChart" style="max-width: 400px; max-height: 400px; margin: 0 auto;"></canvas>
+                        <p class="text-center mt-3">
+                            <strong>Total Réservations :</strong> {{ totalReservations }}
+                        </p>
                     </div>
                 </div>
             </div>
             
-            <!-- Top Destinations -->
-            <div class="col-md-4">
+            <!-- Top Destinations (Courbe) -->
+            <div class="col-md-6">
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header" style="background-color: #002B5C; color: white;">
                         Top Destinations
                     </div>
                     <div class="card-body">
-                        {% if topDestinations is not empty %}
-                            <ul class="list-group list-group-flush">
-                                {% for destination in topDestinations %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>{{ destination.destination }}</span>
-                                        <span class="badge bg-secondary rounded-pill">{{ destination.totalReservations }} réservations</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p class="text-center text-muted">Aucune donnée disponible.</p>
-                        {% endif %}
+                        <canvas id="topDestinationsChart"></canvas>
+                        <p class="text-center mt-3">
+                            <strong>Total Réservations :</strong> {{ totalReservations }}
+                        </p>
                     </div>
                 </div>
             </div>
-            
-            <!-- Chiffre d'Affaire par Compagnie -->
-            <div class="col-md-4">
+        </div>
+        
+        <div class="row">
+            <!-- Chiffre d'Affaire par Compagnie (Histogramme) -->
+            <div class="col-md-12">
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header" style="background-color: #002B5C; color: white;">
                         Chiffre d'Affaire par Compagnie
                     </div>
                     <div class="card-body">
-                        {% if chiffreAffaireParCompagnie is not empty %}
-                            <ul class="list-group list-group-flush">
-                                {% for compagnie in chiffreAffaireParCompagnie %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>{{ compagnie.compagnie }}</span>
-                                        <span class="badge bg-secondary rounded-pill">{{ compagnie.chiffreAffaire|number_format(2, ',', ' ') }} €</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p class="text-center text-muted">Aucune donnée disponible.</p>
-                        {% endif %}
+                        <canvas id="chiffreAffaireChart"></canvas>
+                        <p class="text-center mt-3">
+                            <strong>Total Chiffre d'Affaire (€) :</strong> {{ totalChiffreAffaire|number_format(2, ',', ' ') }}
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Données pour le graphique circulaire (Top Compagnies Aériennes)
+        const topCompagniesData = {
+            labels: {{ topCompagnies|map(c => c.compagnie)|json_encode|raw }},
+            datasets: [{
+                label: 'Réservations',
+                data: {{ topCompagnies|map(c => c.totalReservations)|json_encode|raw }},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.5)',
+                    'rgba(54, 162, 235, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(153, 102, 255, 0.5)',
+                    'rgba(255, 159, 64, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        // Données pour le graphique en courbe (Top Destinations)
+        const topDestinationsData = {
+            labels: {{ topDestinations|map(d => d.destination)|json_encode|raw }},
+            datasets: [{
+                label: 'Réservations',
+                data: {{ topDestinations|map(d => d.totalReservations)|json_encode|raw }},
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.4,
+                borderWidth: 2
+            }]
+        };
+
+        // Données pour le graphique en histogramme (Chiffre d'Affaire par Compagnie)
+        const chiffreAffaireData = {
+            labels: {{ chiffreAffaireParCompagnie|map(c => c.compagnie)|json_encode|raw }},
+            datasets: [{
+                label: 'Chiffre d\'Affaire (€)',
+                data: {{ chiffreAffaireParCompagnie|map(c => c.chiffreAffaire)|json_encode|raw }},
+                backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Initialisation des graphiques
+        new Chart(document.getElementById('topCompagniesChart'), {
+            type: 'pie',
+            data: topCompagniesData,
+        });
+
+        new Chart(document.getElementById('topDestinationsChart'), {
+            type: 'line',
+            data: topDestinationsData,
+            options: {
+                scales: {
+                    y: {
+                        ticks: {
+                            // Format pour afficher les entiers (sans décimales)
+                            stepSize: 1,  // Unité pour l'incrément
+                            callback: function(value) {
+                                return value % 1 === 0 ? value : ''; // Affiche seulement les entiers
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('chiffreAffaireChart'), {
+            type: 'bar',
+            data: chiffreAffaireData,
+        });
+    </script>
 {% endblock %}

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Repository\ReservationRepository;
@@ -36,13 +37,16 @@ class Reservation
     private ?string $email = null;
 
     #[ORM\Column(type: "string", length: 20)]
-    #[Assert\NotBlank(message: "contact est obligatoire.")]
+    #[Assert\NotBlank(message: "Le contact est obligatoire.")]
     #[Assert\Regex(
         pattern: "/^\d+$/",
         message: "Le contact doit contenir uniquement des chiffres."
-        
     )]
     private ?string $contact = null;
+
+    // Ajout de l'ID utilisateur
+    #[ORM\Column(type: "integer", nullable: true)]
+    private ?int $userId = null;
 
     public function getId(): ?int
     {
@@ -90,6 +94,17 @@ class Reservation
     public function setContact(string $contact): self
     {
         $this->contact = $contact;
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?int $userId): self
+    {
+        $this->userId = $userId;
         return $this;
     }
 }
