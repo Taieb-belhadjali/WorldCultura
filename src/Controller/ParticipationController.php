@@ -43,8 +43,12 @@ final class ParticipationController extends AbstractController
         ]);
     }*/
     #[Route('/new/{id}', name: 'app_participation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EventRepository $eventRepository, EntityManagerInterface $entityManager, $id): Response
-    {
+    public function new(
+        Request $request, 
+        EventRepository $eventRepository, 
+        EntityManagerInterface $entityManager, 
+        $id
+    ): Response {
         $event = $eventRepository->find($id);
         
         if (!$event) {
@@ -61,12 +65,16 @@ final class ParticipationController extends AbstractController
             $entityManager->persist($participation);
             $entityManager->flush();
     
-            return $this->redirectToRoute('app_participation_index', [], Response::HTTP_SEE_OTHER);
+            // Ajout du message flash
+            $this->addFlash('success', 'Votre participation est enregistrée.');
+    
+            // Redirection vers la page de détail de l'événement
+            return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
     
         return $this->render('participation/new.html.twig', [
             'participation' => $participation,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
     
@@ -80,22 +88,25 @@ final class ParticipationController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_participation_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participation $participation, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ParticipationType::class, $participation);
-        $form->handleRequest($request);
+public function edit(Request $request, Participation $participation, EntityManagerInterface $entityManager): Response
+{
+    $form = $this->createForm(ParticipationType::class, $participation);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_participation_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('participation/edit.html.twig', [
-            'participation' => $participation,
-            'form' => $form,
-        ]);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
+        // Ajout du message flash de succès
+        $this->addFlash('success', 'Votre participation a été mise à jour avec succès.');
+        
+        // Redirection vers la même page d'édition pour afficher le message
+        return $this->redirectToRoute('app_participation_edit', ['id' => $participation->getId()], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('participation/edit.html.twig', [
+        'participation' => $participation,
+        'form' => $form->createView(),
+    ]);
+}
 
     #[Route('/{id}', name: 'app_participation_delete', methods: ['POST'])]
     public function delete(Request $request, Participation $participation, EntityManagerInterface $entityManager): Response

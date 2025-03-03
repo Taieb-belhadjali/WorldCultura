@@ -1,48 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Participation index{% endblock %}
+{% block title %}Participation Index{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1 class="text-center text-primary mb-4">List of Participations</h1>
+    <style>
+        .participant-card {
+            background: linear-gradient(135deg, #f8f9fa, #e3e6ea);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
 
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <table class="table table-hover table-bordered table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for participation in participations %}
-                            <tr>
-                                <td>{{ participation.id }}</td>
-                                <td>{{ participation.nom }}</td>
-                                <td>{{ participation.email }}</td>
-                                <td>{{ participation.telephone }}</td>
-                                <td class="d-flex gap-2">
-                                    <a href="{{ path('app_participation_show', {'id': participation.id}) }}" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-eye"></i> Show
-                                    </a>
-                                    <a href="{{ path('app_participation_edit', {'id': participation.id}) }}" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-pencil"></i> Update
-                                    </a>
-                                </td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="5" class="text-center">No participation found</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        .participant-card:hover {
+            transform: scale(1.05);
+        }
+
+        .participant-card h5 {
+            color: #073d88;
+            font-weight: bold;
+        }
+
+        .icon {
+            color: #073d88;
+            margin-right: 10px;
+        }
+
+        .btn-action {
+            border-radius: 50px;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <h1 class="text-center text-primary mb-4"><i class="bi bi-people"></i> List of Participations</h1>
+
+        <div class="row">
+            {% for participation in participations %}
+                <div class="col-md-4 mb-4">
+                    <div class="participant-card p-4">
+                        <h5><i class="bi bi-person-circle icon"></i>{{ participation.nom }}</h5>
+                        <p><i class="bi bi-envelope icon"></i>{{ participation.email }}</p>
+                        <p><i class="bi bi-telephone icon"></i>{{ participation.telephone }}</p>
+                        <div class="d-flex gap-2 mt-3">
+                            <a href="{{ path('app_participation_show', {'id': participation.id}) }}" class="btn btn-primary btn-sm btn-action">
+                                <i class="bi bi-eye"></i> Show
+                            </a>
+                            <a href="{{ path('app_participation_edit', {'id': participation.id}) }}" class="btn btn-primary btn-sm btn-action">
+                                <i class="bi bi-pencil"></i> Update
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">No participation found</p>
+                </div>
+            {% endfor %}
         </div>
     </div>
-
 {% endblock %}

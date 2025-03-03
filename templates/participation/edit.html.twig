@@ -7,7 +7,7 @@
     {{ include('participation/_form.html.twig', {'button_label': 'Update'}) }}
 
     <div class="d-flex justify-content-center mt-4">
-        <a href="{{ path('app_participation_index') }}" class="btn btn-primary btn-sm me-5">Back to list</a>
+        <a href="{{  path('app_event_index') }}" class="btn btn-primary btn-sm me-5">Back Home</a>
         {{ include('participation/_delete_form.html.twig', {'class': 'btn btn-danger'}) }}
     </div>
 

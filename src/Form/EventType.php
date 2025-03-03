@@ -37,6 +37,7 @@ class EventType extends AbstractType
                 'widget' => 'single_text'
             ])
         ;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 
+
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
 {

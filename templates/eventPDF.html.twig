@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Événement : {{ event.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .event-container {
+            background: #ffffff;
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .event-image {
+            width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        .details {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .details strong {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+<div class="event-container">
+    <h1>{{ event.name }}</h1>
+
+    {% if event_image_absolute_path %}
+        <img src="{{ absolute_url(asset('uploads/images/'~ event.image)) }}" alt="Image " class="event-image">
+    {% else %}
+        <p>Image non disponible</p>
+    {% endif %}
+
+    <p class="details"><strong>Description :</strong> {{ event.description }}</p>
+    <p class="details"><strong>Date de début :</strong> {{ event.dateDebut|date('d/m/Y H:i') }}</p>
+    <p class="details"><strong>Date de fin :</strong> {{ event.dateFin|date('d/m/Y H:i') }}</p>
+</div>
+</body>
+</html>

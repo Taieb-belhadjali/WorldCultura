@@ -3,6 +3,7 @@
 {% block title %}Event index{% endblock %}
 
 {% block body %}
+
     <div class="container-fluid py-5" style="background-color: #fff;">
         <h1 class="text-center text-primary mb-4">Event </h1>
 
@@ -12,7 +13,6 @@
                     <th>Id</th>
                     <th>Image</th>
                     <th>Name</th>
-                    <th>Description</th>
                     <th>StartDate</th>
                     <th>EndDate</th>
                     <th>Actions</th>
@@ -30,16 +30,17 @@
                         {% endif %}
                     </td>
                     <td>{{ event.name }}</td>
-                    <td>{{ event.description }}</td>
                     <td>{{ event.dateDebut ? event.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ event.dateFin ? event.dateFin|date('Y-m-d H:i:s') : '' }}</td>
                     <td>
                         <a href="{{ path('app_eventback_show', {'id': event.id}) }}" class="btn btn-info btn-sm">
-                            Show
+                            Details
                         </a>
                         <a href="{{ path('app_eventback_edit', {'id': event.id}) }}" class="btn btn-warning btn-sm">
                             Edit
                         </a>
+                        <a class="btn btn-success" href="{{ path('event_pdf', {'id': event.id}) }}">Print</a>
+
                     </td>
                 </tr>
             {% else %}
@@ -54,6 +55,12 @@
             <a href="{{ path('app_eventback_new') }}" class="btn btn-success">
                 Create New Event
             </a>
+            <a href="{{ path('app_participationback_index') }}" class="btn btn-success">
+                Participations List
+            </a>
+            
+    
         </div>
     </div>
+    
 {% endblock %}

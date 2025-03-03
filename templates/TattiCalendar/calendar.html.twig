@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier des Événements{% endblock %}
+
+{% block body %}
+    <div class="calendar-container">
+        
+        <div class="header-container">
+            <h1 class="calendar-title"> </h1>
+            <a href="{{ path('app_event_index') }}" class="btn-back">⬅ </a>
+        </div>
+
+        <div id="calendar"></div>
+    </div>
+
+    {# FullCalendar CSS et JS #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+    <style>
+        /* 🌟 Conteneur principal */
+        .calendar-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* 🌟 En-tête */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-title {
+            font-size: 24px;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        /* 🌟 Bouton Retour */
+        .btn-back {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* 🌟 Calendrier */
+        #calendar {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 🌟 Style des événements */
+        .fc-daygrid-event {
+            background-color: #007bff !important;
+            color: white !important;
+            border-radius: 5px !important;
+            padding: 4px 6px;
+            font-size: 12px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .fc-daygrid-event:hover {
+            background-color: #0056b3 !important;
+            transform: scale(1.05);
+        }
+
+        /* 🌟 Responsive */
+        @media (max-width: 768px) {
+            .calendar-container {
+                max-width: 90%;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'fr',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: {{ events|raw }},
+                eventClick: function(info) {
+                    alert("📌 Événement : " + info.event.title + "\\n📅 Date : " + info.event.start.toLocaleDateString());
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+{% endblock %}

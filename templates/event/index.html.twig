@@ -2,47 +2,140 @@
 
 {% block body %}
 <div class="container-fluid blog py-5">
+    <!-- Bloc Recherche, Tri et Filtre -->
+    <div class="container mb-4">
+        <div class="bg-light shadow-sm p-4 rounded d-flex flex-wrap justify-content-center align-items-center gap-3">
+            <!-- Barre de recherche -->
+            <div class="position-relative">
+                <input class="form-control ps-5 rounded-pill" type="text" placeholder="🔍 Rechercher un événement..." id="searchInput" style="width: 250px;">
+                <i class="fas fa-search position-absolute text-primary" style="top: 50%; left: 15px; transform: translateY(-50%);"></i>
+            </div>
+
+            <!-- Filtres de date -->
+            <div class="d-flex gap-2">
+                <div class="position-relative">
+                    <input class="form-control ps-4 rounded-pill" type="date" id="filterStartDate" style="width: 180px;">
+                    <i class="fas fa-calendar-alt position-absolute text-primary" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                </div>
+                <div class="position-relative">
+                    <input class="form-control ps-4 rounded-pill" type="date" id="filterEndDate" style="width: 180px;">
+                    <i class="fas fa-calendar-check position-absolute text-success" style="top: 50%; left: 10px; transform: translateY(-50%);"></i>
+                </div>
+            </div>
+
+            <!-- Sélecteur de tri -->
+            <div class="position-relative">
+                <select class="form-select rounded-pill ps-5" id="sortSelect" style="width: 250px;">
+                    <option value="asc">📆 Trier par date (Ancien → Récent)</option>
+                    <option value="desc">📅 Trier par date (Récent → Ancien)</option>
+                </select>
+                <i class="fas fa-sort position-absolute text-warning" style="top: 50%; left: 15px; transform: translateY(-50%);"></i>
+            </div>
+            <a href="{{ path('app_calendar') }}" class="btn btn-primary">
+                📅 calendar
+            </a>
+        </div>
+    </div>
+    
     <div class="container py-5">
         <div class="mx-auto text-center mb-5" style="max-width: 900px;">
             <h5 class="section-title px-3">Our Events</h5>
             <h1 class="mb-4">Upcoming Events</h1>
             <p class="mb-0">Discover our latest events and join us for unforgettable experiences.</p>
         </div>
-        <div class="row g-4 justify-content-center">
-            {% for event in events %}
-            <div class="col-lg-4 col-md-6">
-                <div class="blog-item">
-                    <div class="blog-img">
-                        <div class="blog-img-inner">
-                            <img class="img-fluid w-100 rounded-top" src="{{ asset('uploads/images/'~ event.image) }}" alt="Event Image" >
-                            <div class="blog-icon">
-                                <a href="{{ path('app_event_show', {'id': event.id}) }}" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
-                            </div>
-                        </div>
-                        <div class="blog-info d-flex align-items-center border border-start-0 border-end-0">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>Start: {{ event.datedebut ? event.datedebut|date('Y-m-d') : 'N/A' }}</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>End: {{ event.datefin ? event.datefin|date('Y-m-d') : 'N/A' }}</small>
+        <div class="row g-4 justify-content-center" id="eventsContainer">
+            {% for event in pagination %}
+            <div class="col-lg-4 col-md-6 blog-item" 
+                 data-date="{{ event.datedebut ? event.datedebut|date('Y-m-d') : '9999-12-31' }}"
+                 data-name="{{ event.name|lower }}"
+                 data-description="{{ event.description|lower }}">
+                <div class="blog-img">
+                    <div class="blog-img-inner">
+                        <img class="img-fluid w-100 rounded-top" src="{{ asset('uploads/images/' ~ event.image) }}" alt="Event Image">
+                        <div class="blog-icon">
+                            <a href="{{ path('app_event_show', {'id': event.id}) }}" class="my-auto"><i class="fas fa-link fa-2x text-white"></i></a>
                         </div>
                     </div>
-                    <div class="blog-content border border-top-0 rounded-bottom p-4">
-                        <p class="mb-3">{{ event.description }}</p>
-                        <a href="#" class="h4">{{ event.name }}</a>
-                        <div class="d-flex justify-content-between mt-3">
-                            
-                            <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-outline-primary px-4">Update</a>
-                            <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-outline-primary px-4">show</a>
-                        </div>
+                    <div class="blog-info d-flex align-items-center border border-start-0 border-end-0">
+                        <small class="flex-fill text-center border-end py-2">
+                            <i class="fa fa-calendar-alt text-primary me-2"></i>
+                            Start: {{ event.datedebut ? event.datedebut|date('Y-m-d') : 'N/A' }}
+                        </small>
+                        <small class="flex-fill text-center py-2">
+                            <i class="fa fa-calendar-alt text-primary me-2"></i>
+                            End: {{ event.datefin ? event.datefin|date('Y-m-d') : 'N/A' }}
+                        </small>
+                    </div>
+                </div>
+                <div class="blog-content border border-top-0 rounded-bottom p-4">
+                    <p class="mb-3">{{ event.description }}</p>
+                    <a href="#" class="h4">{{ event.name }}</a>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-outline-primary px-4">Read More</a>
                     </div>
                 </div>
             </div>
+            {% else %}
+                <div class="col-12">
+                    <p>No events found.</p>
+                </div>
             {% endfor %}
         </div>
 
-        <!-- Boutons Create Event et Participer -->
-        <div class="text-center mt-4">
-            <a href="{{ path('app_event_new') }}" class="btn btn-outline-primary px-4">Create Event</a>
-           
+        <!-- Affichage de la pagination -->
+        <div class="mt-4 text-center">
+            {{ knp_pagination_render(pagination) }}
         </div>
     </div>
 </div>
+
+<script>
+    function filterEvents() {
+        let searchText = document.getElementById("searchInput").value.toLowerCase();
+        let startDate = document.getElementById("filterStartDate").value;
+        let endDate = document.getElementById("filterEndDate").value;
+        let events = document.querySelectorAll(".blog-item");
+
+        events.forEach(event => {
+            let eventName = event.getAttribute("data-name");
+            let eventDescription = event.getAttribute("data-description");
+            let eventDate = event.getAttribute("data-date");
+
+            let matchesSearch = eventName.includes(searchText) || eventDescription.includes(searchText);
+            let matchesDate = true;
+
+            if (startDate && eventDate < startDate) {
+                matchesDate = false;
+            }
+            if (endDate && eventDate > endDate) {
+                matchesDate = false;
+            }
+
+            if (matchesSearch && matchesDate) {
+                event.style.display = "";
+            } else {
+                event.style.display = "none";
+            }
+        });
+    }
+
+    function sortEvents() {
+        let order = document.getElementById("sortSelect").value;
+        let container = document.getElementById("eventsContainer");
+        let events = Array.from(container.querySelectorAll(".blog-item"));
+
+        events.sort((a, b) => {
+            let dateA = new Date(a.getAttribute("data-date"));
+            let dateB = new Date(b.getAttribute("data-date"));
+            return order === "asc" ? dateA - dateB : dateB - dateA;
+        });
+
+        events.forEach(event => container.appendChild(event));
+    }
+
+    document.getElementById("searchInput").addEventListener("keyup", filterEvents);
+    document.getElementById("filterStartDate").addEventListener("change", filterEvents);
+    document.getElementById("filterEndDate").addEventListener("change", filterEvents);
+    document.getElementById("sortSelect").addEventListener("change", sortEvents);
+</script>
 {% endblock %}
