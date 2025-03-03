@@ -1,0 +1,30 @@
+<h1>Historique des commandes</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Détails</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.totalPrice|number_format(2, ',', ' ') }} €</td>
+                <td>
+                    <a href="{{ path('customer_order_confirmation', { id: order.id }) }}">Voir</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Vous n'avez pas encore passé de commandes.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

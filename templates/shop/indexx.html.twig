@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop{% endblock %}
+
+{% block body %}
+    <h1>Shop</h1>
+
+    <div class="product-cards">
+        {% for product in products %}
+            <div class="product-card">
+                <img src="{{ asset('uploads/products/' ~ product.image) }}" alt="{{ product.name }}" class="product-image" />
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p><strong>${{ product.price }}</strong></p>
+
+                <div class="product-buttons">
+                    <!-- Add to cart button -->
+                    <a href="{{ path('add_to_cart', { 'id': product.id, 'quantity': 1 }) }}" class="btn add-to-cart-btn">Add to Cart</a>
+
+                    <!-- View product button -->
+                    <a href="{{ path('product_view', { 'id': product.id }) }}" class="btn view-product-btn">View Product</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="cart-summary">
+        <h2>Your Cart</h2>
+        {% for item in cart %}
+            <div class="cart-item">
+                <p>{{ item.product.name }} - Quantity: {{ item.quantity }} - Total: ${{ item.total }}</p>
+            </div>
+        {% endfor %}
+        <p><strong>Total: ${{ total }}</strong></p>
+        <a href="{{ path('checkout') }}" class="btn checkout-btn">Proceed to Checkout</a>
+    </div>
+{% endblock %}

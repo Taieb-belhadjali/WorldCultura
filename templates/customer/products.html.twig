@@ -1,0 +1,238 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}🛍️ Produits{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h2 class="text-3xl font-semibold mb-6 text-center">🛍️ Nos Produits</h2>
+
+    <!-- Barre de recherche et tri -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <form method="get" action="{{ path('app_products') }}" class="d-flex">
+                <input 
+                    type="text" 
+                    name="query" 
+                    class="form-control me-2" 
+                    placeholder="Rechercher un produit..." 
+                    value="{{ query | default('') }}"
+                >
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </form>
+        </div>
+        <div class="col-md-4 text-end">
+            <form method="get" action="{{ path('app_products') }}">
+    <select name="sort" class="form-select" onchange="this.form.submit()">
+        <option value="p.name" {% if sort == 'p.name' and direction == 'ASC' %}selected{% endif %}>Nom (A-Z)</option>
+        <option value="p.name" {% if sort == 'p.name' and direction == 'DESC' %}selected{% endif %}>Nom (Z-A)</option>
+        <option value="p.price" {% if sort == 'p.price' and direction == 'ASC' %}selected{% endif %}>Prix croissant</option>
+        <option value="p.price" {% if sort == 'p.price' and direction == 'DESC' %}selected{% endif %}>Prix décroissant</option>
+        <option value="p.createdAt" {% if sort == 'p.createdAt' and direction == 'ASC' %}selected{% endif %}>Date (Ancien)</option>
+        <option value="p.createdAt" {% if sort == 'p.createdAt' and direction == 'DESC' %}selected{% endif %}>Date (Récent)</option>
+    </select>
+    <input type="hidden" name="query" value="{{ query }}">
+    <input type="hidden" name="category" value="{{ selectedCategory }}">
+    <input type="hidden" name="direction" value="{{ direction == 'ASC' ? 'DESC' : 'ASC' }}">
+</form>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Filtrage par catégorie -->
+        <div class="col-md-3">
+            <h4 class="mb-3">Catégories</h4>
+            <ul class="list-group">
+                <li class="list-group-item {% if not selectedCategory %}active{% endif %}">
+                    <a href="{{ path('app_products', { query: query, sort: sort }) }}" class="{% if not selectedCategory %}text-white{% else %}text-dark{% endif %}">Toutes les catégories</a>
+                </li>
+                {% for category in categories %}
+                    <li class="list-group-item {% if selectedCategory == category %}active{% endif %}">
+                        <a href="{{ path('app_products', { category: category, query: query, sort: sort }) }}" class="{% if selectedCategory == category %}text-white{% else %}text-dark{% endif %}">{{ category }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Produits -->
+        <div class="col-md-9">
+            {% if pagination.items|length == 0 %}
+                <div class="alert alert-info">Aucun produit trouvé.</div>
+            {% else %}
+                <div class="grid">
+                    {% for product in pagination.items %}
+                        <div class="product-card">
+                            {% if product.image %}
+                                <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="product-image">
+                            {% else %}
+                                <div class="no-image"><span>Pas d'image</span></div>
+                            {% endif %}
+
+                            <div class="product-info">
+                                <h2 class="product-title">{{ product.name }}</h2>
+                                <p class="product-description">{{ product.description }}</p>
+                                <p class="product-price">{{ product.price }} €</p>
+
+                                <form action="{{ path('app_add_to_cart', { 'id': product.id }) }}" method="POST">
+                                    <button type="submit" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">Ajouter au panier</button>
+                                </form>
+                                <a href="{{ path('app_product_details', { 'id': product.id }) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm mt-2">Voir Détails</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <ul class="pagination">
+                        <li class="page-item {% if pagination.getCurrentPageNumber() == 1 %}disabled{% endif %}">
+                            <a class="page-link" href="{{ path('app_products', { query: query, sort: sort, category: selectedCategory, page: pagination.getCurrentPageNumber() - 1 }) }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% for page in 1..pagination.getPageCount() %}
+                            <li class="page-item {% if pagination.getCurrentPageNumber() == page %}active{% endif %}">
+                                <a class="page-link" href="{{ path('app_products', { query: query, sort: sort, category: selectedCategory, page: page }) }}">{{ page }}</a>
+                            </li>
+                        {% endfor %}
+                        <li class="page-item {% if pagination.getCurrentPageNumber() == pagination.getPageCount() %}disabled{% endif %}">
+                            <a class="page-link" href="{{ path('app_products', { query: query, sort: sort, category: selectedCategory, page: pagination.getCurrentPageNumber() + 1 }) }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="fixed-btn-container">
+    <a href="{{ path('app_cart') }}" class="btn btn-panier">🛒 Voir mon Panier</a>
+</div>
+
+<!-- Styles -->
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .text-3xl {
+        font-size: 2rem;
+    }
+
+    .font-semibold {
+        font-weight: 600;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-6 {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+        width: 70%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .list-group-item.active {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .list-group-item {
+        cursor: pointer;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        border-radius: 5px;
+    }
+
+    .no-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+        border-radius: 5px;
+        background-color: #f3f3f3;
+    }
+
+    .product-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .product-description {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .product-price {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .btn-panier {
+        background: linear-gradient(to right, #00bcd4, #007bff);
+        color: white;
+        padding: 12px 24px;
+        font-weight: bold;
+        border-radius: 50px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-panier:hover {
+        background: linear-gradient(to right, #007bff, #00bcd4);
+    }
+
+    .fixed-btn-container {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+    }
+</style>
+
+{% endblock %}

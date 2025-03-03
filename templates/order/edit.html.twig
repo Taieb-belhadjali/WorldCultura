@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la commande{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="edit-order-card shadow-lg p-5">
+            <!-- Titre -->
+            <h1 class="order-title text-center mb-4">✏️ Modifier la commande #{{ order.id }}</h1>
+
+            <!-- Formulaire -->
+            {{ form_start(form) }}
+                <div class="form-group mb-4">
+    <label for="order-status" class="form-label">📌 Statut :</label>
+    {{ form_widget(form.status, {'attr': {'class': 'form-select'}}) }}
+</div>
+
+                <div class="form-group mb-4">
+                    <label for="order-total-price" class="form-label">💳 Prix total :</label>
+                    {{ form_widget(form.totalPrice, {'attr': {'class': 'form-control', 'placeholder': 'Saisir le prix total'}}) }}
+                </div>
+
+                <!-- Bouton de soumission -->
+                <button type="submit" class="btn btn-warning w-100">✅ Modifier la commande</button>
+            {{ form_end(form) }}
+
+            <!-- Bouton retour -->
+            <div class="text-center mt-4">
+                <a href="{{ path('order_index') }}" class="btn btn-secondary">⬅️ Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Conteneur général */
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            font-family: 'Arial', sans-serif;
+            color: #2d3748;
+        }
+
+        /* Carte principale */
+        .edit-order-card {
+            background: linear-gradient(135deg, #f9fafc, #edf2f7);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Titre principal */
+        .order-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c5282;
+        }
+
+        /* Formulaire */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        .form-select {
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            appearance: none;
+            background: white url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 viewBox%3D%220 0 4 5%22%3E%3Cpath fill%3D%22%23666%22 d%3D%22M2 0L0 2h4zm0 5L0 3h4z%22/%3E%3C/svg%3E') no-repeat right 10px center;
+            background-size: 10px;
+        }
+
+        .form-select:focus {
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+            outline: none;
+        }
+
+        .form-control {
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+            outline: none;
+        }
+
+        /* Boutons */
+        .btn-warning {
+            background-color: #f6ad55;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-warning:hover {
+            background-color: #dd6b20;
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background-color: #edf2f7;
+            color: #2d3748;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e0;
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .edit-order-card {
+                padding: 15px;
+            }
+        }
+    </style>
+{% endblock %}

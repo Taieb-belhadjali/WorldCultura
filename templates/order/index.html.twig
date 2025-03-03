@@ -1,0 +1,154 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}🚚 Liste des commandes{% endblock %}
+
+{% block body %}
+    <style>
+        /* Background Styling */
+        body {
+            background-color: #f0f2f5;
+            background-image: linear-gradient(to right, #e3f2fd, #f9fbe7);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Content Container */
+        .content-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table thead {
+            background-color: rgb(165, 188, 212);
+            color: white;
+        }
+
+        table thead th {
+            text-align: left;
+            padding: 12px;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        table tbody td {
+            padding: 12px;
+        }
+
+        /* Button Styling */
+        .btn {
+            border-radius: 30px;
+            padding: 10px 30px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-info {
+            background: linear-gradient(45deg, #17a2b8, #2dceab);
+            border: none;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(45deg, #2dceab, #17a2b8);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-info i {
+            font-size: 18px;
+        }
+
+        /* Heading Styling */
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Empty State Styling */
+        .empty-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-top: 20px;
+        }
+    </style>
+
+    <div class="content-container">
+        <h2>🚚 Liste des commandes</h2>
+
+        <!-- Add a back button to manage products page -->
+        <div class="text-center mb-4 d-flex justify-content-center gap-3">
+        <a href="{{ path('product_index') }}" class="btn btn-info">
+            <i class="fas fa-box-open"></i> 📋Gestion des produits
+        </a>
+        <a href="{{ path('admin_dashboard') }}" class="btn btn-info">
+            <i class="fas fa-tachometer-alt"></i> 🏠Voir Dashboard
+        </a>
+    </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date de création</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>{{ order.status }}</td>
+                        <td>{{ order.totalPrice|number_format(2, ',', ' ') }} €</td>
+                        <td>
+                            <a href="{{ path('order_show', { id: order.id }) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                Voir
+                            </a>
+                            <a href="{{ path('order_edit', { id: order.id }) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                Modifier
+                            </a>
+                            <form action="{{ path('order_delete', { 'id': order.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette commande ?');" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ order.id) }}">
+                                <button class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="empty-message">Aucune commande trouvée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

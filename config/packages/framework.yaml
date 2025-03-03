@@ -1,22 +1,23 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
+# config/packages/framework.yaml
+
 framework:
     secret: '%env(APP_SECRET)%'
     annotations: false
     http_method_override: false
     handle_all_throwables: true
 
-    # Enables session support. Note that the session will ONLY be started if you read or write from it.
-    # Remove or comment this section to explicitly disable session support.
+    # Enable session support with default handler
     session:
-        handler_id: null
+        enabled: true
+        handler_id: null # You can leave this or set it to null to use default handler
         cookie_secure: auto
         cookie_samesite: lax
 
-    #esi: true
-    #fragments: true
     php_errors:
         log: true
 
+# Configuration for the test environment
 when@test:
     framework:
         test: true

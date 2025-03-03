@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Commandes{% endblock %}
+
+{% block body %}
+    <h1 class="text-center mb-4">Liste des Commandes</h1>
+
+    <a href="{{ path('order_create') }}" class="btn btn-primary mb-3">Créer une nouvelle commande</a>
+
+    <div class="row">
+        {% for order in orders %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title">Commande #{{ order.id }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">Date de création: {{ order.createdAt|date('d/m/Y H:i') }}</h6>
+                        <p class="card-text">
+                            <strong>Status: </strong> 
+                            <span class="badge {% if order.status == 'pending' %}bg-warning{% elseif order.status == 'completed' %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </p>
+                        <p class="card-text">
+                            <strong>Total: </strong>{{ order.totalPrice|number_format(2, ',', ' ') }}€
+                        </p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{{ path('order_show', { id: order.id }) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ path('order_edit', { id: order.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <form action="{{ path('order_delete', { 'id': order.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette commande ?');" style="display:inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ order.id) }}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <p>Aucune commande trouvée.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

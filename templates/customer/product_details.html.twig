@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }} - Détails 🛍️{% endblock %}
+
+{% block body %}
+<div class="container mt-8 relative">
+    <!-- Bouton retour en haut à gauche -->
+    <div class="absolute top-0 left-0 mt-4 ml-4">
+        <a href="{{ path('app_products') }}" class="btn-back-to-products">
+            Retour aux produits 🛍️
+        </a>
+    </div>
+
+    <div class="product-details flex flex-col md:flex-row bg-white shadow-lg rounded-lg p-6">
+        <!-- Image du produit -->
+        <div class="w-full md:w-1/2 mb-6 md:mb-0">
+            <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="product-image">
+        </div>
+
+        <!-- Détails du produit -->
+        <div class="w-full md:w-1/2 md:pl-6">
+            <h1 class="text-3xl font-semibold text-gray-800 mb-4">{{ product.name }} 🏷️</h1>
+            <p class="text-lg text-gray-600 mb-4">{{ product.description }} 📜</p>
+            <p class="text-xl font-bold text-gray-900 mb-4">{{ product.price }} € 💰</p>
+
+            <!-- Formulaire pour ajouter au panier -->
+            <form action="{{ path('app_add_to_cart', { 'id': product.id }) }}" method="POST">
+                <div class="flex items-center mb-6">
+                    <button type="submit" class="btn-add-to-cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 3h2l.09.27L5.68 6H21a1 1 0 0 1 .94 1.34l-1.5 4A1 1 0 0 1 19.5 12H8.41l-.73 2H19a1 1 0 1 1 0 2H6a1 1 0 0 1-.94-1.34l1.5-4A1 1 0 0 1 7.5 9h10.09L16.68 4H6.32l-.95-2.73L5 1H3zm4 17a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm8 0a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+                        </svg>
+                        Ajouter au panier 🛒
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Produits Similaires -->
+    <div class="mt-12">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Produits Similaires 🛍️</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for similar_product in products %}
+                {% if similar_product.id != product.id %}
+                    <div class="product-card bg-white p-4 shadow-md rounded-lg hover:shadow-xl transition-all">
+                        <img src="{{ asset('uploads/' ~ similar_product.image) }}" alt="{{ similar_product.name }}" class="product-image mb-4">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ similar_product.name }} 🏷️</h3>
+                        <p class="text-lg text-gray-600 mb-2">{{ similar_product.price }} € 💰</p>
+                        <a href="{{ path('app_product_details', { 'id': similar_product.id }) }}" class="text-blue-600 hover:text-blue-800">Voir détails 🔍</a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Container général */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Image du produit */
+    .product-image {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        object-fit: cover;
+        margin: 0 auto;
+    }
+
+    /* Détails du produit */
+    .product-details {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    /* Titre principal */
+    h1, h2 {
+        color: #2d3748;
+    }
+
+    /* Style des boutons */
+    .btn-add-to-cart {
+        background-color: #3182ce;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-add-to-cart:hover {
+        background-color: #2b6cb0;
+        transform: scale(1.05);
+    }
+
+    .btn-back-to-products {
+        background-color: #e2e8f0;
+        color: #2d3748;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-back-to-products:hover {
+        background-color: #cbd5e0;
+        transform: scale(1.05);
+    }
+
+    .product-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .info-item {
+        width: 100%;
+        font-size: 1.1rem;
+        color: #4a5568;
+    }
+
+    .product-card {
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-card img {
+        border-radius: 8px;
+        height: 180px;
+        width: 100%;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Grid des produits similaires */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+</style>
+
+{% endblock %}

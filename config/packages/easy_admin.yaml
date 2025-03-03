@@ -1,0 +1,5 @@
+easy_admin:
+    entities:
+        - App\Entity\Order
+        - App\Entity\Product
+        # Ajoute d'autres entités que tu veux gérer via EasyAdmin

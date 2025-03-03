@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un produit{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">📦 Créer un produit</h1>
+
+        <div class="card shadow-lg border-0">
+            <div class="card-body">
+                {{ form_start(form) }}
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form_label(form.name, 'Nom du produit', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        {{ form_widget(form.name, { 'attr': { 'class': 'form-control border-primary' } }) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        {{ form_label(form.price, 'Prix (€)', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        {{ form_widget(form.price, { 'attr': { 'class': 'form-control border-primary' } }) }}
+                        {{ form_errors(form.price) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        {{ form_label(form.description, 'Description', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        {{ form_widget(form.description, { 'attr': { 'class': 'form-control border-primary', 'rows': 3 } }) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form_label(form.category, 'Catégorie', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        {{ form_widget(form.category, { 'attr': { 'class': 'form-select border-primary' } }) }}
+                        {{ form_errors(form.category) }}
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        {{ form_label(form.stock, 'Quantité en stock', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        {{ form_widget(form.stock, { 'attr': { 'class': 'form-control border-primary' } }) }}
+                        {{ form_errors(form.stock) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        {{ form_label(form.imageFile, 'Image (fichier)', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        {{ form_widget(form.imageFile, { 'attr': { 'class': 'form-control border-primary' } }) }}
+                        {{ form_errors(form.imageFile) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3">
+                        {{ form_label(form.tags, 'Tags (séparés par des virgules)', { 'label_attr': { 'class': 'form-label text-primary' } }) }}
+                        {{ form_widget(form.tags, { 'attr': { 'class': 'form-control border-primary', 'placeholder': 'Exemple: tag1, tag2' } }) }}
+                        {{ form_errors(form.tags) }}
+                    </div>
+                </div>
+
+                <button class="btn btn-primary w-100 rounded-pill py-2 shadow-sm btn-hover">
+                    <i class="fas fa-save"></i> Créer
+                </button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <a href="{{ path('product_index') }}" class="btn btn-secondary mt-3 d-block text-center rounded-pill py-2 shadow-sm btn-hover">
+            <i class="fas fa-arrow-left"></i> Retour à la liste
+        </a>
+    </div>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            font-weight: bold;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        .form-label {
+            font-weight: bold;
+            color: #495057;
+        }
+        .form-control, .form-select {
+            border: 2px solid #e4e4e4;
+            border-radius: 0.5rem;
+            transition: border-color 0.3s ease-in-out;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Légère ombre au survol */
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn-hover {
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-hover:hover {
+            opacity: 0.9;
+        }
+    </style>
+{% endblock %}

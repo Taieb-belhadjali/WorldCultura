@@ -1,0 +1,237 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}🛍️ Détails du produit ✨{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="product-details-card shadow-lg p-4">
+            <!-- Image du produit -->
+            <div class="product-image-container">
+                {% if product.image %}
+                    <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="product-image">
+                {% else %}
+                    <img src="{{ asset('images/default-product.jpg') }}" alt="Image par défaut" class="product-image">
+                {% endif %}
+            </div>
+
+            <!-- Détails du produit -->
+            <div class="product-info">
+                <h1 class="product-title">{{ product.name }} 🛒</h1>
+                <p class="product-price">{{ product.price|number_format(2, '.', ',') }} € 💸</p>
+                <p class="product-description">{{ product.description }}</p>
+
+                <!-- Nouvelle information -->
+                <div class="product-category">
+                    <span class="badge bg-primary">Catégorie 🏷️:</span> {{ product.category ? product.category : 'Aucune catégorie 📂' }}
+                </div>
+
+                <div class="product-tags">
+                    <span class="badge bg-info">Tags 🏷️:</span>
+                    {% if tags|length > 0 %}
+                        {% for tag in tags %}
+                            <span class="tag-bubble">{{ tag }}</span>
+                        {% endfor %}
+                    {% else %}
+                        Aucun tag 🏷️
+                    {% endif %}
+                </div>
+
+                <div class="product-stock">
+                    <span class="badge bg-success">Stock 📦:</span> {{ product.stock }} unité(s) disponible(s)
+                </div>
+
+                <div class="product-created-at">
+                    <span class="badge bg-secondary">Créé le 📅:</span> {{ product.createdAt|date('d/m/Y H:i') }}
+                </div>
+
+                <div class="product-updated-at">
+                    <span class="badge bg-warning">Dernière mise à jour ⏰:</span> {{ product.updatedAt|date('d/m/Y H:i') }}
+                </div>
+
+                <!-- Boutons -->
+                <div class="product-actions">
+                    <a href="{{ path('product_form_edit', { id: product.id }) }}" class="btn btn-warning">✏️ Modifier</a>
+                    <a href="{{ path('product_index') }}" class="btn btn-secondary">⬅️ Retour à la liste</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Conteneur principal */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Carte des détails du produit */
+        .product-details-card {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, #fdfdfd, #f3f4f6);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Image du produit */
+        .product-image-container {
+            flex: 1 1 40%;
+            max-width: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Informations du produit */
+        .product-info {
+            flex: 1 1 60%;
+            max-width: 60%;
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #3182ce;
+            margin-bottom: 15px;
+        }
+
+        .product-description {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Nouvelles informations */
+        .product-category,
+        .product-stock,
+        .product-created-at,
+        .product-updated-at {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .badge.bg-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .badge.bg-info {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+
+        .badge.bg-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .badge.bg-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .badge.bg-warning {
+            background-color: #ffc107;
+            color: #fff;
+        }
+
+        /* Bulles de tags */
+        .product-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .tag-bubble {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .tag-bubble:hover {
+            background-color: #3182ce;
+            color: white;
+        }
+
+        /* Boutons */
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-warning {
+            background-color: #ffcc00;
+            color: #2d3748;
+        }
+
+        .btn-warning:hover {
+            background-color: #ffaa00;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-details-card {
+                flex-direction: column;
+            }
+
+            .product-image-container,
+            .product-info {
+                max-width: 100%;
+            }
+        }
+    </style>
+{% endblock %}

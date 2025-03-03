@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .product-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            width: 300px;
+            text-align: center;
+        }
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .product-buttons {
+            margin-top: 10px;
+        }
+        .cart-summary {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        .cart-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .checkout-btn {
+            margin-top: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-4">Shop</h1>
+
+        <div class="product-cards">
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="product-image" />
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p><strong>${{ product.price }}</strong></p>
+
+                    <div class="product-buttons">
+                        <!-- Add to cart button -->
+                        <a href="{{ path('add_to_cart', { 'id': product.id, 'quantity': 1 }) }}" class="btn btn-primary add-to-cart-btn">Add to Cart</a>
+
+                        <!-- View product button -->
+                        <a href="{{ path('product_view', { 'id': product.id }) }}" class="btn btn-secondary view-product-btn">View Product</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="cart-summary">
+            <h2>Your Cart</h2>
+            {% for item in cart %}
+                <div class="cart-item">
+                    <p>{{ item.product.name }} - Quantity: {{ item.quantity }} - Total: ${{ item.total }}</p>
+                </div>
+            {% endfor %}
+            <p><strong>Total: ${{ total }}</strong></p>
+            <a href="{{ path('checkout') }}" class="btn btn-success checkout-btn">Proceed to Checkout</a>
+        </div>
+    </div>
+{% endblock %}

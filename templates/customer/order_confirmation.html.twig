@@ -1,0 +1,16 @@
+<h1>Order #{{ order.id }} - Confirmed</h1>
+<p>Status: {{ order.status }}</p>
+<p>Total Price: {{ order.totalPrice|number_format(2, ',', ' ') }}€</p>
+
+<h3>Order Items</h3>
+<ul>
+    {% for item in order.orderItems %}
+        {% set itemTotal = (item.price is defined and item.quantity is defined) 
+            ? (item.price|default(0) * item.quantity|default(0)) : 0 %}
+        <li>
+            {{ item.product.name }} - 
+            Quantity: {{ item.quantity|default(0) }} - 
+            Total: {{ itemTotal|number_format(2, ',', ' ') }}€
+        </li>
+    {% endfor %}
+</ul>

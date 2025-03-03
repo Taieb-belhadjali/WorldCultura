@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <h1 class="text-center mb-4">Admin Dashboard</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">Total Orders</div>
+                <div class="card-body">
+                    <h3 class="text-center">{{ totalOrders }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-white">Pending Orders</div>
+                <div class="card-body">
+                    <h3 class="text-center">{{ pendingOrders }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphique des commandes (barres) -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">Orders Statistics (Bar Chart)</div>
+                <div class="card-body">
+                    <canvas id="ordersChart" style="height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphique des commandes (camembert) dans une carte avec style -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">Order Status Distribution (Pie Chart)</div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height: 300px; width: 100%; max-width: 600px; margin: 0 auto;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Selling Products -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">Top Selling Products</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for product in topSellingProducts %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ product.name }}
+                                <span class="badge badge-primary badge-pill">{{ product.totalQuantity }} sold</span>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">No top selling products yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Graphique à barres pour Total Orders et Pending Orders
+        var ctxOrders = document.getElementById('ordersChart').getContext('2d');
+        var ordersChart = new Chart(ctxOrders, {
+            type: 'bar', // Graphique à barres
+            data: {
+                labels: ['Total Orders', 'Pending Orders'], // Catégories
+                datasets: [{
+                    label: 'Number of Orders',
+                    data: [{{ totalOrders }}, {{ pendingOrders }}], // Données
+                    backgroundColor: ['rgba(54, 162, 235, 0.4)', 'rgba(255, 159, 64, 0.4)'],
+                    borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 159, 64, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Graphique circulaire pour la répartition des statuts des commandes
+        var ctxStatus = document.getElementById('statusChart').getContext('2d');
+        var statusChart = new Chart(ctxStatus, {
+            type: 'pie', // Graphique circulaire
+            data: {
+                labels: ['Pending', 'Completed'], // Catégories de statut
+                datasets: [{
+                    label: 'Order Status',
+                    data: [{{ pendingOrders }}, {{ totalOrders - pendingOrders }}], // Données (en fonction des commandes en attente et complètes)
+                    backgroundColor: ['rgba(255, 159, 64, 0.4)', 'rgba(54, 162, 235, 0.4)'],
+                    borderColor: ['rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Styles pour le dashboard */
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .card-body h3 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .row {
+            margin-top: 30px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .justify-content-center {
+            justify-content: center;
+        }
+
+        /* Style spécifique pour la liste des produits */
+        .list-group-item {
+            font-size: 1.1rem;
+            padding: 15px;
+        }
+
+        .badge-primary {
+            background-color: #007bff;
+        }
+    </style>
+{% endblock %}

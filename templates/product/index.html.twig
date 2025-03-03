@@ -1,0 +1,178 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}📋 Liste des produits{% endblock %}
+
+{% block body %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Styles existants inchangés */
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        h2 {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .btn-outline-secondary {
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #138496;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+        .btn-danger:hover {
+            background-color: #bd2130;
+            border-color: #b21f2d;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        /* Custom button for command list */
+        .btn-command {
+            background: linear-gradient(45deg, #ff6f61, #d63e33);
+            border: none;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-command:hover {
+            background: linear-gradient(45deg, #d63e33, #ff6f61);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-command i {
+            font-size: 18px;
+        }
+
+        .table {
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .table thead th {
+            background-color:rgb(150, 173, 198);
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .img-fluid {
+            max-width: 80px;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+        .btn-sm {
+            font-size: 0.85rem;
+            padding: 6px 12px;
+        }
+    </style>
+
+    <div class="container">
+        <h2>📋 Liste des produits</h2>
+
+        <!-- Bouton ajouter un produit -->
+        <a href="{{ path('product_new') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm mb-4">
+            <i class="fas fa-plus"></i> Ajouter un produit
+        </a>
+
+       <div class="text-center mb-4">
+    <div class="d-flex justify-content-center gap-3">
+        <!-- Bouton pour la liste des commandes -->
+        <a href="{{ path('order_index') }}" class="btn-command">
+            <i class="fas fa-truck"></i> Liste des commandes
+        </a>
+
+        <!-- Bouton pour voir le dashboard -->
+        <a href="{{ path('admin_dashboard') }}" class="btn-command">
+            <i class="fas fa-tachometer-alt"></i> Voir Dashboard
+        </a>
+    </div>
+</div>
+
+        <!-- Affichage des flash messages -->
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price|number_format(2, ',', ' ') }} €</td>
+                        <td>
+                            <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="img-fluid">
+                        </td>
+                        <td>{{ product.description|length > 50 ? product.description|slice(0, 50) ~ '...' : product.description }}</td>
+                        <td>
+                            <a href="{{ path('product_show', { id: product.id }) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                <i class="fas fa-eye"></i> Voir
+                            </a>
+                            <a href="{{ path('product_form_edit', { id: product.id }) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                            <form method="post" action="{{ path('product_delete', { id: product.id }) }}" style="display:inline;" onsubmit="return confirm('Voulez-vous vraiment supprimer ce produit ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                                <button class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Aucun produit trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
