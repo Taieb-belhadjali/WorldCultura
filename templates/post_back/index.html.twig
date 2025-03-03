@@ -20,7 +20,8 @@
                 <tr>
                     <td>{{ post.id }}</td>
                     <td>{{ post.title }}</td>
-                    <td>{{ post.content }}</td>
+                    <td>{{ post.content|length > 100 ? post.content|slice(0,50)~ '...' : post.content }}</td>
+
                     <td><img src="{{ asset('uploads/images/' ~ post.image) }}" alt="{{ post.title }}" class="img-thumbnail" style="max-width: 100px;"></td>
                     <td>{{ post.createDate }}</td>
                     <td>
@@ -44,6 +45,48 @@
     .btn-dark-blue {
         background-color: #00008b;
         color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .btn-dark-blue:hover {
+        background-color: #00006b;
+    }
+
+    .table {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .content-preview {
+        max-width: 10px; /* Largeur max */
+        max-height: 60px; /* Hauteur max */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Nombre max de lignes */
+        -webkit-box-orient: vertical;
+        white-space: normal;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .content-preview {
+            max-width: 200px;
+            max-height: 40px;
+            -webkit-line-clamp: 1;
+        }
     }
 </style>
 {% endblock %}

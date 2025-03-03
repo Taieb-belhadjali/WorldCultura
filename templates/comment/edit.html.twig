@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="text-center mt-4">
-            <a href="{{ path('app_comment_index') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">⬅️ Return to list</a>
+            <a href="{{ path('app_post_show', {'id': post}) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">⬅️ Return </a>
         </div>
         <div class="text-center mt-3">
             {{ include('comment/_delete_form.html.twig') }}

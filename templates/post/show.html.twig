@@ -36,7 +36,10 @@
                 <div class="d-flex justify-content-center gap-3 mt-4">
                     <a href="{{ path('app_post_index') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">⬅️ Back to List</a>
                     <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-primary rounded-pill py-2 px-4 shadow-sm transform-hover-button">✏️ Update</a>
-                    <a href="{{ path('app_comment_new', {'postId': post.id}) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">Add a Comment</a>                    
+                    <a href="{{ path('app_comment_new', {'postId': post.id}) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold shadow-sm">Add a Comment</a>  
+                    <button class="like-btn" data-id="{{ post.id }}">👍 Like ({{ post.getLikesCount() }})</button>
+                    <button class="dislike-btn" data-id="{{ post.id }}">👎 Dislike ({{ post.getDislikesCount() }})</button>
+                  
                 </div>
 
                 <!-- Delete Form (optional) -->
@@ -59,6 +62,7 @@
                         <a href="{{ path('app_comment_edit', {'id': comment.id}) }}" class="btn btn-primary btn-sm me-2">
                             <i class="fa fa-edit"></i> Edit
                         </a>
+                        
                     </div>
                 </div>
             </div>
@@ -70,4 +74,29 @@
         </div>
     </div>
 </div>
+<script>
+    document.querySelectorAll('.like-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            let postId = this.getAttribute('data-id');
+            fetch(`/post/${postId}/like`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    this.innerHTML = `👍 Like (${data.likes})`;
+                    document.querySelector(`.dislike-btn[data-id="${postId}"]`).innerHTML = `👎 Dislike (${data.dislikes})`;
+                });
+        });
+    });
+
+    document.querySelectorAll('.dislike-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            let postId = this.getAttribute('data-id');
+            fetch(`/post/${postId}/dislike`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    this.innerHTML = `👎 Dislike (${data.dislikes})`;
+                    document.querySelector(`.like-btn[data-id="${postId}"]`).innerHTML = `👍 Like (${data.likes})`;
+                });
+        });
+    });
+</script>
 {% endblock %}

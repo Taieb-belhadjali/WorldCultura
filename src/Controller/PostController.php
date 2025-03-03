@@ -13,26 +13,62 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/post')]
 final class PostController extends AbstractController
 {
-    #[Route(name: 'app_post_index', methods: ['GET'])]
-public function index(PostRepository $postRepository, PaginatorInterface $paginator, Request $request): Response
-{
-    $query = $postRepository->createQueryBuilder('p')
-        ->orderBy('p.createDate', 'DESC') // Sort posts by newest first
-        ->getQuery();
+    #[Route(name: 'app_poste_index', methods: ['GET'])]
+public function imdex(
+    PostRepository $postRepository,
+    PaginatorInterface $paginator,
+    Request $request
+): Response {
+    // Get and validate parameters
+    $query = $request->query->get('q', '');
+    $sort = in_array($request->query->get('sort'), ['newest', 'oldest']) 
+        ? $request->query->get('sort') 
+        : 'newest';
+    $daysBefore = $request->query->getInt('daysBefore', 0);
+    $currentPage = max(1, $request->query->getInt('page', 1));
 
+    // Build filtered query
+    $qb = $postRepository->createQueryBuilder('p')
+        ->orderBy('p.createDate', $sort === 'oldest' ? 'ASC' : 'DESC');
+
+    if (!empty($query)) {
+        $qb->andWhere('p.title LIKE :query')
+           ->setParameter('query', '%' . addcslashes($query, '%_') . '%');
+    }
+
+    if ($daysBefore > 0) {
+        $qb->andWhere('p.createDate >= :date')
+           ->setParameter('date', new \DateTimeImmutable("-$daysBefore days"));
+    }
+
+    // Paginate with query preservation
     $pagination = $paginator->paginate(
-        $query,
-        $request->query->getInt('page', 1), // Get the current page number (default: 1)
-        5 // Number of posts per page
+        $qb->getQuery(),
+        $currentPage,
+        5,
+        [
+            'query' => $request->query->all(),
+            'pageParameterName' => 'page'
+        ]
     );
-    
+
+    // AJAX response handling
+    if ($request->isXmlHttpRequest()) {
+        return $this->render('post/index.html.twig', [
+            'pagination' => $pagination,
+            'is_ajax' => true
+        ]);
+    }
+
+    // Full page response
     return $this->render('post/index.html.twig', [
-        'pagination' => $pagination, // Send paginated posts to Twig
+        'pagination' => $pagination,
+        'is_ajax' => false
     ]);
 }
 
@@ -140,4 +176,83 @@ public function search(Request $request, PostRepository $postRepository): Respon
 
         return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+
+
+
+
+    #[Route(name: 'app_post_index', methods: ['GET'])]
+public function index(PostRepository $postRepository, PaginatorInterface $paginator, Request $request): Response
+{
+    $query = $postRepository->createQueryBuilder('p')
+        ->orderBy('p.createDate', 'DESC') // Sort posts by newest first
+        ->getQuery();
+
+    $pagination = $paginator->paginate(
+        $query,
+        $request->query->getInt('page', 1), // Get the current page number (default: 1)
+        5 // Number of posts per page
+    );
+    
+    return $this->render('post/index.html.twig', [
+        'pagination' => $pagination, // Send paginated posts to Twig
+    ]);
+}
+
+
+
+/////////////////likeee
+#[Route('/{id}/like', name: 'app_post_like', methods: ['POST'])]
+public function like(Post $post, EntityManagerInterface $entityManager, SessionInterface $session): Response
+{
+    $likedPosts = $session->get('liked_posts', []);
+
+    if (in_array($post->getId(), $likedPosts)) {
+        // Remove like if already liked
+        $post->removeLike($post->getId());
+        $likedPosts = array_diff($likedPosts, [$post->getId()]);
+    } else {
+        // Add like and remove dislike if exists
+        $post->addLike($post->getId());
+        $post->removeDislike($post->getId());
+        $likedPosts[] = $post->getId();
+    }
+
+    $session->set('liked_posts', $likedPosts);
+    $entityManager->flush();
+
+    return $this->json([
+        'likes' => $post->getLikesCount(),
+        'dislikes' => $post->getDislikesCount(),
+    ]);
+}
+
+#[Route('/{id}/dislike', name: 'app_post_dislike', methods: ['POST'])]
+public function dislike(Post $post, EntityManagerInterface $entityManager, SessionInterface $session): Response
+{
+    $dislikedPosts = $session->get('disliked_posts', []);
+
+    if (in_array($post->getId(), $dislikedPosts)) {
+        // Remove dislike if already disliked
+        $post->removeDislike($post->getId());
+        $dislikedPosts = array_diff($dislikedPosts, [$post->getId()]);
+    } else {
+        // Add dislike and remove like if exists
+        $post->addDislike($post->getId());
+        $post->removeLike($post->getId());
+        $dislikedPosts[] = $post->getId();
+    }
+
+    $session->set('disliked_posts', $dislikedPosts);
+    $entityManager->flush();
+
+    return $this->json([
+        'likes' => $post->getLikesCount(),
+        'dislikes' => $post->getDislikesCount(),
+    ]);
+}
+
+
 }

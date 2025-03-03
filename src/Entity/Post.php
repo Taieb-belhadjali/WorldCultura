@@ -46,6 +46,56 @@ class Post
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\Column(type: 'json')]
+    private array $likes = [];
+
+    #[ORM\Column(type: 'json')]
+    private array $dislikes = [];
+
+    public function getLikes(): array
+    {
+        return $this->likes;
+    }
+
+    public function addLike(string $identifier): void
+    {
+        if (!in_array($identifier, $this->likes)) {
+            $this->likes[] = $identifier;
+        }
+    }
+
+    public function removeLike(string $identifier): void
+    {
+        $this->likes = array_diff($this->likes, [$identifier]);
+    }
+
+    public function getLikesCount(): int
+    {
+        return count($this->likes);
+    }
+
+    public function getDislikes(): array
+    {
+        return $this->dislikes;
+    }
+
+    public function addDislike(string $identifier): void
+    {
+        if (!in_array($identifier, $this->dislikes)) {
+            $this->dislikes[] = $identifier;
+        }
+    }
+
+    public function removeDislike(string $identifier): void
+    {
+        $this->dislikes = array_diff($this->dislikes, [$identifier]);
+    }
+
+    public function getDislikesCount(): int
+    {
+        return count($this->dislikes);
+    }
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
