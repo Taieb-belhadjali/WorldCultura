@@ -28,6 +28,7 @@
     },
     "knplabs/knp-paginator-bundle": {
         "version": "v6.6.1"
+    },
     "karser/karser-recaptcha3-bundle": {
         "version": "0.2",
         "recipe": {
