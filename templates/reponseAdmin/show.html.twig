@@ -1,0 +1,116 @@
+{% extends 'Dashboard.html.twig' %}
+
+{% block html %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+    {% block head %}
+        <meta charset="utf-8">
+        {% block title %}<title>WorldCultura {% endblock %}</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <!-- Google Web Fonts -->
+        {% block google_fonts %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet"> 
+        {% endblock %}
+
+        <!-- Icon Font Stylesheet -->
+        {% block icon_font %}
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        {% endblock %}
+
+        <!-- Libraries Stylesheet -->
+        {% block libraries %}
+        <link href="{{asset('lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+        <link href="{{asset('lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
+        {% endblock %}    
+
+        <!-- Customized Bootstrap Stylesheet -->
+        {% block bootstrap %}
+        <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+        {% endblock %}
+
+        <!-- Template Stylesheet -->
+        {% block style %}
+        <link href="{{asset('css/style.css" rel="stylesheet')}}">
+        {% endblock %}
+    {% endblock %}    
+    </head>
+
+    <body>
+    {% block body %}
+
+        <!-- partie reclamation --> 
+        {% block show_reclamation  %}
+            <div class="card p-4 mb-4 mx-3 shadow-lg rounded border-0" style="background-color: #f8f9fa;">
+                <div class="card-header bg-primary text-white text-center rounded-top">
+                    <h4 class="mb-0 text-white">Reclamation</h4>
+                </div>
+
+                <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="mb-0 text-primary">{{ reclamation.getUserName() }}</h5>
+                            <span class="badge {% if reclamation.statut == 'En cours' %}bg-warning text-dark{% elseif reclamation.statut == 'Résolu' %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ reclamation.statut }}
+                            </span>
+                        </div>
+                    <hr>
+                    <p><strong>Posté le :</strong> {{ reclamation.createdat ? reclamation.createdat|date('Y-m-d ') : '' }}</p>
+                    <p><strong>Type :</strong> {{ reclamation.type }}</p>
+                    <p><strong>Description :</strong> {{ reclamation.description }}</p>
+                </div>
+            </div>
+
+
+            <!-- partie reponse -->
+                <div class="card p-4 mb-4 mx-3 shadow-lg rounded border-0" style="background-color: #f8f9fa;">
+                <div class="card-header bg-primary text-white text-center rounded-top">
+                    <h4 class="mb-0 text-white">Réponses</h4>
+                </div>
+
+                <div class="card-body">
+                    {% for reponse in reclamation.reponses %}
+                        <div class="card p-3 mb-3 shadow-sm rounded border-0" style="background-color: #f8f9fa;">
+                            {% if reponse.acteur == "Admin"%}
+                                <div class="card-body">
+                                    <h6 class="text-primary">{{ reponse.acteur }}</h6>
+                                    <p class="text-muted mb-1">{{ reponse.createdat ? reponse.createdat|date('Y-m-d ') : '' }}</p>
+                                    <p>{{ reponse.description }}</p>
+                                    <a href="{{ path('app_Areponse_edit', {'id': reponse.id}) }}">edit</a>
+                                    {{ include('reponseAdmin/_delete_form.html.twig') }}
+                                </div>  
+                            {% endif %}
+                                {% if reponse.acteur == "Reclameur"%}
+                                <div class="card-body">
+                                    <h6 class="text-primary">{{ reponse.acteur }}</h6>
+                                    <p class="text-muted mb-1">{{ reponse.createdat ? reponse.createdat|date('Y-m-d ') : '' }}</p>
+                                    <p>{{ reponse.description }}</p>
+                                    
+                                </div>   
+                                {% endif %} 
+                        </div>    
+                    {% else %}
+                        <p class="text-muted">Aucune réponse pour le moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
+    
+
+            
+        {% endblock %}
+
+        <!-- show reclamation End -->
+    </body>
+{% endblock %}
+
+</html>
+{% endblock %}
+
+
+ 
