@@ -5,7 +5,7 @@
     <head>
     {% block head %}
         <meta charset="utf-8">
-        <title>{% block title %}WorldCultura{% endblock %}</title>
+        <title>{% block title %}Travela - Tourism Website Template{% endblock %}</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -68,9 +68,21 @@
                     </div>
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
+                        <div class="d-inline-flex align-items-center" style="height: 45px;">
+                            <a href="/user"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>BackEnd</small></a>
+                        </div>
+                    
                     <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="/register"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Register</small></a>
-                        <a href="/{{ app.user ? 'logout' : 'login' }}"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Login</small></a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> My Dashboard</small></a>
+                            <div class="dropdown-menu rounded">
+                                <a href="#" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> My Profile</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Inbox</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notifications</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
+                                <a href="/{{ app.user ? 'logout' : 'login' }}" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,7 +96,7 @@
             <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
                     <h1 class="m-0"><i class="fa fa-map-marker-alt me-3"></i>WorldCultura</h1>
-                    <img src="img/logo.png" alt="Logo">
+                    <!-- <img src="img/logo.png" alt="Logo"> -->
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>

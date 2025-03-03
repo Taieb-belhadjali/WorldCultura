@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-lg rounded-4">
+            <div class="card-body p-5">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="alert alert-info">
+                        You are logged in as <strong>{{ app.user.userIdentifier }}</strong>, 
+                        <a href="{{ path('app_logout') }}" class="text-danger fw-bold">Logout</a>
+                    </div>
+                {% endif %}
+
+                <h1 class="h4 text-center mb-4">Please sign in</h1>
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="inputEmail" class="fw-bold">Email</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" 
+                               class="form-control shadow-sm" autocomplete="email" required autofocus>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="inputPassword" class="fw-bold">Password</label>
+                        <input type="password" name="password" id="inputPassword" 
+                               class="form-control shadow-sm" autocomplete="current-password" required>
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="_remember_me" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-lg" type="submit">Sign in</button>
+                        <a href="/reset-password" class="btn btn-outline-primary btn-lg">Forgot password?</a>
+                        <a href="/test/temp" class="btn btn-secondary btn-lg">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Edit User</h1>
+
+    <div class="card p-4 shadow-sm mb-4">
+        {{ include('user/_form.html.twig', {'button_label': 'Update', 'attr': {'class': 'form'}}) }}
+    </div>
+
+    <!--<div class="mt-4">
+        <a href="{{ path('app_user_index') }}" class="btn btn-secondary">Back to List</a>
+        <a href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger">Delete</a>
+    </div>-->
+</div>
+{% endblock %}

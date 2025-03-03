@@ -1,0 +1,33 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block body %}
+<div class="container mt-5 text-center">
+    <!-- Form -->
+    <div class="form-container">
+        {{ form_start(form) }}
+            {{ form_widget(form, {'attr': {'style': 'color: black;'}}) }}
+            <button class="btn btn-primary mt-3">{{ button_label|default('Save') }}</button>
+            <a href="{{ path('app_user_index') }}" class="btn btn-secondary mt-3">Back to list</a>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+    /* Lower the form */
+    .mt-5 {
+        margin-top: 500px; /* Increased to drop the form further */
+    }
+
+    /* Center everything */
+    .form-container {
+        display: inline-block;
+        text-align: center;
+    }
+
+    /* Ensure black text */
+    label, input, select, textarea {
+        color: black !important;
+    }
+</style>
+{% endblock %}
