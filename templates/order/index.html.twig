@@ -102,11 +102,14 @@
         <h2>🚚 Liste des commandes</h2>
 
         <!-- Add a back button to manage products page -->
-        <div class="text-center mb-4">
-            <a href="{{ path('product_index') }}" class="btn btn-info">
-                <i class="fas fa-box-open"></i> 📋Gestion des produits
-            </a>
-        </div>
+        <div class="text-center mb-4 d-flex justify-content-center gap-3">
+        <a href="{{ path('product_index') }}" class="btn btn-info">
+            <i class="fas fa-box-open"></i> 📋Gestion des produits
+        </a>
+        <a href="{{ path('admin_dashboard') }}" class="btn btn-info">
+            <i class="fas fa-tachometer-alt"></i> 🏠Voir Dashboard
+        </a>
+    </div>
 
         <table class="table">
             <thead>

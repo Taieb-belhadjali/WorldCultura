@@ -108,12 +108,19 @@
             <i class="fas fa-plus"></i> Ajouter un produit
         </a>
 
+       <div class="text-center mb-4">
+    <div class="d-flex justify-content-center gap-3">
         <!-- Bouton pour la liste des commandes -->
-        <div class="text-center mb-4">
-            <a href="{{ path('order_index') }}" class="btn-command">
-                <i class="fas fa-truck"></i> Liste des commandes
-            </a>
-        </div>
+        <a href="{{ path('order_index') }}" class="btn-command">
+            <i class="fas fa-truck"></i> Liste des commandes
+        </a>
+
+        <!-- Bouton pour voir le dashboard -->
+        <a href="{{ path('admin_dashboard') }}" class="btn-command">
+            <i class="fas fa-tachometer-alt"></i> Voir Dashboard
+        </a>
+    </div>
+</div>
 
         <!-- Affichage des flash messages -->
         {% for label, messages in app.flashes %}

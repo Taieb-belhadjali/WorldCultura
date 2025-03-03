@@ -15,7 +15,7 @@ class ProductFixtures extends Fixture
         $categories = ['Électronique', 'Livres', 'Maison', 'Vêtements', 'Autres']; // Liste des catégories
         $tagsList = ['Promotion', 'Nouveau', 'Best-seller', 'Solde', 'Exclusif']; // Liste des tags
 
-        for ($i = 0; $i < 10; $i++) { // Générer 10 produits
+        for ($i = 0; $i < 5; $i++) { // Générer 10 produits
             $product = new Product();
             $product->setName($faker->word()); // Nom aléatoire
             $product->setDescription($faker->paragraph()); // Description aléatoire
