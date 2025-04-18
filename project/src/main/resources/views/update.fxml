@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="project.controllers.updateairlinecontroller"
+      spacing="10" alignment="CENTER"
+      style="-fx-background-color: #ffffff; -fx-padding: 20;">
+
+    <Label text="Modifier la Compagnie Aérienne" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <TextField fx:id="idTextField" promptText="ID de la compagnie à modifier" editable="false"/>
+    <TextField fx:id="nomTextField" promptText="Nouveau nom de la compagnie" />
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="logoTextField" promptText="URL du logo (ou choisir un fichier)" HBox.hgrow="ALWAYS"/>
+        <Button text="Choisir un fichier" onAction="#chooseLogoFile"/>
+    </HBox>
+
+    <ImageView fx:id="logoPreview" fitWidth="100" fitHeight="100" preserveRatio="true"/>
+
+    <TextArea fx:id="descriptionTextArea" promptText="Nouvelle description" prefRowCount="3" />
+    <TextField fx:id="contactTextField" promptText="Nouveau contact du responsable" />
+
+    <Button fx:id="updateButton" text="Mettre à jour" onAction="#updateAirline" />
+
+</VBox>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.controllers.ListAirlinesController"
+            prefWidth="800" prefHeight="600"
+            style="-fx-background-color: #f8f9fa;">
+
+    <VBox spacing="20" alignment="TOP_CENTER" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20"
+          style="-fx-background-color: #ffffff; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-padding: 20px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+
+        <Label text="Liste des Compagnies Aériennes"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0d6efd;"/>
+
+        <TextField fx:id="searchField"
+                   promptText="Rechercher une compagnie..."
+                   style="-fx-pref-width: 400px; -fx-alignment: center; -fx-background-radius: 5px; -fx-border-color: #ccc; -fx-padding: 8px;"/>
+
+        <TableView fx:id="airlineTable" prefHeight="400"
+                   style="-fx-table-cell-border-color: transparent;">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="nomColumn" text="Nom" prefWidth="150"/>
+                <TableColumn fx:id="logoColumn" text="Logo" prefWidth="100"/>
+                <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="250"/>
+                <TableColumn fx:id="contactColumn" text="Contact" prefWidth="150"/>
+                <TableColumn fx:id="actionColumn" text="Actions" prefWidth="250"/> </columns>
+        </TableView>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="Nouvelle Compagnie" onAction="#handleAddAirline"
+                    style="-fx-font-size: 14px; -fx-background-color: #002B5C; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"/>
+            <Button text="Modifier Compagnie" onAction="#handleUpdateAirline"
+                    style="-fx-font-size: 14px; -fx-background-color: #28a745; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"/>
+            <Button text="Supprimer Compagnie" onAction="#handleDeleteSelectedAirline"
+                    style="-fx-font-size: 14px; -fx-background-color: #dc3545; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"/>
+            <Button text="Afficher Détails" onAction="#handleShowSelectedAirlineDetails"
+                    style="-fx-font-size: 14px; -fx-background-color: #17a2b8; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>

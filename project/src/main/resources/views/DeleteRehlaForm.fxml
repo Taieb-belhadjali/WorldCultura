@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.controllers.deleterehlacontroller"
+            prefWidth="300.0" prefHeight="150.0">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <VBox spacing="15.0">
+        <Label fx:id="confirmationLabel" text="Êtes-vous sûr de vouloir supprimer ce vol?" wrapText="true"/>
+        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+            <Button fx:id="confirmButton" text="Confirmer" onAction="#handleConfirmDelete"/>
+            <Button fx:id="cancelButton" text="Annuler" onAction="#handleCancelDelete"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

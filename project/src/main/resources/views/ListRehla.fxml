@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.controllers.ListRehlaController"
+            prefWidth="800" prefHeight="600"
+            style="-fx-background-color: #f8f9fa;">
+
+    <VBox spacing="20" alignment="TOP_CENTER" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20"
+          style="-fx-background-color: #ffffff; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-padding: 20px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+
+        <Label text="Liste des Vols"
+               style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0d6efd;"/>
+
+        <TextField fx:id="searchField"
+                   promptText="Rechercher un vol..."
+                   style="-fx-pref-width: 400px; -fx-alignment: center; -fx-background-radius: 5px; -fx-border-color: #ccc; -fx-padding: 8px;"/>
+
+        <TableView fx:id="rehlaTable" prefHeight="400"
+                   style="-fx-table-cell-border-color: transparent;">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="agenceColumn" text="Agence" prefWidth="100"/>
+                <TableColumn fx:id="departColumn" text="Départ" prefWidth="120"/>
+                <TableColumn fx:id="destinationColumn" text="Destination" prefWidth="120"/>
+                <TableColumn fx:id="departDateColumn" text="Date Départ" prefWidth="120"/>
+                <TableColumn fx:id="arrivalDateColumn" text="Date Arrivée" prefWidth="120"/>
+                <TableColumn fx:id="priceColumn" text="Prix" prefWidth="80"/>
+                <TableColumn fx:id="actionColumn" text="Actions" prefWidth="200"/>
+            </columns>
+        </TableView>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="Nouveau Vol" onAction="#handleAddRehla"
+                    style="-fx-font-size: 14px; -fx-background-color: #002B5C; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"/>
+            <Button text="Modifier Vol" onAction="#handleUpdateRehla"
+                    style="-fx-font-size: 14px; -fx-background-color: #28a745; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"/>
+            <Button text="Supprimer Vol" onAction="#handleDeleteSelectedRehla"
+                    style="-fx-font-size: 14px; -fx-background-color: #dc3545; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"/>
+            <Button text="Afficher Détails" onAction="#handleShowSelectedRehlaDetails"
+                    style="-fx-font-size: 14px; -fx-background-color: #17a2b8; -fx-text-fill: white; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>

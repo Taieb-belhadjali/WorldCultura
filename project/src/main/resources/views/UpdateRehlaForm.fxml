@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="project.controllers.updaterehlacontroller"
+      spacing="10" alignment="CENTER"
+      style="-fx-background-color: #ffffff; -fx-padding: 20;">
+
+    <Label text="Modifier le Vol" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <ComboBox fx:id="agenceComboBox" promptText="Agence" prefWidth="1.7976931348623157E308"/>
+    <TextField fx:id="departTextField" promptText="Départ"/>
+    <TextField fx:id="destinationTextField" promptText="Destination"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <DatePicker fx:id="departDatePicker" promptText="Date de Départ"/>
+        <ComboBox fx:id="departTimeComboBox" promptText="Heure de Départ" prefWidth="120.0"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER">
+        <DatePicker fx:id="arrivalDatePicker" promptText="Date d'Arrivée"/>
+        <ComboBox fx:id="arrivalTimeComboBox" promptText="Heure d'Arrivée" prefWidth="120.0"/>
+    </HBox>
+
+    <TextField fx:id="priceTextField" promptText="Prix"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="confirmButton" text="Confirmer" onAction="#handleConfirm"/>
+        <Button fx:id="saveButton" text="Enregistrer" onAction="#handleSave"/>
+        <Button fx:id="cancelButton" text="Annuler" onAction="#handleCancel"/>
+    </HBox>
+
+</VBox>

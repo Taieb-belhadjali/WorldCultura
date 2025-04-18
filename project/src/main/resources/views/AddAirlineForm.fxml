@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="project.controllers.AddAirlineController"
+      spacing="10" alignment="CENTER"
+      style="-fx-background-color: #ffffff; -fx-padding: 20;">
+
+    <Label text="Formulaire Compagnie Aérienne" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <VBox spacing="5">
+        <Label text="Nom de la compagnie:"/>
+        <TextField fx:id="nomField" promptText="Nom de la compagnie" />
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Logo:"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <TextField fx:id="logoField" promptText="Chemin du fichier logo" editable="false"/>
+            <Button text="Choisir un fichier" onAction="#handleChooseLogo"/>
+            <ImageView fx:id="logoPreview" fitHeight="30" fitWidth="60" preserveRatio="true"/>
+        </HBox>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Description:"/>
+        <TextArea fx:id="descriptionField" promptText="Description" prefRowCount="3" />
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Contact du responsable:"/>
+        <TextField fx:id="contactField" promptText="Contact du responsable" />
+    </VBox>
+
+    <HBox spacing="10">
+        <Button text="Enregistrer" onAction="#handleSave" />
+        <Button text="Annuler" onAction="#handleCancel" />
+    </HBox>
+</VBox>

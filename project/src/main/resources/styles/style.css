@@ -1,0 +1,26 @@
+.container {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.5, 0, 4);
+}
+
+.title {
+    -fx-font-size: 24px;
+    -fx-text-fill: #0d6efd;
+    -fx-font-weight: bold;
+}
+
+.search-bar {
+    -fx-pref-width: 300px;
+    -fx-padding: 10;
+}
+
+.add-button {
+    -fx-background-color: #002B5C;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+}

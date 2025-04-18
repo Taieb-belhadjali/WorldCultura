@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.controllers.showrehlacontroller"
+            prefWidth="300.0" prefHeight="250.0">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <VBox spacing="10.0">
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Détails du Vol"/>
+        <GridPane vgap="5.0" hgap="10.0">
+            <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <Label fx:id="idLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label text="Agence:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id="agenceLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label text="Départ:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label fx:id="departLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label text="Destination:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <Label fx:id="destinationLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <Label text="Date Départ:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <Label fx:id="departDateLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <Label text="Date Arrivée:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+            <Label fx:id="arrivalDateLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <Label text="Prix:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+            <Label fx:id="priceLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        </GridPane>
+        <HBox alignment="CENTER_RIGHT">
+            <Button text="Fermer" onAction="#handleClose"/>
+        </HBox>
+    </VBox>
+</AnchorPane>
