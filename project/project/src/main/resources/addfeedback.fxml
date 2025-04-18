@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+<VBox prefHeight="400.0" prefWidth="600.0"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="project.controllers.AddFeedbackController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Add Feedback" />
+        <GridPane hgap="10" vgap="10" style="-fx-padding: 20;">
+            <Label text="Bon Plan ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="bonPlanIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label text="User ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="utilisateurIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <Label text="Comment:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextArea fx:id="commentaireTextArea" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <Label text="Rating:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="ratingTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <Button fx:id="addButton" onAction="#addFeedback" text="Add Feedback" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        </GridPane>
+    </children>
+</VBox>

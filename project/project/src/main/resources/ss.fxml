@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: pink;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.ShowBonPlanController">
+    <center>
+        <VBox prefHeight="256.0" prefWidth="446.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10;" BorderPane.alignment="CENTER">
+            <effect>
+                <DropShadow>
+                    <color>
+                        <Color opacity="0.25" />
+                    </color>
+                </DropShadow>
+            </effect>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Bon Plan Details" />
+                <GridPane hgap="10" style="-fx-padding: 20;" vgap="10">
+                    <Label fx:id="idLabelLabel" style="-fx-font-weight: bold;" text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="idTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label fx:id="titreLabelLabel" style="-fx-font-weight: bold;" text="Titre:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="titreTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label fx:id="descriptionLabelLabel" style="-fx-font-weight: bold;" text="Description:" GridPane.rowIndex="2" />
+                    <TextField fx:id="descriptionTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                    <Label fx:id="lieuLabelLabel" style="-fx-font-weight: bold;" text="Lieu:" GridPane.rowIndex="3" />
+                    <TextField fx:id="lieuTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                    <Label fx:id="dateCreationLabelLabel" style="-fx-font-weight: bold;" text="Date de Création:" GridPane.rowIndex="4" />
+                    <TextField fx:id="dateCreationTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                    <Label fx:id="dateExpirationLabelLabel" style="-fx-font-weight: bold;" text="Date d'Expiration:" GridPane.rowIndex="5" />
+                    <TextField fx:id="dateExpirationTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                    <Label fx:id="categorieLabelLabel" style="-fx-font-weight: bold;" text="Catégorie:" GridPane.rowIndex="6" />
+                    <TextField fx:id="categorieTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                </GridPane>
+                <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-margin-top: 20;" text="Feedbacks" />
+                <TableView fx:id="feedbackTableView" prefHeight="300.0" prefWidth="600.0" style="-fx-margin-top: 10;">
+                    <columns>
+                        <TableColumn fx:id="userIdColumn" text="User ID" />
+                        <TableColumn fx:id="commentColumn" text="Comment" />
+                        <TableColumn fx:id="ratingColumn" text="Rating" />
+                        <TableColumn fx:id="dateColumn" text="Date" />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+    </center>
+    <left>
+        <Pane prefHeight="353.0" prefWidth="64.0" BorderPane.alignment="CENTER" />
+    </left>
+    <right>
+        <Pane prefHeight="353.0" prefWidth="89.0" BorderPane.alignment="CENTER" />
+    </right>
+    <top>
+        <Pane prefHeight="45.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+    </top>
+    <bottom>
+        <Pane prefHeight="63.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+    </bottom>
+</BorderPane>

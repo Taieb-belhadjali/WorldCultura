@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="544.0" prefWidth="799.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.BonPlanController">
+    <stylesheets>
+        <URL value="@bonplan_styles.css" />
+    </stylesheets>
+    <children>
+        <TableView fx:id="tableBonPlans" layoutX="11.0" layoutY="16.0" prefHeight="439.0" prefWidth="773.0" styleClass="table-view">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="50.0" style="-fx-text-fill: #666666;" text="ID" />
+                <TableColumn fx:id="colTitre" prefWidth="110.0" style="-fx-text-fill: #666666;" text="Titre" />
+                <TableColumn fx:id="colDescription" prefWidth="150.0" style="-fx-text-fill: #666666;" text="Description" />
+                <TableColumn fx:id="colLieu" prefWidth="100.0" style="-fx-text-fill: #666666;" text="Lieu" />
+                <TableColumn fx:id="dateCreationColumn" prefWidth="120.0" style="-fx-text-fill: #666666;" text="Date Création" />
+                <TableColumn fx:id="colDateExp" prefWidth="100.0" style="-fx-text-fill: #666666;" text="Date Expiration" />
+                <TableColumn fx:id="colCategorie" prefWidth="110.0" style="-fx-text-fill: #666666;" text="Catégorie" />
+            </columns>
+        </TableView>
+        <Button fx:id="consulterButton" layoutX="372.0" layoutY="470.0" mnemonicParsing="false" onAction="#consulterBonPlan" styleClass="button" text="Consulter" />
+    </children>
+</AnchorPane>

@@ -1,0 +1,41 @@
+.button {
+    -fx-background-color: #00B8D4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15 8 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    -fx-background-color: #00869e;
+}
+
+.button:pressed {
+    -fx-background-color: #005a67;
+    -fx-effect: null;
+}
+
+.add-feedback-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 15 8 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 2);
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-transition: background-color 0.3s ease;
+}
+
+.add-feedback-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.add-feedback-button:pressed {
+    -fx-background-color: #388e3c;
+    -fx-effect: null;
+}

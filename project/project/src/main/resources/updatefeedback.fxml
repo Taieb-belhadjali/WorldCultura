@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.UpdateFeedbackController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Update Feedback" />
+        <GridPane vgap="10" hgap="10" style="-fx-padding: 20;">
+            <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="idTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label text="Bon Plan ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="bonPlanIdTextField" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <Label text="Commentaire:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextArea fx:id="commentaireTextArea" prefHeight="80.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <Label text="Rating:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <Slider fx:id="ratingSlider" max="5.0" min="1.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="ratingValueLabel" text="3" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+
+            <HBox spacing="10" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <Button onAction="#handleUpdateFeedback" text="Update" />
+                <Button onAction="#handleCancelUpdate" text="Cancel" />
+            </HBox>
+        </GridPane>
+    </children>
+</VBox>

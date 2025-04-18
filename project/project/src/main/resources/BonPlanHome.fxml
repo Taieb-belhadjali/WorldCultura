@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.BonPlanHomeController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label fx:id="bonPlanIdLabel" text="ID du Bon Plan:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label text="Titre:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="titreLabel" text="[Titre du Bon Plan]" />
+        <Label text="Description:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="descriptionLabel" text="[Description du Bon Plan]" wrapText="true" />
+        <Label text="Lieu:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="lieuLabel" text="[Lieu du Bon Plan]" />
+        <Label text="Date d'Expiration:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="dateExpirationLabel" text="[Date d'Expiration du Bon Plan]" />
+        <Label text="Catégorie:">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="categorieLabel" text="[Catégorie du Bon Plan]" />
+    </children>
+</VBox>
