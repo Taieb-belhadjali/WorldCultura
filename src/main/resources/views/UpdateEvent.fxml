@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="project.controllers.UpdateEventController">
+    <children>
+        <VBox spacing="10" alignment="CENTER" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+            <Label text="🛠️ Update Event" />
+            <TextField fx:id="idField" promptText="Event ID" visible="false" managed="false"/>
+            <TextField fx:id="nameField" promptText="New Event Name" />
+            <TextField fx:id="startDateField" promptText="Start Date (YYYY-MM-DD)" />
+            <TextField fx:id="endDateField" promptText="End Date (YYYY-MM-DD)" />
+            <TextArea fx:id="descriptionArea" promptText="Description" />
+            <TextField fx:id="imageField" promptText="Image URL" />
+            <Button fx:id="chooseImageButton" text="📁 Choisir une image" onAction="#handleImageImport"/>
+            <Label fx:id="imagePathLabel" text="Aucune image sélectionnée" />
+            <ImageView fx:id="imagePreview" fitWidth="200" preserveRatio="true" />
+
+
+            <Button text="Update" onAction="#updateEvent"/>
+        </VBox>
+    </children>
+</AnchorPane>

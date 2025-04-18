@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox fx:id="eventBox" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="project.controllers.EventItemController"
+      spacing="10" alignment="CENTER"
+      style="-fx-background-color: white; -fx-padding: 10; -fx-border-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0.0, 0, 1);">
+
+    <ImageView fx:id="eventImage" fitWidth="150" fitHeight="100" preserveRatio="true"/>
+    <Label fx:id="eventName" style="-fx-font-weight: bold; -fx-font-size: 16;"/>
+    <Button text="Détails" fx:id="detailButton" onAction="#handleDetails"
+            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 5;"/>
+    <Button fx:id="participerButton" text="Participer" onAction="#handleParticiper" style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+
+</VBox>

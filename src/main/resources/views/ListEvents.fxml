@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.controllers.ListEventController"
+            prefWidth="900.0" prefHeight="600.0"
+            style="-fx-background-color: #ecf0f1;">
+
+    <!-- En-tête -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: #2c3e50;">
+            <padding><Insets top="20" bottom="20" left="30" right="30"/></padding>
+            <Label text="📅 Liste des Événements"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white;" />
+        </HBox>
+    </top>
+
+    <!-- Table des événements -->
+    <center>
+        <VBox spacing="15" alignment="CENTER">
+            <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+            <TableView fx:id="eventsTable" prefHeight="480" prefWidth="840"
+                       style="-fx-background-color: white; -fx-border-radius: 10; -fx-padding: 10px;">
+                <columns>
+                    <!-- Colonne Nom -->
+                    <TableColumn fx:id="nameColumn" text="Nom" prefWidth="150"/>
+                    <!-- Colonne Description -->
+                    <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="200"/>
+                    <!-- Colonne Date Début -->
+                    <TableColumn fx:id="dateDebutColumn" text="Date Début" prefWidth="120"/>
+                    <!-- Colonne Date Fin -->
+                    <TableColumn fx:id="dateFinColumn" text="Date Fin" prefWidth="120"/>
+                    <!-- Colonne Image -->
+                    <TableColumn fx:id="imageColumn" text="Image" prefWidth="100"/>
+                    <!-- Colonne Actions -->
+                    <TableColumn fx:id="actionColumn" text="Actions" prefWidth="150"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+    <!-- Boutons en bas -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-background-color: #bdc3c7;">
+            <padding><Insets top="15" bottom="15" left="30" right="30"/></padding>
+            <Button text="🔄 Rafraîchir"
+                    fx:id="refreshButton"
+                    style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;"/>
+
+            <Button text="➕ Ajouter un événement"
+                    onAction="#handleAddEvent"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

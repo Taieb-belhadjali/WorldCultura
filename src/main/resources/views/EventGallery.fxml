@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="project.controllers.EventGalleryController">
+    <children>
+        <VBox spacing="10.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+            <!-- Titre principal -->
+            <Label text="🎉 Nos Événements"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"
+                   alignment="CENTER"
+                   maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets top="20" bottom="5"/>
+                </VBox.margin>
+            </Label>
+
+            <!-- Phrase d’accueil -->
+            <Label text="Vivez l’émotion, créez des souvenirs ✨"
+                   style="-fx-font-size: 16px; -fx-text-fill: #34495e;"
+                   alignment="CENTER"
+                   maxWidth="Infinity">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </Label>
+
+            <!-- Scroll avec les cartes -->
+            <ScrollPane fx:id="scrollPane"
+                        fitToWidth="true"
+                        fitToHeight="true"
+                        style="-fx-background-color: transparent;"
+                        VBox.vgrow="ALWAYS">
+                <content>
+                    <FlowPane fx:id="eventContainer"
+                              hgap="20"
+                              vgap="20"
+                              style="-fx-background-color: #ecf0f1;">
+                        <padding>
+                            <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+                    </FlowPane>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </children>
+</AnchorPane>
