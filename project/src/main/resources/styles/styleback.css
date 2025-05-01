@@ -1,0 +1,223 @@
+/* General styles */
+.root {
+    -fx-background-color: #f4f6f8; /* Light grey background */
+    -fx-font-family: "Segoe UI", "Roboto", sans-serif;
+}
+
+/* Top section (similar to the blue header) */
+.top-section {
+    -fx-background-color: #002B5C; /* Dark blue */
+    -fx-padding: 10px;
+}
+
+.top-label {
+    -fx-text-fill: white;
+    -fx-font-size: 1.4em;
+    -fx-font-weight: bold;
+}
+
+/* Sidebar */
+.sidebar {
+    -fx-background-color: white;
+    -fx-pref-width: 220px; /* Adjust as needed */
+    -fx-padding: 10px 0;
+}
+
+.sidebar-header {
+    -fx-padding: 10px 15px;
+}
+
+.sidebar-brand {
+    -fx-alignment: center-left;
+}
+
+.sidebar-logo {
+    /* You'll need to handle the image loading in your JavaFX code */
+    -fx-pref-width: 26px;
+    -fx-pref-height: 26px;
+}
+
+.sidebar-brand-name {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-padding-left: 10px;
+    -fx-font-size: 1.1em;
+}
+
+.sidebar-divider {
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px 0 0 0;
+    -fx-margin: 10px 15px;
+}
+
+.sidebar-nav {
+    -fx-padding: 0;
+}
+
+.nav-item {
+    -fx-padding: 8px 15px;
+}
+
+.nav-link {
+    -fx-text-fill: #333;
+    -fx-font-size: 1em;
+    -fx-alignment: center-left;
+}
+
+.nav-link:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.nav-icon {
+    /* Use a font icon library like FontAwesomeFX or create your own */
+    -fx-font-size: 1.1em;
+    -fx-padding-right: 10px;
+}
+
+.nav-link.active {
+    -fx-background-color: #e9ecef; /* Light grey for active */
+    -fx-font-weight: bold;
+}
+
+/* Main content area */
+.main-content {
+    -fx-padding: 20px;
+}
+
+/* Navigation bar (inside main content) */
+.navbar {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 0;
+}
+
+.breadcrumb {
+    -fx-text-fill: #555;
+    -fx-font-size: 0.9em;
+}
+
+.search-bar {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+}
+
+.search-input {
+    -fx-padding: 8px;
+    -fx-prompt-text-fill: #999;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.search-button {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 8px;
+}
+
+.search-icon {
+    /* Font icon */
+    -fx-font-size: 1em;
+    -fx-text-fill: #555;
+}
+
+.navbar-nav {
+    -fx-spacing: 15px;
+}
+
+.nav-item-right {
+    -fx-alignment: center-right;
+}
+
+.nav-link-right {
+    -fx-text-fill: #333;
+}
+
+.user-icon {
+    /* Font icon */
+    -fx-font-size: 1.1em;
+    -fx-padding-right: 5px;
+}
+
+/* Dashboard content (example) */
+.dashboard-row {
+    -fx-spacing: 20px;
+    -fx-padding-bottom: 20px;
+}
+
+.dashboard-card {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-padding: 15px;
+}
+
+/* Footer */
+.footer {
+    -fx-padding: 15px 0;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.copyright {
+    -fx-text-fill: #777;
+    -fx-font-size: 0.8em;
+}
+
+.copyright-link {
+    -fx-text-fill: #007bff;
+    -fx-underline: false;
+}
+
+.copyright-link:hover {
+    -fx-underline: true;
+}
+
+/* You'll need to integrate a font icon library (like FontAwesomeFX)
+   to use classes like .fa, .ni, etc. For example, if you're using
+   FontAwesomeFX, you might style icons like this: */
+
+.nav-icon.ni-tv-2 {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf111"; /* Example - replace with the correct unicode for tv icon */
+    -fx-font-weight: 900;
+}
+.nav-icon.ni-calendar-grid-58 {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf073"; /* Example - replace with the correct unicode for calendar icon */
+    -fx-font-weight: 900;
+}
+.nav-icon.ni-credit-card {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf09d"; /* Example - replace with the correct unicode for credit card icon */
+    -fx-font-weight: 900;
+}
+.nav-icon.ni-chart-bar-32 {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf080"; /* Example - replace with the correct unicode for chart bar icon */
+    -fx-font-weight: 900;
+}
+.fa-user {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf007";
+}
+.fas.fa-search {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf002";
+}
+.fa-cog {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf013";
+}
+.fa-times {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf00d";
+}
+.fa-close {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf00d";
+}
+.fa-heart {
+    -fx-font-family: "Font Awesome 5 Free";
+    -fx-text: "\uf004";
+    -fx-fill: red; /* Example color for the heart */
+}

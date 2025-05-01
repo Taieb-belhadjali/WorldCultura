@@ -12,6 +12,17 @@ module project {
     requires com.almasb.fxgl.all;
     requires java.sql;
 
+    requires com.google.zxing;
+    requires com.google.zxing.javase;
+    requires java.desktop; // For java.awt.image
+    requires javafx.swing; // For javafx.embed.swing
+
+    requires java.net.http;
+    requires org.json;
+    requires flying.saucer.pdf;
+    requires stripe.java;
+    requires jdk.jsobject;
+
 
     exports project;
     exports project.interfaces;

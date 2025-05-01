@@ -1,0 +1,114 @@
+/* stylefront.css */
+
+/* General Body Styles */
+body {
+    -fx-font-family: "Roboto", sans-serif;
+    -fx-background-color: #f8f9fa; /* Light gray background */
+    -fx-text-fill: #343a40; /* Dark text color */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    -fx-font-family: "Jost", sans-serif;
+    -fx-font-weight: bold;
+    -fx-text-fill: #198754; /* Primary green color for headings */
+}
+
+h1 {
+    -fx-font-size: 2.5em;
+}
+
+h2 {
+    -fx-font-size: 2em;
+}
+
+/* Links */
+.hyperlink {
+    -fx-text-fill: #0d6efd; /* Primary blue color for links */
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #0b5ed7; /* Darker blue on hover */
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #198754; /* Primary green */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 0.6em 1.2em;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #157347; /* Darker green on hover */
+}
+
+.button:pressed {
+    -fx-background-color: #0d663e; /* Even darker green when pressed */
+}
+
+/* Primary Color Accents */
+.primary {
+    -fx-background-color: #198754;
+    -fx-text-fill: white;
+}
+
+/* Light Background Sections */
+.light-section {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-border-radius: 5px;
+}
+
+/* Input Fields (if you have them) */
+.text-field {
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 5px;
+    -fx-padding: 0.4em;
+}
+
+.text-field:focused {
+    -fx-border-color: #0d6efd;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+}
+
+/* Lists */
+.list-view {
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 5px;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #198754;
+    -fx-text-fill: white;
+}
+
+/* You can add more specific styles based on the HTML structure,
+   like for navigation bars, footers, etc. */
+
+/* Example for a navigation bar */
+.nav-bar {
+    -fx-background-color: #007bff; /* Example blue */
+    -fx-padding: 10px;
+}
+
+.nav-link {
+    -fx-text-fill: white;
+    -fx-padding: 0.5em 1em;
+}
+
+.nav-link:hover {
+    -fx-opacity: 0.8;
+}
+
+/* Example for a footer */
+.footer {
+    -fx-background-color: #343a40; /* Dark background */
+    -fx-padding: 20px;
+}
+
+.footer-text {
+    -fx-text-fill: #f8f9fa; /* Light text */
+}

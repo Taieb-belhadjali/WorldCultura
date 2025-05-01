@@ -3,9 +3,11 @@ package project.service;
 import project.interfaces.iservice;
 import project.models.Reservation;
 import project.models.rehla;
+import project.models.compagnie_aerienne; // Importez la classe de l'agence
 import project.utils.Myconnection;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +32,9 @@ public class Reservationservice implements iservice<Reservation> {
             if (generatedKeys.next()) {
                 reservation.setId(generatedKeys.getInt(1));
             }
-            System.out.println("✅ Reservation added successfully with ID: " + reservation.getId() + " for Flight ID: " + reservation.getRehla().getId());
+            System.out.println("✅ Réservation ajoutée avec succès avec l'ID : " + reservation.getId() + " pour le vol ID : " + reservation.getRehla().getId());
         } catch (SQLException ex) {
-            System.err.println("❌ Error adding reservation: " + ex.getMessage());
+            System.err.println("❌ Erreur lors de l'ajout de la réservation : " + ex.getMessage());
         }
     }
 
@@ -48,12 +50,12 @@ public class Reservationservice implements iservice<Reservation> {
             pst.setInt(6, reservation.getId());
             int rowsUpdated = pst.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("✅ Reservation with ID " + reservation.getId() + " updated successfully for Flight ID: " + reservation.getRehla().getId());
+                System.out.println("✅ Réservation avec l'ID " + reservation.getId() + " mise à jour avec succès pour le vol ID : " + reservation.getRehla().getId());
             } else {
-                System.out.println("⚠️ Reservation with ID " + reservation.getId() + " not found for update.");
+                System.out.println("⚠️ Réservation avec l'ID " + reservation.getId() + " non trouvée pour la mise à jour.");
             }
         } catch (SQLException ex) {
-            System.err.println("❌ Error updating reservation: " + ex.getMessage());
+            System.err.println("❌ Erreur lors de la mise à jour de la réservation : " + ex.getMessage());
         }
     }
 
@@ -64,37 +66,51 @@ public class Reservationservice implements iservice<Reservation> {
             pst.setInt(1, id);
             int rowsDeleted = pst.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("✅ Reservation with ID " + id + " deleted successfully.");
+                System.out.println("✅ Réservation avec l'ID " + id + " supprimée avec succès.");
             } else {
-                System.out.println("⚠️ Reservation with ID " + id + " not found for deletion.");
+                System.out.println("⚠️ Réservation avec l'ID " + id + " non trouvée pour la suppression.");
             }
         } catch (SQLException ex) {
-            System.err.println("❌ Error deleting reservation: " + ex.getMessage());
+            System.err.println("❌ Erreur lors de la suppression de la réservation : " + ex.getMessage());
         }
     }
 
     @Override
     public Reservation getById(int id) {
-        String sql = "SELECT r.*, h.id as rehla_id FROM reservation r JOIN rehla h ON r.rehla_id = h.id WHERE r.id = ?";
+        String sql = "SELECT r.*, h.*, a.* FROM reservation r JOIN rehla h ON r.rehla_id = h.id JOIN compagnie_aerienne a ON h.agence_id = a.id WHERE r.id = ?";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 Reservation reservation = new Reservation();
                 reservation.setId(rs.getInt("id"));
+
                 rehla flight = new rehla();
                 flight.setId(rs.getInt("rehla_id"));
+                flight.setDepart(rs.getString("depart"));
+                flight.setDestination(rs.getString("destination"));
+                flight.setDepart_date(rs.getObject("depart_date", LocalDateTime.class));
+                flight.setArrival_date(rs.getObject("arrival_date", LocalDateTime.class));
+                flight.setPrice(rs.getFloat("price"));
+
+                // Récupération de l'agence
+                compagnie_aerienne agence = new compagnie_aerienne();
+                agence.setId(rs.getInt("agence_id")); // Assurez-vous que le nom de la colonne est correct
+                agence.setNom(rs.getString("nom"));    // Assurez-vous que le nom de la colonne est correct
+                //agence.setAdresse(rs.getString("adresse")); // Si vous avez d'autres attributs pour l'agence
+                flight.setAgence(agence);
+
                 reservation.setRehla(flight);
-                reservation.setUserName(rs.getString("user_name")); // Changed to user_name
+                reservation.setUserName(rs.getString("user_name"));
                 reservation.setEmail(rs.getString("email"));
                 reservation.setContact(rs.getString("contact"));
-                reservation.setUserId((Integer) rs.getObject("user_id")); // Changed to user_id
+                reservation.setUserId((Integer) rs.getObject("user_id"));
                 return reservation;
             } else {
-                System.out.println("⚠️ Reservation with ID " + id + " not found.");
+                System.out.println("⚠️ Réservation avec l'ID " + id + " non trouvée.");
             }
         } catch (SQLException ex) {
-            System.err.println("❌ Error fetching reservation: " + ex.getMessage());
+            System.err.println("❌ Erreur lors de la récupération de la réservation : " + ex.getMessage());
         }
         return null;
     }
@@ -102,22 +118,36 @@ public class Reservationservice implements iservice<Reservation> {
     @Override
     public List<Reservation> getAll() {
         List<Reservation> reservations = new ArrayList<>();
-        String sql = "SELECT r.*, h.id as rehla_id FROM reservation r JOIN rehla h ON r.rehla_id = h.id";
+        String sql = "SELECT r.*, h.*, a.* FROM reservation r JOIN rehla h ON r.rehla_id = h.id JOIN compagnie_aerienne a ON h.agence_id = a.id";
         try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 Reservation reservation = new Reservation();
                 reservation.setId(rs.getInt("id"));
+
                 rehla flight = new rehla();
                 flight.setId(rs.getInt("rehla_id"));
+                flight.setDepart(rs.getString("depart"));
+                flight.setDestination(rs.getString("destination"));
+                flight.setDepart_date(rs.getObject("depart_date", LocalDateTime.class));
+                flight.setArrival_date(rs.getObject("arrival_date", LocalDateTime.class));
+                flight.setPrice(rs.getFloat("price"));
+
+                // Récupération de l'agence
+                compagnie_aerienne agence = new compagnie_aerienne();
+                agence.setId(rs.getInt("agence_id"));  // Assurez-vous que le nom de la colonne est correct
+                agence.setNom(rs.getString("nom"));     // Assurez-vous que le nom de la colonne est correct
+                //agence.setAdresse(rs.getString("adresse"));  // Si vous avez d'autres attributs pour l'agence
+                flight.setAgence(agence);
+
                 reservation.setRehla(flight);
-                reservation.setUserName(rs.getString("user_name")); // Changed to user_name
+                reservation.setUserName(rs.getString("user_name"));
                 reservation.setEmail(rs.getString("email"));
                 reservation.setContact(rs.getString("contact"));
-                reservation.setUserId((Integer) rs.getObject("user_id")); // Changed to user_id
+                reservation.setUserId((Integer) rs.getObject("user_id"));
                 reservations.add(reservation);
             }
         } catch (SQLException ex) {
-            System.err.println("❌ Error fetching all reservations: " + ex.getMessage());
+            System.err.println("❌ Erreur lors de la récupération de toutes les réservations : " + ex.getMessage());
         }
         return reservations;
     }
