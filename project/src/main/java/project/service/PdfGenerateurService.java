@@ -165,10 +165,9 @@ public class PdfGenerateurService {
                 "            <th>Prix</th>\n" +
                 "            <td>" + reservation.getRehla().getPrice() + " €</td>\n" +
                 "            <th>QR Code</th>\n" +
-
-                //"            <td class=\"qr-code\"><img src=\"data:image/png;base64," + qrCodeBase64 + "\" alt=\"QR Code\"/></td>\n" +
-                "            <th>Siège</th>\n" +
-                "            <td>55L</td>\n" +
+                "            <td class=\"qr-code\"><img src=\"data:image/png;base64," + qrCodeBase64 + "\" alt=\"QR Code\"/></td>\n" +
+                "            <th>QR Code</th>\n" +
+                "            <td class=\"qr-code\"><img src=\"data:image/png;base64," + qrCodeBase64 + "\" alt=\"QR Code\"/></td>\n" +
                 "        </tr>\n" +
                 "    </table>\n" +
                 "</div>\n" +
@@ -196,7 +195,7 @@ public class PdfGenerateurService {
 
         try {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(qrContent.toString(), BarcodeFormat.QR_CODE, 200, 200);
+            BitMatrix bitMatrix = qrCodeWriter.encode(qrContent.toString(), BarcodeFormat.QR_CODE, 90, 90);
             BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "png", outputStream);
