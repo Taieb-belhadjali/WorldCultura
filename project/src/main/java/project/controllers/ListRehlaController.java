@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import project.models.compagnie_aerienne;
 import project.models.rehla;
@@ -23,12 +24,32 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class ListRehlaController {
 
     @FXML
     private TextField searchField;
+    @FXML
+    private TextField departInput;
+    @FXML
+    private TextField searchInput; // Pour la destination
+    @FXML
+    private Slider minPriceRange;
+    @FXML
+    private Slider maxPriceRange;
+    @FXML
+    private DatePicker departDateInput;
+    @FXML
+    private DatePicker arrivalDateInput;
+    @FXML
+    private VBox agenceFilterVBox;
+    @FXML
+    private Label minPriceLabel;
+    @FXML
+    private Label maxPriceLabel;
 
     @FXML
     private TableView<rehla> rehlaTable;
@@ -148,7 +169,79 @@ public class ListRehlaController {
         loadRehlas();
 
         searchField.setOnKeyReleased(this::handleSearch);
+
+        // Ajouter des listeners pour les champs de recherche départ et destination
+        departInput.textProperty().addListener((obs, oldVal, newVal) -> {
+            applyFilters();
+        });
+
+        searchInput.textProperty().addListener((obs, oldVal, newVal) -> {
+            applyFilters();
+        });
+
+        // Initialize listeners for price sliders
+        minPriceRange.valueProperty().addListener((obs, oldVal, newVal) -> {
+            minPriceLabel.setText(String.format("%.0f €", newVal.doubleValue()));
+            applyFilters();
+        });
+
+        maxPriceRange.valueProperty().addListener((obs, oldVal, newVal) -> {
+            maxPriceLabel.setText(String.format("%.0f €", newVal.doubleValue()));
+            applyFilters();
+        });
+
+        // Add listeners for date pickers
+        departDateInput.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+        arrivalDateInput.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+
+        // Populate the agency filter
+        populateAgenceFilter();
     }
+
+    private void populateAgenceFilter() {
+        // Clear existing checkboxes to avoid duplicates
+        agenceFilterVBox.getChildren().clear();
+
+        // Use a Set to ensure unique agencies
+        Set<compagnie_aerienne> uniqueAgences = new HashSet<>();
+
+        for (rehla vol : service.getAll()) {
+            uniqueAgences.add(vol.getAgence());
+        }
+
+        for (compagnie_aerienne agence : uniqueAgences) {
+            CheckBox checkBox = new CheckBox(agence.getNom());
+            checkBox.setOnAction(event -> applyFilters());
+            agenceFilterVBox.getChildren().add(checkBox);
+        }
+    }
+
+    private void applyFilters() {
+        String departKeyword = departInput.getText().toLowerCase();
+        String destinationKeyword = searchInput.getText().toLowerCase();
+        double minPrice = minPriceRange.getValue();
+        double maxPrice = maxPriceRange.getValue();
+        LocalDateTime selectedDepartDate = departDateInput != null ? departDateInput.getValue() != null ? departDateInput.getValue().atStartOfDay() : null : null;
+        LocalDateTime selectedArrivalDate = arrivalDateInput != null ? arrivalDateInput.getValue() != null ? arrivalDateInput.getValue().atStartOfDay() : null : null;
+        List<String> selectedAgences = agenceFilterVBox.getChildren().stream()
+                .filter(node -> node instanceof CheckBox && ((CheckBox) node).isSelected())
+                .map(node -> ((CheckBox) node).getText())
+                .collect(Collectors.toList());
+
+        List<rehla> filtered = rehlaList.stream()
+                .filter(rehla ->
+                        (departKeyword.isEmpty() || rehla.getDepart().toLowerCase().contains(departKeyword)) &&
+                                (destinationKeyword.isEmpty() || rehla.getDestination().toLowerCase().contains(destinationKeyword)) &&
+                                rehla.getPrice() >= minPrice &&
+                                rehla.getPrice() <= maxPrice &&
+                                (selectedDepartDate == null || (rehla.getDepart_date() != null && rehla.getDepart_date().toLocalDate().equals(selectedDepartDate.toLocalDate()))) &&
+                                (selectedArrivalDate == null || (rehla.getArrival_date() != null && rehla.getArrival_date().toLocalDate().equals(selectedArrivalDate.toLocalDate()))) &&
+                                (selectedAgences.isEmpty() || selectedAgences.contains(rehla.getAgence().getNom()))
+                )
+                .collect(Collectors.toList());
+        rehlaTable.setItems(FXCollections.observableArrayList(filtered));
+    }
+
 
     void loadRehlas() {
         List<rehla> flights = service.getAll();
@@ -184,6 +277,7 @@ public class ListRehlaController {
             stage.setScene(new Scene(root));
             stage.showAndWait();
             loadRehlas();
+            populateAgenceFilter(); // Rafraîchir les filtres après ajout
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -202,6 +296,7 @@ public class ListRehlaController {
             stage.setScene(new Scene(root));
             stage.showAndWait();
             loadRehlas();
+            populateAgenceFilter(); // Rafraîchir les filtres après modification
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -220,6 +315,7 @@ public class ListRehlaController {
             stage.setScene(new Scene(root));
             stage.showAndWait();
             loadRehlas();
+            populateAgenceFilter(); // Rafraîchir les filtres après suppression
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -307,5 +403,23 @@ public class ListRehlaController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void resetFilters(ActionEvent event) {
+        if (searchInput != null) searchInput.clear();
+        if (departInput != null) departInput.clear();
+        if (minPriceRange != null) minPriceRange.setValue(0);
+        if (maxPriceRange != null) maxPriceRange.setValue(2000);
+        if (departDateInput != null) departDateInput.setValue(null);
+        if (arrivalDateInput != null) arrivalDateInput.setValue(null);
+        if (agenceFilterVBox != null) {
+            agenceFilterVBox.getChildren().forEach(node -> {
+                if (node instanceof CheckBox) {
+                    ((CheckBox) node).setSelected(false);
+                }
+            });
+        }
+        applyFilters(); // Re-apply filters after reset
     }
 }

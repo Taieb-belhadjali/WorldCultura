@@ -165,7 +165,8 @@ public class PdfGenerateurService {
                 "            <th>Prix</th>\n" +
                 "            <td>" + reservation.getRehla().getPrice() + " €</td>\n" +
                 "            <th>QR Code</th>\n" +
-                "            <td class=\"qr-code\"><img src=\"data:image/png;base64," + qrCodeBase64 + "\" alt=\"QR Code\"/></td>\n" +
+
+                //"            <td class=\"qr-code\"><img src=\"data:image/png;base64," + qrCodeBase64 + "\" alt=\"QR Code\"/></td>\n" +
                 "            <th>Siège</th>\n" +
                 "            <td>55L</td>\n" +
                 "        </tr>\n" +

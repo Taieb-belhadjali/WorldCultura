@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.event.ActionEvent?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefWidth="220.0" styleClass="sidebar" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.SidebarController">
+    <children>
+        <HBox alignment="CENTER_LEFT" styleClass="sidebar-header, sidebar-brand">
+            <children>
+                <Label styleClass="sidebar-brand-name" text="World Cultura">
+                    <textFill>
+                        <Color blue="0.8" green="0.168" red="0.0" opacity="1.0" />
+                    </textFill>
+                    <font>
+                        <Font name="Segoe UI Bold" size="18.0" />
+                    </font>
+                </Label>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+            </padding>
+        </HBox>
+        <Label styleClass="sidebar-divider" />
+        <VBox styleClass="sidebar-nav">
+            <children>
+                <Button mnemonicParsing="false" onAction="#loadAirlines" styleClass="nav-item, nav-link" prefWidth="Infinity">
+                    <graphic>
+                        <Label styleClass="nav-icon fa fa-plane" text="&#xf072;" />
+                    </graphic>
+                    <text>Compagnie Aérienne</text>
+                    <padding>
+                        <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                    </padding>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#loadFlights" styleClass="nav-item, nav-link" prefWidth="Infinity">
+                    <graphic>
+                        <Label styleClass="nav-icon fa fa-list-alt" text="&#xf022;" />
+                    </graphic>
+                    <text>Liste des Vols</text>
+                    <padding>
+                        <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                    </padding>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#loadReservations" styleClass="nav-item, nav-link" prefWidth="Infinity">
+                    <graphic>
+                        <Label styleClass="nav-icon fa fa-ticket-alt" text="&#xf3ff;" />
+                    </graphic>
+                    <text>Liste des Réservations</text>
+                    <padding>
+                        <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                    </padding>
+                </Button>
+            </children>
+        </VBox>
+    </children>
+</VBox>

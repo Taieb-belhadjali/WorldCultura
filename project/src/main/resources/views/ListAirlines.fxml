@@ -5,7 +5,11 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Font?>
+<?import javafx.fxml.FXMLLoader?>
 <BorderPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@../styles/styleback.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.ListAirlinesController">
+    <left>
+        <fx:include fx:id="sidebar" source="sidebar.fxml" />
+    </left>
     <top>
         <VBox alignment="CENTER" spacing="10.0" styleClass="top-section" BorderPane.alignment="CENTER">
             <padding>
