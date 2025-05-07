@@ -18,13 +18,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import project.models.Reservation;
-import project.models.compagnie_aerienne;
-import project.models.rehla;
-import project.service.WeatherService; // Import du nouveau service
-import project.service.compagnie_areienneservice;
-import project.service.rehlaservice;
-import project.service.Reservationservice;
+import project.models.aminemodels.Reservation;
+import project.models.aminemodels.compagnie_aerienne;
+import project.models.aminemodels.rehla;
+import project.service.amineservice.WeatherService; // Import du nouveau service
+import project.service.amineservice.compagnie_areienneservice;
+import project.service.amineservice.rehlaservice;
+import project.service.amineservice.Reservationservice;
 
 import java.io.IOException;
 import java.net.URL;
@@ -295,7 +295,7 @@ public class RehlafrontController implements Initializable {
     @FXML
     private void consulterReservations(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/reservationuser.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/reservationuser.fxml"));
             Parent reservationUserRoot = loader.load();
 
             Scene scene = new Scene(reservationUserRoot);

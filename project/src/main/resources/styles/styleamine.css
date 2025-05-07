@@ -59,9 +59,12 @@
 }
 
 .nav-link {
+    -fx-font-family: "System", "Segoe UI Emoji", sans-serif; /* Pour les emojis */
+    -fx-background-color: transparent;
     -fx-text-fill: #333;
     -fx-font-size: 1em;
     -fx-alignment: center-left;
+    -fx-padding: 8px 15px;
 }
 
 .nav-link:hover {
@@ -77,6 +80,19 @@
 .nav-link.active {
     -fx-background-color: #e9ecef; /* Light grey for active */
     -fx-font-weight: bold;
+}
+
+.sub-nav-link {
+    -fx-font-family: "System", "Segoe UI Emoji", sans-serif; /* Pour les emojis */
+    -fx-background-color: transparent;
+    -fx-text-fill: #333;
+    -fx-font-size: 0.9em;
+    -fx-alignment: center-left;
+    -fx-padding: 8px 15px 8px 30px; /* Indentation */
+}
+
+.sub-nav-link:hover {
+    -fx-background-color: #f0f0f0;
 }
 
 /* Main content area */
@@ -172,52 +188,17 @@
     -fx-underline: true;
 }
 
-/* You'll need to integrate a font icon library (like FontAwesomeFX)
-   to use classes like .fa, .ni, etc. For example, if you're using
-   FontAwesomeFX, you might style icons like this: */
-
-.nav-icon.ni-tv-2 {
+/* Font Awesome integration example (if you use it) */
+.nav-icon.fa {
     -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf111"; /* Example - replace with the correct unicode for tv icon */
-    -fx-font-weight: 900;
+    -fx-font-weight: 900; /* Solid style */
 }
-.nav-icon.ni-calendar-grid-58 {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf073"; /* Example - replace with the correct unicode for calendar icon */
-    -fx-font-weight: 900;
+.nav-icon.fa-plane {
+    -fx-text: "\uf072";
 }
-.nav-icon.ni-credit-card {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf09d"; /* Example - replace with the correct unicode for credit card icon */
-    -fx-font-weight: 900;
+.nav-icon.fa-list-alt {
+    -fx-text: "\uf022";
 }
-.nav-icon.ni-chart-bar-32 {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf080"; /* Example - replace with the correct unicode for chart bar icon */
-    -fx-font-weight: 900;
-}
-.fa-user {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf007";
-}
-.fas.fa-search {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf002";
-}
-.fa-cog {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf013";
-}
-.fa-times {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf00d";
-}
-.fa-close {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf00d";
-}
-.fa-heart {
-    -fx-font-family: "Font Awesome 5 Free";
-    -fx-text: "\uf004";
-    -fx-fill: red; /* Example color for the heart */
+.nav-icon.fa-ticket-alt {
+    -fx-text: "\uf3ff";
 }

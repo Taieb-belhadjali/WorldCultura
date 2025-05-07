@@ -6,7 +6,7 @@
 
 <?import javafx.scene.text.Font?>
 <?import javafx.fxml.FXMLLoader?>
-<BorderPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@../styles/styleback.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.ListRehlaController">
+<BorderPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@../../styles/styleamine.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.ListRehlaController">
     <left>
         <VBox spacing="10.0" styleClass="side-panel" prefWidth="200.0">
             <padding>

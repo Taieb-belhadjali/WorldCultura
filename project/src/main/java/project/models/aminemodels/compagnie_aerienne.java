@@ -1,4 +1,4 @@
-package project.models;
+package project.models.aminemodels;
 
 public class compagnie_aerienne {
     private Integer id;

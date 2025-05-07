@@ -1,9 +1,9 @@
-package project.service;
+package project.service.amineservice;
 
 import project.interfaces.iservice;
-import project.models.Reservation;
-import project.models.rehla;
-import project.models.compagnie_aerienne; // Importez la classe de l'agence
+import project.models.aminemodels.Reservation;
+import project.models.aminemodels.rehla;
+import project.models.aminemodels.compagnie_aerienne; // Importez la classe de l'agence
 import project.utils.Myconnection;
 
 import java.sql.*;

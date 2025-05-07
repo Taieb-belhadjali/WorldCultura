@@ -14,13 +14,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import project.models.Reservation;
-import project.service.Reservationservice;
-import project.service.StripeService;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
+import project.models.aminemodels.Reservation;
+import project.service.amineservice.Reservationservice;
+import project.service.amineservice.StripeService;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -161,7 +157,7 @@ public class ReservationUserController {
     private void openPaymentWindow(Reservation reservation) {
         System.out.println("Entering openPaymentWindow for reservation ID: " + reservation.getId());
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/PaymentView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/PaymentView.fxml"));
             VBox paymentRoot = loader.load();
 
             PaymentController paymentController = loader.getController();
@@ -241,7 +237,7 @@ public class ReservationUserController {
     @FXML
     private void switchToRehlaFront(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/rehla_front.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/rehla_front.fxml"));
             javafx.scene.Parent rehlaFrontRoot = loader.load();
             Scene scene = new Scene(rehlaFrontRoot);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

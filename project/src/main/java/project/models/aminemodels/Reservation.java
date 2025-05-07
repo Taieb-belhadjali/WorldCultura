@@ -1,8 +1,8 @@
-package project.models;
+package project.models.aminemodels;
 
 public class Reservation {
     private Integer id;
-    private rehla rehla; // Changed type to your rehla class
+    private project.models.aminemodels.rehla rehla; // Changed type to your rehla class
     private String userName;
     private String email;
     private String contact;

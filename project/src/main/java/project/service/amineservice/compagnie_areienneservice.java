@@ -1,7 +1,7 @@
-package project.service;
+package project.service.amineservice;
 
 import project.interfaces.iservice;
-import project.models.compagnie_aerienne;
+import project.models.aminemodels.compagnie_aerienne;
 import project.utils.Myconnection;
 
 import java.sql.*;

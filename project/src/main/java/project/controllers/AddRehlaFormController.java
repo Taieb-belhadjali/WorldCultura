@@ -8,10 +8,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import project.models.compagnie_aerienne;
-import project.models.rehla;
-import project.service.compagnie_areienneservice;
-import project.service.rehlaservice;
+import project.models.aminemodels.compagnie_aerienne;
+import project.models.aminemodels.compagnie_aerienne;
+import project.models.aminemodels.rehla;
+
+import project.service.amineservice.compagnie_areienneservice;
+import project.service.amineservice.rehlaservice;
 
 import java.time.LocalDate; // Added import
 import java.time.LocalDateTime;

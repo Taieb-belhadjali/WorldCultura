@@ -9,8 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import project.models.compagnie_aerienne;
-import project.service.compagnie_areienneservice;
+import project.models.aminemodels.compagnie_aerienne;
+import project.service.amineservice.compagnie_areienneservice;
 
 import java.io.File;
 

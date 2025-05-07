@@ -13,12 +13,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane; // Import manquant !
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import project.models.compagnie_aerienne;
-import project.service.compagnie_areienneservice;
+import project.models.aminemodels.compagnie_aerienne;
+import project.service.amineservice.compagnie_areienneservice;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +81,7 @@ public class ListAirlinesController implements javafx.fxml.Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Apply the stylesheet to the rootPane
         if (rootPane != null) {
-            rootPane.getStylesheets().add(getClass().getResource("/styles/styleback.css").toExternalForm());
+            rootPane.getStylesheets().add(getClass().getResource("/styles/styleamine.css").toExternalForm());
         } else {
             System.err.println("rootPane n'a pas été injecté ! Vérifiez votre fichier FXML.");
         }
@@ -239,7 +238,7 @@ public class ListAirlinesController implements javafx.fxml.Initializable {
     @FXML
     private void handleAddAirline() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddAirlineForm.fxml")); // Load the FXML file for adding an airline
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/AddAirlineForm.fxml")); // Load the FXML file for adding an airline
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Ajouter une compagnie"); // Set the title of the new window
@@ -311,7 +310,7 @@ public class ListAirlinesController implements javafx.fxml.Initializable {
      */
     private void handleUpdateAirlineForm(compagnie_aerienne airline) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/updateAirline.fxml")); // Load the FXML file for updating an airline
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/updateAirline.fxml")); // Load the FXML file for updating an airline
             Parent root = loader.load();
 
             updateairlinecontroller controller = loader.getController(); // Get the controller of the update form
@@ -352,7 +351,7 @@ public class ListAirlinesController implements javafx.fxml.Initializable {
     @FXML
     private void handleShowAirlineDetails(compagnie_aerienne airline) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/showairline.fxml")); // Load the FXML file for showing airline details
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/showairline.fxml")); // Load the FXML file for showing airline details
             Parent root = loader.load();
 
             showairline controller = loader.getController(); // Get the controller of the show details view

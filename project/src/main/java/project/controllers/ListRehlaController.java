@@ -16,9 +16,9 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import project.models.compagnie_aerienne;
-import project.models.rehla;
-import project.service.rehlaservice;
+import project.models.aminemodels.compagnie_aerienne;
+import project.models.aminemodels.rehla;
+import project.service.amineservice.rehlaservice;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -268,7 +268,7 @@ public class ListRehlaController {
     @FXML
     private void handleAddRehla() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddRehlaForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/AddRehlaForm.fxml"));
             Parent root = loader.load();
             AddRehlaFormController controller = loader.getController();
             controller.setListRehlaController(this);
@@ -286,7 +286,7 @@ public class ListRehlaController {
     @FXML
     private void handleUpdateRehla(rehla rehlaToUpdate) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UpdateRehlaForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/UpdateRehlaForm.fxml"));
             Parent root = loader.load();
             updaterehlacontroller controller = loader.getController();
             controller.setRehlaToEdit(rehlaToUpdate);
@@ -305,7 +305,7 @@ public class ListRehlaController {
     @FXML
     private void handleDeleteSelectedRehla(rehla rehlaToDelete) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/DeleteRehlaForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/DeleteRehlaForm.fxml"));
             Parent root = loader.load();
             deleterehlacontroller controller = loader.getController();
             controller.setRehlaToDelete(rehlaToDelete);
@@ -324,7 +324,7 @@ public class ListRehlaController {
     @FXML
     private void handleShowSelectedRehlaDetails(rehla rehlaDetails) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ShowRehlaDetails.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/amineviews/ShowRehlaDetails.fxml"));
             Parent root = loader.load();
             showrehlacontroller controller = loader.getController();
             controller.setRehla(rehlaDetails);

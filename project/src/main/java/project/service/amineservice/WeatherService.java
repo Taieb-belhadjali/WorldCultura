@@ -1,4 +1,4 @@
-package project.service;
+package project.service.amineservice;
 
 import java.net.URI;
 import java.net.http.HttpClient;

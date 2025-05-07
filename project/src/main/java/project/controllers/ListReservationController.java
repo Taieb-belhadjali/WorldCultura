@@ -1,6 +1,5 @@
 package project.controllers;
 
-import com.google.zxing.WriterException;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,10 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import project.models.Reservation;
-import project.service.PdfGenerateurService;
-import project.service.QRCodeService; // Importez le service QRCode
-import project.service.Reservationservice;
+import project.models.aminemodels.Reservation;
+import project.service.amineservice.PdfGenerateurService;
+import project.service.amineservice.QRCodeService; // Importez le service QRCode
+import project.service.amineservice.Reservationservice;
 
 import java.util.Comparator;
 import java.util.List;

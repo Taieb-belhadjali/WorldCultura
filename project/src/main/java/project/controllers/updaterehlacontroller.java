@@ -11,10 +11,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import project.models.compagnie_aerienne;
-import project.models.rehla;
-import project.service.compagnie_areienneservice;
-import project.service.rehlaservice;
+import project.models.aminemodels.compagnie_aerienne;
+import project.models.aminemodels.rehla;
+import project.service.amineservice.compagnie_areienneservice;
+import project.service.amineservice.rehlaservice;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -193,7 +193,7 @@ public class updaterehlacontroller {
 
     // Non-standard method for the controller to load its own FXML
     public static updaterehlacontroller loadFXML() throws IOException {
-        FXMLLoader loader = new FXMLLoader(updaterehlacontroller.class.getResource("/views/UpdateRehlaForm.fxml"));
+        FXMLLoader loader = new FXMLLoader(updaterehlacontroller.class.getResource("/views/amineviews/UpdateRehlaForm.fxml"));
         Parent root = loader.load();
         updaterehlacontroller controller = loader.getController();
         Stage stage = new Stage();

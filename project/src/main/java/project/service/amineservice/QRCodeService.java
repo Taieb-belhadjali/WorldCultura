@@ -1,4 +1,4 @@
-package project.service;
+package project.service.amineservice;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -9,7 +9,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.control.Alert;
-import project.models.Reservation; // Importez la classe Reservation
+import project.models.aminemodels.Reservation; // Importez la classe Reservation
 
 import java.awt.image.BufferedImage;
 

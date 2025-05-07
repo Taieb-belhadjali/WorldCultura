@@ -1,10 +1,10 @@
-package project.service;
+package project.service.amineservice;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 public class StripeService {

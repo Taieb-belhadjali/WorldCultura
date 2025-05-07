@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1500.0" styleClass="root" stylesheets="@../styles/styleback.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.ReservationUserController">
+<BorderPane prefHeight="800.0" prefWidth="1500.0" styleClass="root" stylesheets="@../../styles/styleamine.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.controllers.ReservationUserController">
     <top>
         <VBox alignment="CENTER" spacing="10.0" styleClass="top-section" BorderPane.alignment="CENTER">
             <padding>

@@ -1,4 +1,4 @@
-package project.models;
+package project.models.aminemodels;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

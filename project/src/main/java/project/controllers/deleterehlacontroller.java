@@ -4,8 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import project.models.rehla;
-import project.service.rehlaservice;
+import project.models.aminemodels.rehla;
+import project.service.amineservice.rehlaservice;
 
 public class deleterehlacontroller {
 

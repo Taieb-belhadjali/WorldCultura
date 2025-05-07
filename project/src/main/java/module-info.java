@@ -26,8 +26,8 @@ module project {
 
     exports project;
     exports project.interfaces;
-    exports project.models;
-    exports project.service;
+    exports project.models.aminemodels;
+    exports project.service.amineservice;
     exports project.utils;
 
     exports project.controllers;

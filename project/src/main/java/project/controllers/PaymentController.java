@@ -5,8 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import project.models.Reservation;
-import project.service.StripeService;
+import project.models.aminemodels.Reservation;
+import project.service.amineservice.StripeService;
 
 public class PaymentController {
 

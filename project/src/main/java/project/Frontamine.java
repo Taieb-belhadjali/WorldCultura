@@ -9,11 +9,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main4 extends Application {
+public class Frontamine extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/views/rehla_front.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/views/amineviews/rehla_front.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Page de Réservation");
         primaryStage.setScene(scene);

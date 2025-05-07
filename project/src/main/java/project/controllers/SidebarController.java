@@ -1,40 +1,52 @@
 package project.controllers;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
 
 public class SidebarController {
 
-    public void loadAirlines(ActionEvent event) throws IOException {
-        loadView("views/ListAirlines.fxml", event);
+    private MainViewController mainViewController;
+
+    @FXML
+    private VBox volManagementLinks;
+
+    private boolean volManagementVisible = false;
+
+    public void setMainViewController(MainViewController mainViewController) {
+        this.mainViewController = mainViewController;
     }
 
-    public void loadFlights(ActionEvent event) throws IOException {
-        loadView("views/ListRehla.fxml", event);
+    @FXML
+    private void toggleVolManagement(ActionEvent event) {
+        volManagementVisible = !volManagementVisible;
+        volManagementLinks.setVisible(volManagementVisible);
     }
 
-    public void loadReservations(ActionEvent event) throws IOException {
-        loadView("views/list_reservations.fxml", event);
+    @FXML
+    private void loadAirlines(ActionEvent event) {
+        if (mainViewController != null) {
+            mainViewController.loadView("views/amineviews/ListAirlines.fxml");
+        } else {
+            System.err.println("MainViewController n'est pas initialisé dans SidebarController.");
+        }
     }
 
-    private void loadView(String fxmlPath, ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/" + fxmlPath)); // Assure-toi que le chemin est correct
-        Node view = loader.load();
+    @FXML
+    private void loadFlights(ActionEvent event) {
+        if (mainViewController != null) {
+            mainViewController.loadView("views/amineviews/ListRehla.fxml");
+        } else {
+            System.err.println("MainViewController n'est pas initialisé dans SidebarController.");
+        }
+    }
 
-        // Trouver le BorderPane principal (si c'est ta structure) et centrer la nouvelle vue
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        BorderPane root = (BorderPane) stage.getScene().getRoot();
-        root.setCenter(view);
-
-        // Si tu as une autre structure, adapte cette partie pour afficher la vue
-        // Par exemple, si tu utilises un StackPane :
-        // StackPane root = (StackPane) stage.getScene().getRoot();
-        // root.getChildren().setAll(view);
+    @FXML
+    private void loadReservations(ActionEvent event) {
+        if (mainViewController != null) {
+            mainViewController.loadView("views/amineviews/list_reservations.fxml");
+        } else {
+            System.err.println("MainViewController n'est pas initialisé dans SidebarController.");
+        }
     }
 }
