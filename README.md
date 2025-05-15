@@ -96,6 +96,8 @@ Ce backend Symfony prend en charge les fonctionnalités suivantes :
     ```
 
 ---
+![image](https://github.com/user-attachments/assets/ce8b8db1-07a8-4a61-bf53-6d6b1f4067a0)
+
 
 ## Remerciements
 
