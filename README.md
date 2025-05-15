@@ -33,8 +33,8 @@ Ce backend Symfony prend en charge les fonctionnalités suivantes :
 
 ### Backend
 
-- PHP 8.1.25
-- Symfony 6.4
+- PHP 8.2
+- Symfony 6.4.18
 - Doctrine ORM
 - MySQL
 - Composer (gestionnaire de dépendances)
@@ -96,7 +96,28 @@ Ce backend Symfony prend en charge les fonctionnalités suivantes :
     ```
 
 ---
-![image](https://github.com/user-attachments/assets/ce8b8db1-07a8-4a61-bf53-6d6b1f4067a0)
+### Tableau de bord administrateur
+![image](https://github.com/user-attachments/assets/d5cab26f-b950-467a-ae23-77b8e00b9fd5)
+
+
+### Réservation de vols
+![image](https://github.com/user-attachments/assets/13186f55-35d4-4bce-b320-ba1547e98a29)
+
+
+### Boutique de produits locaux
+![image](https://github.com/user-attachments/assets/c3c0a414-8609-40a7-a363-d28e741f7232)
+
+
+### Blog – Liste des articles
+![image](https://github.com/user-attachments/assets/4da8bdfd-07e6-413e-b43e-30b53b4f244e)
+
+
+### Gestion des réclamations
+![image](https://github.com/user-attachments/assets/10aee998-d2a4-4bbb-adea-6a12b0d222d1)
+
+
+### Gestion des événements
+![image](https://github.com/user-attachments/assets/67143abd-7eac-4977-a656-8ef2c84414d3)
 
 
 ## Remerciements
