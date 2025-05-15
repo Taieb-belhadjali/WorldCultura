@@ -96,6 +96,12 @@ Ce backend Symfony prend en charge les fonctionnalités suivantes :
     ```
 
 ---
+
+### Home page
+![image](https://github.com/user-attachments/assets/87ee377e-d06f-488a-84ac-e243815e5b75)
+
+
+
 ### Tableau de bord administrateur
 ![image](https://github.com/user-attachments/assets/d5cab26f-b950-467a-ae23-77b8e00b9fd5)
 
