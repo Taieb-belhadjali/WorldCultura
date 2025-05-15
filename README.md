@@ -1,4 +1,4 @@
-# WorldCultura – Symfony Backend
+# WorldCultura
 
 WorldCultura est une plateforme innovante dédiée à la découverte des pays et à la promotion de l’échange culturel. Elle permet aux utilisateurs de réserver des vols, d’acheter des produits locaux, de consulter des événements culturels, de partager des avis sur un blog et de gérer leurs réclamations.
 
