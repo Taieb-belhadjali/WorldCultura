@@ -8,7 +8,7 @@ WorldCultura est une plateforme innovante dédiée à la découverte des pays et
 
 Ce backend Symfony prend en charge les fonctionnalités suivantes :
 
-- Gestion des utilisateurs avec rôles (administrateurs, voyageurs, vendeurs, etc.)
+- Gestion des utilisateurs avec rôles (administrateurs,client)
 - Réservation de vols internationaux
 - Achat de produits locaux importés ou artisanaux
 - Consultation d’événements culturels (festivals, expositions…)
